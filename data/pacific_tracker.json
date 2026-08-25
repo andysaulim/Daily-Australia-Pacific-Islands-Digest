@@ -1,0 +1,125 @@
+{
+  "last_updated": null,
+  "countries": {
+    "Papua New Guinea": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Fiji": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Solomon Islands": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Vanuatu": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Samoa": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Tonga": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Kiribati": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Tuvalu": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Nauru": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Palau": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Marshall Islands": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Micronesia (FSM)": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Cook Islands": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Niue": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "New Caledonia": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "French Polynesia": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    },
+    "Timor-Leste": {
+      "last_event": null,
+      "last_event_date": null,
+      "last_activity_type": null,
+      "url": null,
+      "event_count": 0
+    }
+  },
+  "recent_events": []
+}

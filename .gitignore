@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Per-run artifacts. Regenerated every run, never worth a diff.
+collected.json
+digest.json
+latest.html
+digest_*.html
+smoke_output.html
+
+# The Pages archive is rebuilt each run and published by the deploy step,
+# so only the directory itself is tracked.
+public/*
+!public/.gitkeep
+
+# Local test databases. data/archive.db and the tracker JSON are the
+# cross-day memory and ARE committed, so nothing under data/ is ignored.
+smoke_archive.db
+*.db-journal
+
+# Credentials. Never commit these; they belong in GitHub Secrets.
+.env
+*.pem
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

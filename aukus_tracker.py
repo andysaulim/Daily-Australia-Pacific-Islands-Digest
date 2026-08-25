@@ -208,4 +208,11 @@ def update_from_digest(digest: dict) -> int:
 
 
 if __name__ == "__main__":
+    # Materialise the seed ledger so it can be edited by hand. SETUP step 2
+    # sends the operator here to generate the file before the first send.
+    if not TRACKER_PATH.exists():
+        _save(_load())
+        print(f"Wrote seed ledger to {TRACKER_PATH}")
+        print("Every milestone marked \"confidence\": \"seed\" is unverified. "
+              "Change it to \"confirmed\" only for lines sourced twice.\n")
     print(build_context_block())

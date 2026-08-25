@@ -10,8 +10,17 @@ Writes smoke_output.html so a layout change can be eyeballed without spending an
 API call. Run this before every commit that touches the validator or renderer.
 """
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
+
+# Section 6 writes real rows through archive.py. Point the ledger at a throwaway
+# file before archive is imported, so a test run cannot poison the cross-day
+# memory that data/archive.db holds. Must precede the imports below.
+_TMP_DB = Path(tempfile.gettempdir()) / "ausbrief_smoke_archive.db"
+_TMP_DB.unlink(missing_ok=True)
+os.environ["ARCHIVE_DB"] = str(_TMP_DB)
 
 FAILS = []
 
@@ -31,6 +40,8 @@ import render as render_mod
 import run as run_mod
 import send_email
 check("all modules import", True)
+check("archive writes to the throwaway database, not data/archive.db",
+      archive.DB_PATH == _TMP_DB, f"DB_PATH={archive.DB_PATH}")
 
 print("\n=== 2. Regex filters ===")
 check("AUSPAC matches an AUKUS headline",

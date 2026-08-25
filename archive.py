@@ -16,13 +16,18 @@ The database file is committed back by the workflow each run so state survives
 between GitHub Actions runners.
 """
 import json
+import os
 import re
 import sqlite3
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-DB_PATH = Path(__file__).parent / "data" / "archive.db"
+# ARCHIVE_DB redirects the ledger elsewhere. The smoke test sets it, because
+# its fixtures are real writes: without the override they land in the
+# published table and suppress a genuine story carrying the same headline.
+DB_PATH = Path(os.environ.get("ARCHIVE_DB")
+               or Path(__file__).parent / "data" / "archive.db")
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS items (

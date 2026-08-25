@@ -9,9 +9,13 @@ on:
     - cron: '0 13 * * 1-5'   # 9:00 AM ET, last resort
   workflow_dispatch:
 
+# The built-in GITHUB_TOKEN covers everything this workflow does, so no
+# personal access token is needed to run the brief. actions:read is what
+# lets the double-send guard call `gh run list`.
 permissions:
   contents: write
   pages: write
+  actions: read
 
 concurrency:
   group: daily-brief
@@ -26,7 +30,7 @@ jobs:
       - name: Check if already sent today
         id: guard
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "${{ github.event_name }}" != "schedule" ]; then
             echo "Dispatch trigger, running"
@@ -82,9 +86,9 @@ jobs:
       # Everything past the send is continue-on-error on purpose. A red
       # post-send step would mark the run failed and let a fallback cron
       # send a second copy of an issue that already went out.
-      # The rendered issue otherwise exists only in recipients' inboxes:
-      # public/ is gitignored and Pages needs GH_PAT. Keeping the HTML and the
-      # digest JSON as artifacts makes an issue auditable after the fact.
+      # The rendered issue otherwise exists only in recipients' inboxes,
+      # because public/ is gitignored. Keeping the HTML and the digest JSON as
+      # artifacts makes an issue auditable after the fact even if Pages is off.
       - name: Upload the rendered issue
         if: always() && steps.guard.outputs.should_run == 'true'
         continue-on-error: true
@@ -108,7 +112,7 @@ jobs:
         continue-on-error: true
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.GH_PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           keep_files: true
 

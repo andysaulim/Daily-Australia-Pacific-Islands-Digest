@@ -158,7 +158,7 @@ health line before keeping it. GitHub Actions has no middlebox and is unaffected
 | `GMAIL_APP_PASS` | Gmail app password |
 | `DIGEST_TO` | Recipient list, delivered as BCC |
 | `ALERT_TO` | Where failure alerts go. Set this to the operator, not the list. |
-| `GH_PAT` | `repo` and `workflow` scopes, for Pages and the double-send guard |
+| `GH_PAT` | `repo` and `workflow` scopes. Only for the external cron; the workflow itself uses the built-in `GITHUB_TOKEN` |
 
 The primary trigger is an external cron firing `workflow_dispatch` at 6:00 AM ET
 on weekdays. The two Actions cron entries are fallbacks, and a guard step skips

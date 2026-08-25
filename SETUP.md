@@ -18,7 +18,7 @@ have from the Korea or Japan brief.
 | --- | --- | --- |
 | Anthropic API key | console.anthropic.com → API keys | The Korea brief's key works if you would rather share billing. A separate key makes the Australia Chair's spend legible on its own. |
 | Gmail app password | myaccount.google.com → Security → 2-Step Verification → App passwords | 16 characters, **not** your account password. Requires 2FA on the account. Same drill as the Korea brief. |
-| GitHub personal access token | github.com → Settings → Developer settings → Personal access tokens | Scopes: `repo` and `workflow`. Used for the Pages deploy and the guard's `gh run list`. |
+| GitHub personal access token | github.com → Settings → Developer settings → Personal access tokens | Scopes: `repo` and `workflow`. Needed **only** for the external cron in step 8, which fires from outside Actions and so cannot use the built-in token. |
 | Sender Gmail account | n/a | Whatever address the brief should come from. Reuse the Korea/Japan sender if the Chair is happy with that. |
 
 Do not paste any of these into a file in the repo. They go into GitHub Secrets in
@@ -115,7 +115,7 @@ cross-day memory, and the workflow commits them back after every run.
 ## 5. Add the secrets
 
 Repo → **Settings** → **Secrets and variables** → **Actions** → **New repository
-secret**. Six entries:
+secret**. Five required, plus one only if you wire up the external cron:
 
 | Name | Value |
 | --- | --- |
@@ -124,7 +124,7 @@ secret**. Six entries:
 | `GMAIL_APP_PASS` | the 16-character app password |
 | `DIGEST_TO` | **your address only, for now.** Comma-separated when you widen it. |
 | `ALERT_TO` | your address. Failure alerts must never reach the distribution list. |
-| `GH_PAT` | the personal access token from step 1 |
+| `GH_PAT` | **only if you set up the external cron in step 8.** The workflow itself no longer needs it: the Pages deploy and the double-send guard both run on the built-in `GITHUB_TOKEN`. |
 
 `DIGEST_TO` starting as just you is the whole point of the pilot in step 8. Widen
 it deliberately, not on day one.

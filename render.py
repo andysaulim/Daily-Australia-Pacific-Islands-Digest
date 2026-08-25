@@ -224,7 +224,7 @@ def render(digest: dict) -> str:
     <a name="top"></a>
     <div bgcolor="{NAVY_DEEP}" style="background-color:{NAVY_DEEP};background:linear-gradient(135deg, {NAVY_DEEP} 0%, {NAVY} 60%, #24485C 100%);color:#fff;padding:20px 32px 16px;" class="sec">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td style="vertical-align:top;">
+        <td class="hdr-main" style="vertical-align:top;">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:{TEAL_LT};font-family:Arial,sans-serif;margin-bottom:6px;">CSIS Australia Chair</div>
           <h1 style="margin:0;font-size:26px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#fff;letter-spacing:0.3px;">
             Australia Chair Daily Brief
@@ -232,7 +232,7 @@ def render(digest: dict) -> str:
           <div style="margin-top:4px;font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif;">Australia &nbsp;&middot;&nbsp; New Zealand &nbsp;&middot;&nbsp; the Pacific Islands</div>
           <div style="margin-top:8px;font-size:16px;color:rgba(255,255,255,0.9);font-family:Georgia,serif;">{_esc(date_str)}</div>
         </td>
-        <td style="vertical-align:top;text-align:right;">
+        <td class="hdr-meta" width="130" style="width:130px;vertical-align:top;text-align:right;">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.5);margin-bottom:4px;">{gen_time}</div>
           <div style="font-size:10px;color:rgba(255,255,255,0.4);">{word_count:,} words &middot; {read_min} min read</div>
         </td>
@@ -248,6 +248,12 @@ def render(digest: dict) -> str:
     # the only two outside the three-geography palette.
     markets = digest.get("market_indicators") or {}
     if markets:
+        # Each indicator is an inline-block that keeps its own figure on one
+        # line but lets the GROUP wrap. It was a single table row of
+        # white-space:nowrap cells, which is six indicators of unbreakable
+        # content, roughly 600px, in a 375px phone: the strip could not wrap,
+        # so it pushed a horizontal scrollbar onto the whole email. Outlook
+        # degrades inline-block to inline, which still wraps and still reads.
         cells = ""
         for m in markets.values():
             if not isinstance(m, dict) or not m.get("value"):
@@ -256,15 +262,14 @@ def render(digest: dict) -> str:
             colour = "#1B7A4A" if pct > 0 else ALERT if pct < 0 else "#777"
             sign = "+" if pct > 0 else ""
             cells += f"""
-              <td style="padding:0 14px 0 0;white-space:nowrap;">
-                <span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8A8A8A;">{_esc(m.get("label", ""))}</span>
-                <span style="font-size:12px;font-weight:600;color:{NAVY};margin-left:6px;">{_esc(m["value"])}</span>
-                <span style="font-size:11px;color:{colour};margin-left:4px;">{sign}{pct:.2f}%</span>
-              </td>"""
+            <span class="mkt" style="display:inline-block;white-space:nowrap;padding:2px 16px 2px 0;">
+              <span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8A8A8A;">{_esc(m.get("label", ""))}</span>
+              <span style="font-size:12px;font-weight:600;color:{NAVY};margin-left:6px;">{_esc(m["value"])}</span>
+              <span style="font-size:11px;color:{colour};margin-left:4px;">{sign}{pct:.2f}%</span>
+            </span>"""
         if cells:
             sections.append(f"""
-        <div style="padding:10px 32px;background:#FAFAFA;border-bottom:1px solid #EBEBEB;" class="sec">
-          <table cellpadding="0" cellspacing="0" border="0"><tr>{cells}</tr></table>
+        <div style="padding:10px 32px;background:#FAFAFA;border-bottom:1px solid #EBEBEB;line-height:1.9;" class="sec">{cells}
         </div>""")
 
     # ── 3. Today at a Glance ─────────────────────────────────────────────
@@ -642,6 +647,10 @@ def _shell(body: str, date_str: str) -> str:
     @media only screen and (max-width: 620px) {{
       .wrapper {{ width:100% !important; }}
       .sec, .footer {{ padding:16px 14px !important; }}
+      .hdr-main, .hdr-meta {{ display:block !important; width:100% !important;
+                              text-align:left !important; }}
+      .hdr-meta {{ padding-top:10px !important; }}
+      .mkt {{ font-size:11px !important; padding-right:12px !important; }}
       .cal-table td[width="110"] {{ width:80px !important; padding:8px 8px 8px 0 !important; }}
       .cal-date {{ font-size:11px !important; }}
       .china-dark > div {{ padding:16px 14px !important; }}
@@ -694,7 +703,7 @@ def _shell(body: str, date_str: str) -> str:
     <tr>
       <td align="center" valign="top" style="padding:0;">
         <!--[if mso]><table width="680" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
-        <table role="presentation" class="wrapper" width="680" cellpadding="0" cellspacing="0" border="0" align="center" style="width:680px;max-width:680px;margin:0 auto;background:#FFFFFF;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+        <table role="presentation" class="wrapper" width="680" cellpadding="0" cellspacing="0" border="0" align="center" style="width:680px;max-width:100%;margin:0 auto;background:#FFFFFF;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
           <tr>
             <td style="padding:0;">
               {body}

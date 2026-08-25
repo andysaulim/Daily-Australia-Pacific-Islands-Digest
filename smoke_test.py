@@ -824,6 +824,32 @@ check("the warning names the story, not just the outlet",
       "Marles meets Austin" in _pline[0] and "Reuters" in _pline[0])
 check("the warning counts what was dropped", "1 collected but unused" in _pline[0])
 
+print("\n=== 14m. A same-day re-run explains itself ===")
+# Brief 3 failed on "OVERNIGHT ITEMS CRITICAL: only 2 (min 3)", which reads
+# like a starved collector and was not: 65 items had already gone out that day
+# and the cross-day memory stripped every one of them.
+import io as _io_cap, contextlib as _ctx
+_arch_gap.record_published({"also_today": [
+    {"url": "http://example.com/sameday", "headline": "Something already sent",
+     "category": "AU-Politics"}]})
+_buf = _io_cap.StringIO()
+with _ctx.redirect_stdout(_buf):
+    run_mod._explain_same_day_rerun()
+_out = _buf.getvalue()
+check("it names how many items already went out", "already went out today" in _out)
+check("it says the guard is working, not the collector failing",
+      "guard working, not a" in _out)
+check("it points at the first run of the day, not the caps",
+      "FIRST run of the day" in _out)
+check("it is wired into the give-up branch, not merely defined",
+      "_explain_same_day_rerun()" in
+      _rsrc_run.split("the brief will NOT be sent")[-1])
+
+_wf = Path(".github/workflows/daily-brief.yml").read_text(encoding="utf-8")
+check("the job budget has headroom over the observed worst case",
+      "timeout-minutes: 45" in _wf)
+check("the timeout says why it is not 30", "22 of its 30 minutes" in _wf)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

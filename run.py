@@ -636,6 +636,37 @@ def validate_digest(digest: dict, payload: dict | None = None) -> list[str]:
     return warnings
 
 
+def _explain_same_day_rerun() -> None:
+    """Say so when the failure is just an issue having already gone out today.
+
+    The third run of 25 August failed on "OVERNIGHT ITEMS CRITICAL: only 2
+    (min 3)", which reads like a starved collector. It was not. Two issues had
+    already published 65 items that day, the cross-day memory stripped every
+    one of them as a repeat, and what was left could not fill a section. The
+    pipeline behaved correctly and refused to send a padded issue; nothing in
+    the log said so, and the operator had to reconstruct it from the archive.
+    """
+    try:
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        import archive
+        today = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
+        already = [e for e in archive.recent_published(days=1)
+                   if e.get("date") == today]
+    except Exception:                                   # noqa: BLE001
+        return
+    if not already:
+        return
+    print(f"\n  NOTE: {len(already)} item(s) already went out today. The "
+          "cross-day memory strips")
+    print("  anything already published, so a re-run on the same day has "
+          "little left to work")
+    print("  with and will usually fail a section floor. This is the guard "
+          "working, not a")
+    print("  starved collector. Compare against the FIRST run of the day "
+          "before tuning caps.")
+
+
 def _postprocess_digest(digest_data: dict, payload: dict | None = None) -> tuple[dict, list[str]]:
     """URL repair, cross-day filter, dedup, source diversity."""
     log = []
@@ -854,6 +885,7 @@ def main():
         else:
             print("\n  CRITICAL failures after all retries, the brief will NOT be sent.")
             print("  HTML is still rendered for review.")
+            _explain_same_day_rerun()
 
     # ── Step 4: Write back trackers and the published ledger ─────────────
     # Only after validation passes: a failed run must not poison state.

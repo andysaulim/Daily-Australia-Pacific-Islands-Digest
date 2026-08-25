@@ -1,0 +1,156 @@
+name: Daily Korea News Digest
+
+on:
+  schedule:
+    # Safety-net fallback only — primary trigger is external (cron-job.org)
+    # If external trigger already succeeded today, these skip automatically.
+    - cron: '30 11 * * *'  # 7:30 AM ET — fallback if external cron missed
+    - cron: '0 13 * * *'   # 9:00 AM ET — last resort
+  workflow_dispatch: # Primary trigger via external cron (cron-job.org)
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      # Guard: for fallback crons, skip if dispatch already succeeded today
+      - name: Check if already sent today
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Dispatch trigger — running"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          today=$(date -u +%Y-%m-%d)
+          success_count=$(gh run list --repo ${{ github.repository }} \
+            --workflow "Daily Korea News Digest" \
+            --status success --created "$today" \
+            --json conclusion -q 'length' 2>/dev/null || echo "0")
+          inprogress_count=$(gh run list --repo ${{ github.repository }} \
+            --workflow "Daily Korea News Digest" \
+            --status in_progress --created "$today" \
+            --json conclusion -q 'length' 2>/dev/null || echo "0")
+          total=$((success_count + inprogress_count))
+          if [ "$total" -gt "1" ]; then
+            echo "Dispatch already succeeded or is running — skipping cron fallback"
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          elif [ "$success_count" -gt "0" ]; then
+            echo "Dispatch already succeeded today — skipping cron fallback"
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No successful run yet today — running cron fallback"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.should_run == 'true'
+
+      - name: Restore tracker data from cache
+        if: steps.guard.outputs.should_run == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            kim_tracker.json
+            kcna_tracker.json
+            bp_tracker.json
+            metrics.jsonl
+          key: tracker-data-v1
+          restore-keys: |
+            tracker-data-
+
+      - name: Set up Python
+        if: steps.guard.outputs.should_run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.should_run == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Generate and send digest
+        if: steps.guard.outputs.should_run == 'true'
+        id: send
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          DIGEST_TO: ${{ secrets.DIGEST_TO }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          WEB_URL: https://andysaulim.github.io/Daily-Korea-Digest
+        run: |
+          python run.py
+          echo "success=true" >> "$GITHUB_OUTPUT"
+
+      # Post-email steps use continue-on-error so a Pages/README failure
+      # doesn't mark the workflow as "failed" and trigger a duplicate
+      # from the cron fallback.
+      - name: Update README with run stats
+        if: steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        run: python update_readme.py
+
+      - name: Deploy to GitHub Pages
+        if: steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.GH_PAT }}
+          publish_dir: ./public
+          keep_files: true
+
+      - name: Commit updated README
+        if: steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Update README stats [skip ci]"
+            git pull --rebase origin main || true
+            git push
+          fi
+
+      - name: Save tracker data to cache
+        if: always() && steps.guard.outputs.should_run == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            kim_tracker.json
+            kcna_tracker.json
+            bp_tracker.json
+            metrics.jsonl
+          key: tracker-data-v1-${{ github.run_id }}
+
+      - name: Send failure alert
+        if: failure() && steps.guard.outputs.should_run == 'true'
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          DIGEST_TO: ${{ secrets.DIGEST_TO }}
+        run: |
+          python -c "
+          import smtplib, os
+          from email.mime.text import MIMEText
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          now = datetime.now(ZoneInfo('America/New_York')).strftime('%Y-%m-%d %I:%M %p ET')
+          body = f'The Korea Daily Brief pipeline failed at {now}.\n\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\n\nThe next fallback cron will retry automatically.'
+          msg = MIMEText(body)
+          msg['Subject'] = f'⚠ Korea Daily Brief FAILED — {now}'
+          msg['From'] = os.environ['GMAIL_USER']
+          msg['To'] = os.environ.get('DIGEST_TO', os.environ['GMAIL_USER'])
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15) as s:
+              s.login(os.environ['GMAIL_USER'], os.environ['GMAIL_APP_PASS'])
+              s.sendmail(os.environ['GMAIL_USER'], msg['To'].split(','), msg.as_string())
+          print('Failure alert sent')
+          "

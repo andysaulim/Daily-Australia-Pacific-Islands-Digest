@@ -142,8 +142,12 @@ It is **off** unless you turn it on, because an always-on IMAP login with nothin
 subscribed would print a failure line every morning until you did.
 
 1. Subscribe the `GMAIL_USER` inbox to the newsletters you want ingested.
-2. Enable IMAP on that account: Gmail **Settings** -> **Forwarding and POP/IMAP**
-   -> **Enable IMAP**.
+2. Check IMAP on that account: Gmail **Settings** -> **Forwarding and
+   POP/IMAP**. Google made IMAP always-on for personal Gmail, so that page
+   now shows only the sub-settings (auto-expunge, folder size) and no
+   enable/disable control. If you see no toggle, there is nothing to turn
+   on. Some Workspace accounts still show one, under admin control. POP is
+   irrelevant either way; the pipeline does not use it.
 3. Add sender or subject fingerprints to `_PUBLISHERS` / `_NEWSLETTERS` in
    `newsletters.py`. It ships with plausible candidates for this beat; an
    unsubscribed one simply never matches.

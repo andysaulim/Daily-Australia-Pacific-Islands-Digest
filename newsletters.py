@@ -48,7 +48,10 @@ import collect   # _is_region_related, _is_sport, _entry_to_article
 
 ENABLED = os.environ.get("NEWSLETTERS", "0") not in ("0", "false", "False", "")
 IMAP_HOST = "imap.gmail.com"
-MAX_MESSAGES = 100
+# Headers only for the scan, so this is a cheap ceiling now, not the
+# hundred full messages it used to mean. A busy personal inbox clears
+# 100 messages in a day easily, which silently truncated the window.
+MAX_MESSAGES = 400
 
 # A newsletter is identified from its sender and/or its subject, so whichever
 # the inbox happens to receive is picked up. Seeded with plausible candidates
@@ -183,6 +186,38 @@ def parse_newsletter_html(html: str, label: str) -> list:
     return out
 
 
+def _scan_mailbox(M, mailbox: str, days: int) -> list:
+    """Find and parse subscribed newsletters in one mailbox."""
+    typ, _ = M.select(mailbox, readonly=True)
+    if typ != "OK":
+        return []
+    since = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%d-%b-%Y")
+    _, data = M.search(None, f"(SINCE {since})")
+    ids = data[0].split() if data and data[0] else []
+    out = []
+    for mid in ids[-MAX_MESSAGES:]:
+        # Headers first. This used to pull RFC822 for every message in the
+        # window, which is the entire day's mail, images and all, downloaded
+        # to read two header lines off each one. Only a match is worth its
+        # body, and PEEK leaves the message unread in the operator's inbox.
+        _, hd = M.fetch(mid, "(BODY.PEEK[HEADER.FIELDS (FROM SUBJECT)])")
+        if not hd or not isinstance(hd[0], tuple):
+            continue
+        head = email.message_from_bytes(hd[0][1])
+        label = _match_source(str(head.get("From", "")),
+                              _decode(head.get("Subject", "")))
+        if not label:
+            continue
+        _, md = M.fetch(mid, "(BODY.PEEK[])")
+        if not md or not isinstance(md[0], tuple):
+            continue
+        msg = email.message_from_bytes(md[0][1])
+        items = parse_newsletter_html(_html_part(msg), label)
+        print(f"  [newsletter] {label}: {len(items)} items")
+        out += items
+    return out
+
+
 def from_imap(days: int = 1) -> list:
     user = os.environ.get("GMAIL_USER")
     pw = os.environ.get("GMAIL_APP_PASS")
@@ -193,22 +228,17 @@ def from_imap(days: int = 1) -> list:
     try:
         M = imaplib.IMAP4_SSL(IMAP_HOST)
         M.login(user, pw)
-        M.select("INBOX")
-        since = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%d-%b-%Y")
-        _, data = M.search(None, f"(SINCE {since})")
-        ids = data[0].split() if data and data[0] else []
-        for mid in ids[-MAX_MESSAGES:]:
-            _, md = M.fetch(mid, "(RFC822)")
-            if not md or not md[0]:
-                continue
-            msg = email.message_from_bytes(md[0][1])
-            label = _match_source(str(msg.get("From", "")),
-                                  _decode(msg.get("Subject", "")))
-            if not label:
-                continue
-            items = parse_newsletter_html(_html_part(msg), label)
-            print(f"  [newsletter] {label}: {len(items)} items")
-            out += items
+        # INBOX first, then All Mail. A newsletter is exactly the kind of mail
+        # a Gmail filter is set up to label and skip the inbox, and an
+        # INBOX-only scan would then find nothing while the operator watched
+        # the issue arrive every morning. All Mail is only paid for on the
+        # days INBOX comes back empty.
+        for mailbox in ("INBOX", '"[Gmail]/All Mail"'):
+            out = _scan_mailbox(M, mailbox, days)
+            if out:
+                break
+            if mailbox == "INBOX":
+                print("  [newsletter] nothing in INBOX, trying All Mail")
         M.logout()
     except Exception as e:                                  # noqa: BLE001
         print(f"  [newsletter] IMAP error: {e!r}")

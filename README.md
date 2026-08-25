@@ -133,7 +133,7 @@ the read-online link), `USE_OS_TRUSTSTORE=1` (see below).
 python smoke_test.py
 ```
 
-One hundred and seventy offline checks covering the relevance filters, region tagging, the
+Two hundred and fourteen offline checks covering the relevance filters, region tagging, the
 trackers, the archive's cross-day memory, the validator (including the regional
 floors, the padding check, and the em-dash and emoji gates), dedup, source caps,
 URL repair, and the renderer. No network, no API call. It writes
@@ -183,9 +183,13 @@ issue.
   numbers, U.S. and U.K. keep their periods, serial comma. An em-dash is a
   critical failure that blocks the send.
 
-Word count: the prompt targets 1,400 to 1,600 words; the validator's hard floor
-is 850 with a 1,200 to 1,400 target. The gap is deliberate, since post-processing
-strips 200 to 400 words.
+Word count: the prompt targets 2,200 to 2,600 words; the validator's hard floor
+is 1,400 with a 2,000 to 2,400 target. The gap is deliberate, since
+post-processing strips 200 to 400 words. These are not the Korea brief's
+numbers, which were 850 and 1,200: twelve topics across Australia, New Zealand
+and seventeen Pacific states do not fit in 1,500 words, and the second live
+issue proved it by clearing every gate at 1,516 words while running a
+supermarket promotion and dropping six wire services.
 
 ## Repo layout
 
@@ -205,7 +209,7 @@ pipeline_health.py      post-run health monitor, feeds into metrics.jsonl
 resolve.py              canonicalizes Google News redirects, cached in archive.db
 fulltext.py             fetches real article bodies, cached in archive.db
 newsletters.py          subscriber-only newsletters over IMAP, off by default
-markets.py              ASX 200, AUD/USD, NZX 50, iron ore, Brent, with fallbacks
+markets.py              ASX 200, AUD/USD, NZX 50, NZD/USD, Brent, with fallbacks
 weekly.py               Friday Week in Review, synthesized from the archive
 cost_report.py          spend per issue and projected monthly, from metrics.jsonl
 BASELINES_WORKSHEET.md  staging for _REGIONAL_BASELINES, not imported anywhere

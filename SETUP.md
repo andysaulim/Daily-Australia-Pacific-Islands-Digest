@@ -66,7 +66,7 @@ pip install -r requirements.txt
 python smoke_test.py
 ```
 
-One hundred and seventy offline checks, no network and no API spend. All should pass.
+Two hundred and fourteen offline checks, no network and no API spend. All should pass.
 
 Then a real generation, no email:
 
@@ -75,7 +75,7 @@ export ANTHROPIC_API_KEY=sk-ant-...
 python run.py --no-send
 ```
 
-Open `latest.html`. Check the word count clears 850, the Pacific and New Zealand
+Open `latest.html`. Check the word count clears 1,400, the Pacific and New Zealand
 sections have real items or an honest stand-in line, and nothing looks fabricated.
 
 **Expect the feed count to look bad on the CSIS network.** It intercepts TLS and
@@ -229,7 +229,7 @@ Keep `DIGEST_TO` as yourself and the Chair. Each morning, check:
 | --- | --- | --- |
 | Repetition across days | Read Monday against Friday | The cross-day memory is the reason this brief exists in its current form. This is the check that matters most. |
 | Pacific stand-in frequency | The README stats block | Three or more in ten issues and the Pacific feed set needs sources, not a lower floor. The README says so itself. |
-| Word count | README stats | Consistently near 850 means the feeds are starving the brief. |
+| Word count | README stats | Consistently near 1,400 means the feeds are starving the brief. |
 | Validation retries | README stats | Frequent retries mean a cap or floor is set wrong for this region's actual volume. |
 | Dead feeds | Actions log | Move anything returning 403 to Google News routing. Never delete it outright. |
 
@@ -240,13 +240,15 @@ see. Widen `DIGEST_TO` only once a fortnight of issues would have been fit to se
 
 ## 10. After the pilot
 
-- **Friday Week in Review.** The Korea brief has `weekly.py`, synthesising the
-  week's archived issues on a separate Friday schedule. Deliberately not built
-  yet: it needs a corpus of real issues to synthesise, so it is worth writing
-  after the pilot rather than before.
-- **Market strip.** Left out of v1 by choice. The render slot and the
-  `market_indicators` key are stubbed, so ASX 200, AUD/USD, NZX 50, NZD/USD, iron
-  ore, the RBA cash rate and the RBNZ OCR can drop in without a re-layout.
+- **Friday Week in Review.** Built: `weekly.py` on its own Friday workflow,
+  reading `data/archive.db`. It has nothing to synthesise until there is a week
+  of issues behind it, so judge it after the pilot, not on its first Friday.
+- **Market strip.** Built: ASX 200, AUD/USD, NZX 50, NZD/USD and Brent, Yahoo
+  with a Stooq fallback, rendered only for what actually resolved. Iron ore is
+  deliberately absent: Yahoo's `TIO=F` stopped updating and returns quotes over
+  1,800 days old, which `markets.py` correctly refuses. If you find a free
+  endpoint with a current 62% Fe CFR price, add it to `INDICATORS` with its
+  sanity range; do not restore `TIO=F`.
 - **Structured outputs.** `digest.py` asks for bare JSON and cleans up the result
   with `_robust_json_parse`. The current API can guarantee valid JSON via
   `output_config.format` with a schema. Worth adopting once there is a key to test

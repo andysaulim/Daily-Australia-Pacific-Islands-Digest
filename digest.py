@@ -86,6 +86,20 @@ A MARKET DATA block below carries pre-collected figures. Use those exact numbers
 SPORT AND ENTERTAINMENT, HARD BLOCK:
 NEVER include AFL, NRL, rugby, cricket, the Ashes, netball, the Melbourne Cup, the Australian Open, Olympic or Commonwealth Games coverage, motorsport, horse racing, celebrity, reality television, film, music, or royal-visit colour in ANY section. Not even when a sport story carries a diplomatic angle (a Pacific rugby tour, a stadium financed by a foreign government) unless the diplomatic substance is the story and the sport is incidental. This brief covers security, foreign policy, defence, politics, trade, and development only.
 
+OFF-BEAT NEWS, THE RELEVANCE GATE:
+The sport block below is absolute. This gate is the softer one it kept missing: a story can be real, well sourced, from a masthead you respect, and still not belong in this brief. The test is whether an official working on Australia, New Zealand or the Pacific Islands would act differently for having read it. If not, leave it out, even when it leaves a section short.
+Exclude, unless the mandate substance IS the story rather than the setting:
+- Consumer protection, advertising standards, and misleading-conduct suits against ordinary businesses.
+- Supermarket promotions, retail sales figures, and marketing campaigns.
+- Local council, school, and municipal-services incidents, including emergency-services callouts.
+- Tourism marketing, trade-show appearances, and destination promotion.
+- Recreational boating, road, and aviation accidents with no policy or diplomatic dimension.
+- Weather and natural-hazard events, unless there is a disaster-response, aid, or climate-policy dimension being reported.
+- Opinion columns about United States domestic politics that reach the region only by implication.
+- Health, welfare, and tax administration stories with no foreign, defence, or trade dimension.
+These are not hypotheticals. On 25 August the brief ran a misleading-advertising judgment against a dating website, a supermarket's collectables campaign, a bomb-squad callout to a school science laboratory, a tourism roadshow, and a column on American power, while six wire services that filed on this region the same day were collected and never used. Every one of those slots belonged to a story on the mandate.
+An honest short section is the correct output when the day is thin. Filling a section with off-beat copy is a worse failure than leaving it short, because it makes a thin day look like a covered one.
+
 PRESTIGE OUTLET RULE, MANDATORY INCLUSION:
 Items from these outlets are marked "prestige_outlet": true in the input data. Do not match outlet names by eye, use that flag. Every flagged item that qualifies on substance MUST appear somewhere in the brief. On the first live issue an SMH story was collected and silently dropped, which is exactly what this flag exists to prevent.
 If a qualifying story appears from any of The Australian, Sydney Morning Herald, Australian Financial Review, ABC News, Wall Street Journal, New York Times, Politico, Radio New Zealand Pacific, Islands Business, or Pacific Island Times, it MUST appear in the brief, in top_stories if major, otherwise in the appropriate section. These are the outlets the Australia Chair reads. Never drop a qualifying story from them.
@@ -240,8 +254,67 @@ Pacific:
 # USER PROMPT
 # ─────────────────────────────────────────────────────────────────────────────
 
+# Terms that mark an article as being on one of the twelve mandate topics.
+# Used only to ORDER the corpus, never to filter it: a story that matches
+# nothing here can still be shown, it just sorts below one that does.
+_MANDATE_TERMS = (
+    "aukus", "submarine", "virginia", "astute", "ssn", "osborne", "henderson",
+    "defence", "defense", "military", "navy", "frigate", "missile", "adf",
+    "nzdf", "exercise", "alliance", "ausmin", "pentagon", "state department",
+    "foreign minister", "foreign affairs", "diplomat", "ambassador", "embassy",
+    "high commission", "treaty", "pact", "communique", "summit", "forum",
+    "pacific islands forum", "pif", "compact", "cofa", "melanesian",
+    "china", "beijing", "xi ", "coast guard", "policing", "security agreement",
+    "critical minerals", "rare earth", "tariff", "sanction", "export control",
+    "investment screening", "undersea cable", "port", "aid", "development",
+    "climate finance", "sea level", "deep sea mining", "fisheries",
+    "parliament", "cabinet", "minister", "election", "coalition", "budget",
+    "taiwan", "united states", "washington",
+)
+
+
+def _relevance_score(a: dict) -> int:
+    """How strongly an article speaks to the twelve-topic mandate.
+
+    The corpus runs to roughly 300 tier-1 items and only a slice of it fits
+    in the prompt. That slice used to be the first N in feed-completion
+    order, which is arbitrary: on 25 August it meant 209 of 299 articles were
+    never shown to the model at all, six wire services were collected and
+    silently dropped, and the brief filled its sections with a consumer-law
+    suit and a supermarket promotion while defence and Pacific copy sat
+    unseen. Ordering the corpus before the cut is what makes the cut honest.
+    """
+    score = 0
+    if a.get("prestige_outlet"):
+        score += 120          # the prompt calls these mandatory, so they must
+    if a.get("prestige"):     # never fall outside the window
+        score += 30
+    if a.get("primary_document"):
+        score += 60
+    if a.get("flagged_journalist"):
+        score += 50
+    region = (a.get("region") or "").strip()
+    if region == "Pacific":
+        score += 70           # four of the twelve topics are Pacific Islands
+    elif region == "NZ":
+        score += 45           # two more are New Zealand
+    haystack = f"{a.get('title', '')} {a.get('summary', '')[:400]}".lower()
+    hits = sum(1 for t in _MANDATE_TERMS if t in haystack)
+    score += min(hits, 4) * 12
+    if len(a.get("summary") or "") > 400:
+        score += 15           # fulltext.py got the body, so it can be mined
+    if a.get("seen_before"):
+        score -= 60
+    return score
+
+
+def _prioritize(articles: list) -> list:
+    """Mandate-relevant first. Stable, so ties keep collection order."""
+    return sorted(articles, key=lambda a: -_relevance_score(a))
+
+
 def _tier_json(articles: list, max_items: int = 60) -> str:
-    trimmed = articles[:max_items]
+    trimmed = _prioritize(articles)[:max_items]
     result = []
     for a in trimmed:
         item = {
@@ -279,12 +352,17 @@ def build_user_prompt(payload: dict, date_str: str) -> str:
     from pacific_tracker import build_context_block as pacific_context
     from calendar_tracker import build_context_block as calendar_context
     from archive import build_context_block as archive_context
+    from archive import build_coverage_gap_block
 
     bar = "=" * 60
     counts = payload.get("region_counts", {})
 
     covered = archive_context(days=3)
     covered_block = f"\n{bar}\nCROSS-DAY MEMORY\n{bar}\n{covered}\n" if covered else ""
+
+    # What the mandate has NOT been fed lately. Empty on a healthy run.
+    gaps = build_coverage_gap_block(days=14)
+    gap_block = f"\n{bar}\nCOVERAGE GAPS TO CLOSE IF TODAY ALLOWS\n{bar}\n{gaps}\n" if gaps else ""
 
     return f"""Produce the Australia Chair Daily Brief for {date_str}.
 
@@ -303,7 +381,7 @@ REGIONAL BASELINES
 {pacific_context()}
 {bar}
 {calendar_context()}
-{covered_block}{bar}
+{covered_block}{gap_block}{bar}
 TODAY'S COLLECTION BALANCE
 {bar}
 Tier 1 news by region: {counts.get('AU', 0)} Australia, {counts.get('NZ', 0)} New Zealand, {counts.get('Pacific', 0)} Pacific Islands.
@@ -312,7 +390,7 @@ Use this to calibrate: if the Pacific count is low, the pacific_wire section wil
 {bar}
 TIER 1: NEWS ARTICLES (last 24h)
 {bar}
-{_tier_json(payload.get("tier1", []), max_items=90)}
+{_tier_json(payload.get("tier1", []), max_items=160)}
 
 {bar}
 TIER 2: ANALYSIS AND COMMENTARY (last 36h)
@@ -357,7 +435,7 @@ Return a single JSON object with these keys.
 - on_this_day: 0-1 items, ONLY from the calendar's confirmed anniversaries. Each: date, event, relevance. Empty array if none.
 - story_count: integer, total items across all sections.
 
-TARGET LENGTH: HARD MINIMUM 1,000 WORDS. Aim for 1,400-1,600 words: post-processing strips duplicate URLs and over-represented sources, which typically removes 200-400 words. Reach the target by covering MORE stories, not by inflating individual bodies. If your draft runs short, add items to overnight_items or also_today.
+TARGET LENGTH: HARD MINIMUM 1,600 WORDS. Aim for 2,200-2,600 words: post-processing strips duplicate URLs and over-represented sources, which typically removes 200-400 words, so a 2,200-word draft lands near 2,000. This brief covers Australia, New Zealand and seventeen Pacific states across twelve topics, and 1,500 words cannot carry that. Reach the target by covering MORE stories, not by inflating individual bodies. If your draft runs short, add items to pacific_wire, overnight_items or also_today, in that order: the Pacific is where the brief is thinnest and the mandate widest.
 
 FINAL CHECKS before you return:
 1. Walk placement priority and delete every cross-section duplicate.
@@ -408,8 +486,8 @@ def _check_content_minimums(digest: dict) -> list[str]:
     """Fast pre-validation used to decide whether to re-prompt for length."""
     failures = []
     wc = _count_digest_words(digest)
-    if wc < 1000:
-        failures.append(f"word count {wc} is below the 1000-word minimum")
+    if wc < 1600:
+        failures.append(f"word count {wc} is below the 1600-word minimum")
     if len(digest.get("top_stories") or []) < 2:
         failures.append("top_stories has fewer than 2 items")
     if len(digest.get("overnight_items") or []) < 3:
@@ -641,15 +719,15 @@ def generate_digest(payload: dict) -> dict:
             if attempt == 0 or digest is None:
                 digest = _call_claude(client, user_prompt, model=retry_model)
             else:
-                deficit = max(0, 1000 - _count_digest_words(digest))
+                deficit = max(0, 1600 - _count_digest_words(digest))
                 expansion = (
                     "Your previous output failed content minimums:\n"
                     + "\n".join(f"  - {f}" for f in failures)
-                    + f"\n\nYou are roughly {deficit} words short of the 1,000-word minimum.\n"
+                    + f"\n\nYou are roughly {deficit} words short of the 1,600-word minimum.\n"
                     "\nHere is your previous output:\n"
                     + json.dumps(digest, ensure_ascii=False)[:8000]
                     + "\n\nReturn a COMPLETE updated brief JSON that fixes every failure above.\n"
-                    "- WORD COUNT: reach 1,000 words minimum. top_stories bodies 60-80 words, "
+                    "- WORD COUNT: reach 1,600 words minimum. top_stories bodies 60-80 words, "
                     "overnight_items 50-70, other sections 40-60. Add MORE items from the "
                     "available articles. Do not inflate existing bodies with filler.\n"
                     "- Keep the regional floors: pacific_wire needs 2 real items or the "

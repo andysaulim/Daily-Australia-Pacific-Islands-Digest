@@ -67,7 +67,12 @@ TIER1_FEEDS = {
     "SMH Federal Politics":   "https://www.smh.com.au/rss/politics/federal.xml",
     "SMH World":              "https://www.smh.com.au/rss/world.xml",
     "ABC News":               "https://www.abc.net.au/news/feed/51120/rss.xml",
-    "ABC Politics":           "https://www.abc.net.au/news/feed/56166/rss.xml",
+    # Feed id 56166 has returned a hard 500 from the ABC on every live run.
+    # Rerouted through Google News rather than deleted: the ABC political
+    # unit is one of the outlets the Chair actually reads, and a publisher
+    # 500 is usually a feed id being retired, not the desk closing.
+    "ABC Politics":           _gnews(
+        "site:abc.net.au+politics+OR+defence+OR+foreign+OR+China"),
 
     # ── Requester's named international outlets ──────────────────────────
     "WSJ":                    _gnews_us(f"({_REGION_Q})+site:wsj.com"),

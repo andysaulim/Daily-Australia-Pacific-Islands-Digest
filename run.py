@@ -556,10 +556,16 @@ def validate_digest(digest: dict, payload: dict | None = None) -> list[str]:
 
     # ── Word count ───────────────────────────────────────────────────────
     word_count = _count_digest_words(digest)
-    if word_count < 850:
-        warnings.append(f"WORD COUNT CRITICAL: ~{word_count} words (hard minimum 850)")
-    elif word_count < 1200:
-        warnings.append(f"WORD COUNT: ~{word_count} words (target 1200-1400)")
+    # 1,400 hard, 2,000 target. The inherited Korea numbers were 850 and
+    # 1,200, which this beat cannot live inside: twelve topics across three
+    # geographies and seventeen Pacific states need the room. The second live
+    # issue passed every gate at 1,516 words while running a supermarket
+    # promotion and dropping six wire services, which is what a floor set too
+    # low buys you.
+    if word_count < 1400:
+        warnings.append(f"WORD COUNT CRITICAL: ~{word_count} words (hard minimum 1400)")
+    elif word_count < 2000:
+        warnings.append(f"WORD COUNT: ~{word_count} words (target 2000-2400)")
 
     # ── House style: em-dashes and emojis ────────────────────────────────
     em_hits = [loc for loc, text in _all_text(digest) if _EM_DASH.search(text)]
@@ -610,16 +616,55 @@ def validate_digest(digest: dict, payload: dict | None = None) -> list[str]:
             warnings.append(f"BROKEN URL ({reason}): {url[:80]}")
 
     # ── Prestige coverage, non-blocking ──────────────────────────────────
+    # Names the stories, not just the outlets. "collected but unused: AFP, AP,
+    # Bloomberg, Financial Times, Reuters, WSJ" told the operator six wires had
+    # been dropped and nothing whatever about whether that was a real miss or
+    # six off-beat world stories, so it read as noise and got ignored. A
+    # headline is diagnosable in one glance.
     if payload:
-        collected_sources = {a.get("source", "") for a in (payload.get("tier1") or [])}
-        used_sources = {i.get("source", "") for s in _ALL_ITEM_SECTIONS
-                        for i in (digest.get(s) or []) if isinstance(i, dict)}
-        missed = [s for s in _PRESTIGE_OUTLETS
-                  if s in collected_sources and s not in used_sources]
-        if missed:
-            warnings.append(f"PRESTIGE: collected but unused: {', '.join(sorted(missed)[:6])}")
+        used_urls = {i.get("url", "") for s in _ALL_ITEM_SECTIONS
+                     for i in (digest.get(s) or []) if isinstance(i, dict)}
+        dropped = [a for a in (payload.get("tier1") or [])
+                   if a.get("source", "") in _PRESTIGE_OUTLETS
+                   and a.get("url", "") not in used_urls]
+        if dropped:
+            shown = "; ".join(f"{a.get('source', '?')}: {(a.get('title') or '')[:60]}"
+                              for a in dropped[:5])
+            more = f" (+{len(dropped) - 5} more)" if len(dropped) > 5 else ""
+            warnings.append(f"PRESTIGE: {len(dropped)} collected but unused: {shown}{more}")
 
     return warnings
+
+
+def _explain_same_day_rerun() -> None:
+    """Say so when the failure is just an issue having already gone out today.
+
+    The third run of 25 August failed on "OVERNIGHT ITEMS CRITICAL: only 2
+    (min 3)", which reads like a starved collector. It was not. Two issues had
+    already published 65 items that day, the cross-day memory stripped every
+    one of them as a repeat, and what was left could not fill a section. The
+    pipeline behaved correctly and refused to send a padded issue; nothing in
+    the log said so, and the operator had to reconstruct it from the archive.
+    """
+    try:
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        import archive
+        today = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
+        already = [e for e in archive.recent_published(days=1)
+                   if e.get("date") == today]
+    except Exception:                                   # noqa: BLE001
+        return
+    if not already:
+        return
+    print(f"\n  NOTE: {len(already)} item(s) already went out today. The "
+          "cross-day memory strips")
+    print("  anything already published, so a re-run on the same day has "
+          "little left to work")
+    print("  with and will usually fail a section floor. This is the guard "
+          "working, not a")
+    print("  starved collector. Compare against the FIRST run of the day "
+          "before tuning caps.")
 
 
 def _postprocess_digest(digest_data: dict, payload: dict | None = None) -> tuple[dict, list[str]]:
@@ -813,10 +858,20 @@ def main():
             validation_passed = True
             break
 
-        print(f"\n  VALIDATION ATTEMPT {validation_attempt + 1}/{1 + MAX_VALIDATION_RETRIES} "
-              f", critical warnings:")
-        for w in validation_warnings:
+        # Blocking and advisory warnings printed apart. They used to be one
+        # undifferentiated list under a "critical warnings:" header, so a soft
+        # word-count note and a prestige miss read as reasons the brief was
+        # held. On the third run of 25 August that cost real time working out
+        # which of three lines had actually blocked the send.
+        print(f"\n  VALIDATION ATTEMPT {validation_attempt + 1}/"
+              f"{1 + MAX_VALIDATION_RETRIES}, blocking:")
+        for w in critical:
             print(f"    - {w}")
+        advisory = [w for w in validation_warnings if w not in critical]
+        if advisory:
+            print("  also, not blocking:")
+            for w in advisory:
+                print(f"    - {w}")
 
         if validation_attempt < MAX_VALIDATION_RETRIES:
             print("\n  Re-generating with validation feedback (reusing collected articles)...")
@@ -830,6 +885,7 @@ def main():
         else:
             print("\n  CRITICAL failures after all retries, the brief will NOT be sent.")
             print("  HTML is still rendered for review.")
+            _explain_same_day_rerun()
 
     # ── Step 4: Write back trackers and the published ledger ─────────────
     # Only after validation passes: a failed run must not poison state.

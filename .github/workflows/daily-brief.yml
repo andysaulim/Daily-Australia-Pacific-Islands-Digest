@@ -24,7 +24,14 @@ concurrency:
 jobs:
   send-brief:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 45, not 30. Run 3 on 25 August spent 22 of its 30 minutes and was
+    # still on validation attempt 3. The tier-1 window is now 160 items
+    # rather than 90, roughly a 78% larger prompt, and the raised word
+    # floor makes a second generation attempt more likely, so the old
+    # budget had no headroom left. A timeout kill is the worst failure
+    # this pipeline has: the run is marked failed, which is exactly what
+    # a fallback cron reads as licence to send a second copy.
+    timeout-minutes: 45
     steps:
       # Guard: on a fallback cron, skip if a dispatch already sent today.
       - name: Check if already sent today

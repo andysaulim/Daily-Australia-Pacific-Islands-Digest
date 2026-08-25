@@ -480,6 +480,30 @@ def _flag_journalist(article: dict) -> dict:
     return article
 
 
+# The eleven outlets the Australia Chair named, as they appear as feed names.
+# The prompt carries a mandatory-inclusion rule for them, but it asked the model
+# to match prose outlet names against a source string by eye. On the first live
+# run SMH was collected and silently dropped, and the validator could only warn
+# after the fact. Flagging the item itself puts the rule where the model reads
+# the data rather than where it reads the instructions.
+_PRESTIGE_FEEDS = {
+    "The Australian", "SMH", "SMH Federal Politics", "SMH World", "AFR",
+    "ABC News", "ABC Politics", "ABC Pacific", "WSJ",
+    "NYT Asia Pacific", "NYT (region)", "Politico Defense", "Politico (region)",
+    "RNZ Pacific", "RNZ Pacific (wire)", "Islands Business",
+    "Islands Business (wire)", "Pacific Island Times", "Australian Foreign Affairs",
+    # Wires that assign this region selectively, per the same prompt rule.
+    "Reuters", "AP", "AFP", "Financial Times", "The Economist", "Bloomberg",
+    "Washington Post",
+}
+
+
+def _flag_prestige(article: dict) -> dict:
+    if article.get("source") in _PRESTIGE_FEEDS:
+        article["prestige_outlet"] = True
+    return article
+
+
 def _dedup(articles: list) -> list:
     seen = set()
     out = []
@@ -544,6 +568,7 @@ def _collect_tier1() -> list:
                 continue
             article = _entry_to_article(entry, source)
             article = _flag_journalist(article)
+            article = _flag_prestige(article)
             articles.append(article)
     return _dedup(articles)
 

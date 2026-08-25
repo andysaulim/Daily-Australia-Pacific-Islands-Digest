@@ -42,8 +42,16 @@ METRICS = Path(__file__).parent / "metrics.jsonl"
 BASELINE_STALE_DAYS = 30
 BASELINE_ALERT_DAYS = 60
 
-# Floors, not targets. Tier 1 runs ~84 feeds, so 40 means roughly half died.
-TIER_EXPECTED_MIN = {"tier1": 40, "tier2": 6, "tier3": 2, "tier4": 2}
+# Floors, not targets. Tier 1 runs ~80 feeds, so 40 means roughly half died.
+#
+# tier3 is 0 on purpose. Academic journals publish on a monthly cycle, so a
+# daily floor fires on a perfectly normal day, and a warning that cries wolf
+# every morning is one nobody reads. A journal drought only means something
+# sustained, which the trailing check below looks for instead.
+TIER_EXPECTED_MIN = {"tier1": 40, "tier2": 6, "tier3": 0, "tier4": 2}
+
+# Consecutive runs of an empty tier 3 before it is worth saying anything.
+TIER3_DRY_RUNS = 6
 
 # The eleven the Australia Chair asked for, as they appear in collect.py's feed
 # names. The mandatory-inclusion rule in the prompt is written against these.
@@ -163,6 +171,17 @@ def check(payload: dict | None = None, digest: dict | None = None) -> dict:
             warnings.append(
                 f"Only {len(hits)} named prestige outlet(s) in tier 1: "
                 f"{', '.join(sorted(hits))}.")
+
+    # ── Sustained journal drought ────────────────────────────────────────
+    # A single empty day is normal; a fortnight of them means the tier 3
+    # queries have stopped matching anything and need rewriting.
+    recent_t3 = _recent_metrics(TIER3_DRY_RUNS)
+    t3_counts = [m.get("tier_counts", {}).get("tier3") for m in recent_t3]
+    if len(recent_t3) >= TIER3_DRY_RUNS and all(c == 0 for c in t3_counts if c is not None) \
+            and any(c is not None for c in t3_counts):
+        warnings.append(
+            f"tier3 has collected nothing for {len(recent_t3)} consecutive runs. "
+            f"The journal queries are matching nothing and need rewriting.")
 
     # ── Pacific stand-in frequency ───────────────────────────────────────
     recent = _recent_metrics(PACIFIC_STAND_IN_WINDOW)

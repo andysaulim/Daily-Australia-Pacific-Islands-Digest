@@ -69,6 +69,7 @@ SPORT AND ENTERTAINMENT, HARD BLOCK:
 NEVER include AFL, NRL, rugby, cricket, the Ashes, netball, the Melbourne Cup, the Australian Open, Olympic or Commonwealth Games coverage, motorsport, horse racing, celebrity, reality television, film, music, or royal-visit colour in ANY section. Not even when a sport story carries a diplomatic angle (a Pacific rugby tour, a stadium financed by a foreign government) unless the diplomatic substance is the story and the sport is incidental. This brief covers security, foreign policy, defence, politics, trade, and development only.
 
 PRESTIGE OUTLET RULE, MANDATORY INCLUSION:
+Items from these outlets are marked "prestige_outlet": true in the input data. Do not match outlet names by eye, use that flag. Every flagged item that qualifies on substance MUST appear somewhere in the brief. On the first live issue an SMH story was collected and silently dropped, which is exactly what this flag exists to prevent.
 If a qualifying story appears from any of The Australian, Sydney Morning Herald, Australian Financial Review, ABC News, Wall Street Journal, New York Times, Politico, Radio New Zealand Pacific, Islands Business, or Pacific Island Times, it MUST appear in the brief, in top_stories if major, otherwise in the appropriate section. These are the outlets the Australia Chair reads. Never drop a qualifying story from them.
 Also mandatory: Reuters, AP, AFP, Financial Times, The Economist, Bloomberg, and the Washington Post assign this region selectively, so when they publish on it, it is inherently worth carrying.
 
@@ -236,8 +237,9 @@ def _tier_json(articles: list, max_items: int = 60) -> str:
             "source":  a.get("source", ""),
             "region":  a.get("region", ""),
         }
-        for optional in ("prestige", "journal_tier", "flagged_journalist",
-                         "primary_document", "seen_before", "tags"):
+        for optional in ("prestige", "prestige_outlet", "journal_tier",
+                         "flagged_journalist", "primary_document", "seen_before",
+                         "tags"):
             if a.get(optional):
                 item[optional] = a[optional]
         result.append(item)

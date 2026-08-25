@@ -133,7 +133,7 @@ the read-online link), `USE_OS_TRUSTSTORE=1` (see below).
 python smoke_test.py
 ```
 
-Ninety-four offline checks covering the relevance filters, region tagging, the
+One hundred and seven offline checks covering the relevance filters, region tagging, the
 trackers, the archive's cross-day memory, the validator (including the regional
 floors, the padding check, and the em-dash and emoji gates), dedup, source caps,
 URL repair, and the renderer. No network, no API call. It writes
@@ -202,6 +202,7 @@ calendar_tracker.py     verified diplomatic calendar
 update_readme.py        refreshes the stats block above
 smoke_test.py           offline test suite, no network and no API spend
 pipeline_health.py      post-run health monitor, feeds into metrics.jsonl
+resolve.py              canonicalizes Google News redirects, cached in archive.db
 fulltext.py             fetches real article bodies, cached in archive.db
 newsletters.py          subscriber-only newsletters over IMAP, off by default
 BASELINES_WORKSHEET.md  staging for _REGIONAL_BASELINES, not imported anywhere

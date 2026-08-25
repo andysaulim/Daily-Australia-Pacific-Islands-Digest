@@ -662,6 +662,19 @@ def main():
         from collect import collect
         payload = collect()
 
+        # Canonicalize Google News redirects FIRST. Order matters twice over:
+        # the model can only copy a short URL accurately, and fulltext.py skips
+        # Google News links because fetching one returns an interstitial. Doing
+        # this before enrichment turns four fifths of the corpus from
+        # unquotable-and-unfetchable into both.
+        try:
+            import resolve
+            pool = [a for t in ("tier1", "tier2", "tier3", "tier4")
+                    for a in (payload.get(t) or [])]
+            resolve.resolve_items(pool)
+        except Exception as e:                              # noqa: BLE001
+            print(f"  !  URL resolution failed, keeping redirects: {e}")
+
         # Fetch real article bodies before anything is cached or sent to the
         # model. Runs here rather than inside collect() so --from-cache reuses
         # enriched summaries and --dry-run shows what the model will actually
@@ -825,6 +838,8 @@ def main():
             "nz_stand_in": _has_stand_in(digest_data, "new_zealand"),
             "china_in_the_pacific": len(_real_items(digest_data, "china_in_the_pacific")),
             "tier1_input": len(payload.get("tier1", [])),
+            "tier_counts": {t: len(payload.get(t) or [])
+                            for t in ("tier1", "tier2", "tier3", "tier4")},
             "region_counts": payload.get("region_counts", {}),
             "validation_warnings": len(validation_warnings),
             "validation_retries": validation_attempt,

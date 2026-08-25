@@ -409,6 +409,52 @@ check("digest sends enriched summaries, not 800 chars",
           [{"title": "t", "url": "u", "summary": "x" * 1500,
             "source": "s", "region": "AU"}]))[0]["summary"]) == 1500)
 
+print("\n=== 13b. Google News URL resolution ===")
+import base64 as _b64
+import resolve
+
+_embedded = "https://www.abc.net.au/news/2026-08-25/aukus-payment-milestone/106572172"
+_payload = b"\x08\x13\x22" + bytes([len(_embedded)]) + _embedded.encode() + b"\xd2\x01\x00"
+_fake_id = _b64.urlsafe_b64encode(_payload).decode().rstrip("=")
+_fake_url = f"https://news.google.com/rss/articles/{_fake_id}?oc=5"
+
+check("base64 path decodes an embedded canonical URL",
+      resolve._decode_base64(_fake_id) == _embedded, resolve._decode_base64(_fake_id))
+check("article id parsed out of the redirect", resolve._article_id(_fake_url) == _fake_id)
+check("gnews detection agrees with fulltext's",
+      resolve.is_gnews(_fake_url) and not resolve.is_gnews(_embedded)
+      and resolve.is_gnews(_fake_url) == fulltext.is_gnews(_fake_url))
+check("new-style id yields nothing rather than a bogus URL",
+      resolve._decode_base64("CBMiAU_yqLNfakenewformatid") is None)
+check("resolver shares the archive database (honours ARCHIVE_DB)",
+      resolve.DB_PATH == archive.DB_PATH, f"{resolve.DB_PATH}")
+
+# End to end through resolve_items, offline: the base64 path needs no network,
+# and a direct URL must pass through untouched.
+_ritems = [{"url": _fake_url, "source": "ABC News"},
+           {"url": "https://www.rnz.co.nz/news/pacific/story", "source": "RNZ Pacific"}]
+resolve.resolve_items(_ritems)
+check("redirect rewritten to the canonical URL", _ritems[0]["url"] == _embedded)
+check("original redirect kept for reference", _ritems[0].get("gnews_url") == _fake_url)
+check("direct URL untouched",
+      _ritems[1]["url"] == "https://www.rnz.co.nz/news/pacific/story"
+      and "gnews_url" not in _ritems[1])
+check("resolution shortens the URL the model must copy",
+      len(_ritems[0]["url"]) < len(_fake_url),
+      f'{len(_ritems[0]["url"])} vs {len(_fake_url)}')
+
+print("\n=== 13c. Prestige flagging ===")
+_pf = collect._flag_prestige(collect._entry_to_article(
+    E(title="Canberra lifts defence budget", link="http://x", summary="Australia"), "SMH"))
+_nf = collect._flag_prestige(collect._entry_to_article(
+    E(title="Canberra lifts defence budget", link="http://y", summary="Australia"), "Crikey"))
+check("named outlet flagged", _pf.get("prestige_outlet") is True)
+check("other outlet not flagged", "prestige_outlet" not in _nf)
+check("flag reaches the model payload",
+      json.loads(digest_mod._tier_json([_pf]))[0].get("prestige_outlet") is True)
+check("prompt tells the model to use the flag",
+      "prestige_outlet" in digest_mod.SYSTEM_PROMPT)
+
 print("\n=== 14. Newsletter ingestion ===")
 import newsletters
 

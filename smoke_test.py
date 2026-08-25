@@ -881,6 +881,95 @@ check("the workflow exposes it as a dispatch input",
       "replace_today:" in _wf and "python run.py --replace-today" in _wf)
 check("the workflow default is off", "default: false" in _wf)
 
+print("\n=== 14o. Politico Canberra Playbook ===")
+# Politico's Canberra desk product: the only daily on Australian federal
+# politics any of the named international outlets runs.
+check("the feed is registered",
+      "Politico Canberra Playbook" in collect.TIER1_FEEDS)
+check("it routes through Google News, since the RSS path is unverifiable",
+      "news.google.com" in collect.TIER1_FEEDS["Politico Canberra Playbook"])
+check("it uses the AU edition for an Australian product",
+      "gl=AU" in collect.TIER1_FEEDS["Politico Canberra Playbook"])
+check("it is distinct from the existing Politico region feed",
+      collect.TIER1_FEEDS["Politico Canberra Playbook"]
+      != collect.TIER1_FEEDS["Politico (region)"])
+check("a qualifying item cannot be silently dropped",
+      "Politico Canberra Playbook" in collect._PRESTIGE_FEEDS
+      and "Politico Canberra Playbook" in run_mod._PRESTIGE_OUTLETS)
+# One product reaches the pipeline under two source strings: the Google News
+# feed reports the feed name, the IMAP path composes "<publisher> (<newsletter>)".
+# The _NEWSLETTERS display name carries no publisher prefix, or the composed
+# label doubles to "Politico (Politico Canberra Playbook)" and matches neither
+# the prestige set nor anything a reader would want to see in a source line.
+check("the subscriber issues have an IMAP fingerprint",
+      any(k == "canberra playbook" for k, _ in newsletters._NEWSLETTERS))
+_pb_label = newsletters._match_source(
+    "Politico Australia <canberraplaybook@email.politico.com>",
+    "Canberra Playbook: Marles under pressure on subs timetable")
+check("the composed label does not double the publisher",
+      _pb_label == "Politico (Canberra Playbook)", _pb_label)
+check("both source strings are prestige",
+      _pb_label in run_mod._PRESTIGE_OUTLETS
+      and "Politico Canberra Playbook" in run_mod._PRESTIGE_OUTLETS)
+check("it files as Australian, which is the default",
+      collect._SOURCE_REGION.get("Politico Canberra Playbook", "AU") == "AU")
+
+print("\n=== 14p. IMAP scan: headers first, All Mail fallback ===")
+# Driven against a stub server, because the real one needs credentials and a
+# subscription. What is being pinned is the fetch discipline and the fallback,
+# both of which are invisible until a live morning goes wrong.
+_RAW = (b"From: Politico Australia <canberraplaybook@email.politico.com>\r\n"
+        b"Subject: Canberra Playbook: subs timetable slips\r\n"
+        b"Content-Type: text/html; charset=utf-8\r\n\r\n"
+        b'<html><body><a href="https://www.politico.com/news/2026/08/25/'
+        b'marles-submarine-timetable-slips-00123456">Australia concedes the '
+        b"AUKUS submarine timetable has slipped</a></body></html>\r\n")
+_HDR = (b"From: Politico Australia <canberraplaybook@email.politico.com>\r\n"
+        b"Subject: Canberra Playbook: subs timetable slips\r\n\r\n")
+_NOISE_HDR = b"From: bank@example.com\r\nSubject: Your statement\r\n\r\n"
+
+class _StubIMAP:
+    """Minimal IMAP4_SSL stand-in. Records what was fetched, and from where."""
+    def __init__(self, has_mail_in): self.has = has_mail_in; self.fetched = []
+    def select(self, mailbox, readonly=False):
+        self.box = mailbox
+        return ("OK", None)
+    def search(self, charset, query):
+        return ("OK", [b"1 2"] if self.box == self.has else [b""])
+    def fetch(self, mid, spec):
+        self.fetched.append((mid, spec))
+        if "HEADER.FIELDS" in spec:
+            return ("OK", [(b"x", _HDR if mid == b"1" else _NOISE_HDR)])
+        return ("OK", [(b"x", _RAW)])
+
+_stub = _StubIMAP("INBOX")
+_got = newsletters._scan_mailbox(_stub, "INBOX", 1)
+check("a subscribed newsletter is found and parsed", len(_got) == 1, str(len(_got)))
+check("the item carries the composed label",
+      _got and _got[0].get("source") == "Politico (Canberra Playbook)")
+_specs = [s for _, s in _stub.fetched]
+check("every message is header-scanned first",
+      sum("HEADER.FIELDS" in s for s in _specs) == 2)
+check("only the match costs a body fetch",
+      sum("HEADER.FIELDS" not in s for s in _specs) == 1)
+check("PEEK is used, so the operator's mail stays unread",
+      all("BODY.PEEK" in s for s in _specs))
+check("a non-matching sender is skipped without a body fetch",
+      (b"2", "(BODY.PEEK[])") not in _stub.fetched)
+
+# The failure mode that matters: a Gmail filter labels the newsletter and skips
+# the inbox, so an INBOX-only scan finds nothing while it arrives every morning.
+_filed = _StubIMAP('"[Gmail]/All Mail"')
+check("INBOX-only would have found nothing",
+      newsletters._scan_mailbox(_filed, "INBOX", 1) == [])
+check("All Mail finds a filtered newsletter",
+      len(newsletters._scan_mailbox(_filed, '"[Gmail]/All Mail"', 1)) == 1)
+_nsrc = inspect.getsource(newsletters)
+check("from_imap tries All Mail after INBOX",
+      '"INBOX", \'"[Gmail]/All Mail"\'' in _nsrc)
+check("the scan window is not a hundred full messages any more",
+      newsletters.MAX_MESSAGES >= 400)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

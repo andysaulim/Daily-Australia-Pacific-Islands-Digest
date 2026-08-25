@@ -130,6 +130,27 @@ def build() -> str:
         "| --- | --- |",
         *[f"| `{k}` | {d} |" for k, d in newsletters._PUBLISHERS],
         "",
+        "## Correspondents watched",
+        "",
+        f"{sum(len(v) for v in collect.JOURNALIST_BEATS.values())} bylines. "
+        "A story carrying one is treated as higher priority, and the "
+        "correspondent is named in the source line.",
+        "",
+        "Matched on the feed's author field, and failing that a `By <name>` "
+        "line at the head of the fetched article text. Not on a bare name "
+        "anywhere in the copy: \"David Speers pressed the minister\" is a "
+        "mention, not a byline, and a false positive here is a factual error "
+        "in the published product.",
+        "",
+        "Kept short on purpose. Do not expand it without an editorial reason, "
+        "and check the spelling exactly, because a misspelled name here "
+        "silently never matches.",
+        "",
+        "| Beat | Correspondents |",
+        "| --- | --- |",
+        *[f"| {beat} | {', '.join(names)} |"
+          for beat, names in collect.JOURNALIST_BEATS.items()],
+        "",
         "## Market data",
         "",
         "`markets.py`, Yahoo Finance with a Stooq fallback, rendered only for "

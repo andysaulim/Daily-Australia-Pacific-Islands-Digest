@@ -199,6 +199,21 @@ Publisher fingerprints, matched on the sender and composed into the label as `Pu
 | `nzherald` | NZ Herald |
 | `politico` | Politico |
 
+## Correspondents watched
+
+23 bylines. A story carrying one is treated as higher priority, and the correspondent is named in the source line.
+
+Matched on the feed's author field, and failing that a `By <name>` line at the head of the fetched article text. Not on a bare name anywhere in the copy: "David Speers pressed the minister" is a mention, not a byline, and a false positive here is a factual error in the published product.
+
+Kept short on purpose. Do not expand it without an editorial reason, and check the spelling exactly, because a misspelled name here silently never matches.
+
+| Beat | Correspondents |
+| --- | --- |
+| Australian foreign affairs and defence | Andrew Tillett, Matthew Knott, Ben Packham, Daniel Hurst, Peter Hartcher, Greg Sheridan, Laura Tingle, David Speers, Stephen Dziedzic, Andrew Greene |
+| Pacific Islands specialists | Kirsty Needham, Lice Movono, Marian Faa, Prianka Srinivasan, Stefan Armbruster, Ben Bohane |
+| New Zealand | Thomas Manch, Sam Sachdeva, Jane Patterson |
+| International correspondents on the region | Rod McGuirk, Damien Cave, Nic Fildes, Michael Smith |
+
 ## Market data
 
 `markets.py`, Yahoo Finance with a Stooq fallback, rendered only for what actually resolved:

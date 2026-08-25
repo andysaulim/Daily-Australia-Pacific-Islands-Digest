@@ -65,7 +65,10 @@ _PUBLISHERS = [
     ("nzherald", "NZ Herald"), ("politico", "Politico"),
 ]
 _NEWSLETTERS = [
-    ("canberra playbook", "Politico Canberra Playbook"),
+    # Display name only, no publisher prefix: _match_source composes the
+    # label as "<publisher> (<newsletter>)" when both hit, and "Politico"
+    # already matches on the sender domain.
+    ("canberra playbook", "Canberra Playbook"),
     ("the briefing", "The Briefing"),
     ("morning edition", "Morning Edition"),
     ("daily briefing", "Daily Briefing"),

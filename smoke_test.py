@@ -896,8 +896,21 @@ check("it is distinct from the existing Politico region feed",
 check("a qualifying item cannot be silently dropped",
       "Politico Canberra Playbook" in collect._PRESTIGE_FEEDS
       and "Politico Canberra Playbook" in run_mod._PRESTIGE_OUTLETS)
+# One product reaches the pipeline under two source strings: the Google News
+# feed reports the feed name, the IMAP path composes "<publisher> (<newsletter>)".
+# The _NEWSLETTERS display name carries no publisher prefix, or the composed
+# label doubles to "Politico (Politico Canberra Playbook)" and matches neither
+# the prestige set nor anything a reader would want to see in a source line.
 check("the subscriber issues have an IMAP fingerprint",
       any(k == "canberra playbook" for k, _ in newsletters._NEWSLETTERS))
+_pb_label = newsletters._match_source(
+    "Politico Australia <canberraplaybook@email.politico.com>",
+    "Canberra Playbook: Marles under pressure on subs timetable")
+check("the composed label does not double the publisher",
+      _pb_label == "Politico (Canberra Playbook)", _pb_label)
+check("both source strings are prestige",
+      _pb_label in run_mod._PRESTIGE_OUTLETS
+      and "Politico Canberra Playbook" in run_mod._PRESTIGE_OUTLETS)
 check("it files as Australian, which is the default",
       collect._SOURCE_REGION.get("Politico Canberra Playbook", "AU") == "AU")
 

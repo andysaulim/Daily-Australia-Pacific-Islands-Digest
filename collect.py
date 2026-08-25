@@ -657,6 +657,20 @@ def collect() -> dict:
     tier2 = results["tier2"]
     tier3 = results["tier3"]
     tier4 = results["tier4"]
+
+    # Subscriber-only newsletters, read from the inbox that receives them.
+    # Off unless NEWSLETTERS=1, and best-effort even then: this must never be
+    # able to take the collection down. Items land in tier 1 already carrying a
+    # region tag, so they count toward the regional balance below like any
+    # other news item, and _dedup drops anything a feed already supplied.
+    try:
+        import newsletters
+        letters = newsletters.collect_newsletters()
+        if letters:
+            tier1 = _dedup(tier1 + letters)
+    except Exception as e:                                  # noqa: BLE001
+        print(f"  !  Newsletter ingestion failed, continuing without it: {e}")
+
     total = len(tier1) + len(tier2) + len(tier3) + len(tier4)
     print(f"\n  Total collected: {total} items")
 

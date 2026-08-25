@@ -661,6 +661,17 @@ def main():
     else:
         from collect import collect
         payload = collect()
+
+        # Fetch real article bodies before anything is cached or sent to the
+        # model. Runs here rather than inside collect() so --from-cache reuses
+        # enriched summaries and --dry-run shows what the model will actually
+        # see. Best-effort: a total failure leaves the RSS summaries intact.
+        try:
+            import fulltext
+            payload = fulltext.enrich_payload(payload)
+        except Exception as e:                              # noqa: BLE001
+            print(f"  !  Full-text enrichment failed, using RSS summaries: {e}")
+
         Path("collected.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 

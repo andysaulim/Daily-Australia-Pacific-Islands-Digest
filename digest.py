@@ -52,6 +52,12 @@ SOURCE-OR-SKIP PRINCIPLE: for EVERY factual claim you write you must be able to 
 THINK TANK FABRICATION, HARD BLOCK:
 You have a strong tendency to invent generic-sounding think tank pieces when the feed is thin. For this region the tempting inventions are Lowy Institute, the Lowy Interpreter, ASPI, the ASPI Strategist, the United States Studies Centre, Devpolicy, CSIS, Brookings, Carnegie, and RAND. The fabrications follow a telltale pattern: a vague title ("examines Australia's evolving strategic environment", "argues for deeper Pacific engagement"), no specific data, and no real URL. STOP. If a think tank piece is not in the input with a real URL, it does not exist. Do not create it.
 
+USING THE ARTICLE TEXT YOU ARE GIVEN:
+Many items carry real article text in their "summary" field, fetched from the publisher, not just a feed blurb. That text is the best material in this prompt. Mine it for the specific figure, the named official, the dated commitment, and the direct quote that turn a headline restatement into something worth reading.
+- Draw quotes, numbers, and detail from that summary text. Quote it accurately and do not stretch a paraphrase into quotation marks.
+- This EXPANDS what you may say, it does not relax SOURCE-OR-SKIP. Everything still has to be in the text in front of you. An item whose summary is a bare headline gets a short entry, not an invented one.
+- Where the summary carries only one or two sentences, that publisher is paywalled and you are seeing its meta description. Use it, and do not assume the rest of the article says what you would expect.
+
 MARKET AND RATE DATA, NO FABRICATION:
 This brief collects NO market data. There is no pre-collected market strip, so there is no injected figure for you to fall back on, which makes this the easiest place in the brief to invent something plausible. The Korea brief published "KOSPI plunges 4.44% amid AI selloff" on a day no such move happened and no article reported one.
 - NEVER write an index level or move (ASX 200, All Ordinaries, NZX 50), an exchange rate (AUD/USD, NZD/USD), a commodity price (iron ore, coal, LNG), or a bond yield unless a source article in today's batch reports that specific figure.
@@ -222,7 +228,11 @@ def _tier_json(articles: list, max_items: int = 60) -> str:
         item = {
             "title":   a.get("title", ""),
             "url":     a.get("url", ""),
-            "summary": a.get("summary", "")[:800],
+            # 1800, not 800. fulltext.py appends real article text to summaries,
+            # and an 800-character cap would truncate it back off, making the
+            # whole fetch a no-op. This is the line that decides whether the
+            # model sees a headline or a story.
+            "summary": a.get("summary", "")[:1800],
             "source":  a.get("source", ""),
             "region":  a.get("region", ""),
         }
@@ -595,10 +605,10 @@ def generate_digest(payload: dict) -> dict:
                     "- morning_memo must have exactly 3 distinct strings.\n"
                     "Return ONLY valid JSON."
                 )
+                # Same as regenerate_digest: one labelled copy of the previous
+                # output, no truncated assistant turn duplicating it.
                 messages = [
                     {"role": "user", "content": user_prompt},
-                    {"role": "assistant",
-                     "content": json.dumps(digest, ensure_ascii=False)[:4000]},
                     {"role": "user", "content": expansion},
                 ]
                 digest = _stream_claude(client, messages, model=retry_model)
@@ -627,7 +637,15 @@ def generate_digest(payload: dict) -> dict:
 
 def regenerate_digest(payload: dict, previous_digest: dict, warnings: list[str],
                       attempt: int = 0) -> dict:
-    """Re-generate with validator feedback. Escalates to the primary model."""
+    """Re-generate with validator feedback.
+
+    The first retry stays on FAST_MODEL and only the second escalates to
+    PRIMARY_MODEL. That is deliberate, not an oversight: most validation
+    failures are a section over its cap or a missing stand-in, which Sonnet
+    fixes when told exactly what broke, and escalating every time would put
+    Opus on the majority of days for no gain. The docstring used to claim it
+    escalated outright, which is what a reader would otherwise assume.
+    """
     import anthropic
 
     api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -653,9 +671,12 @@ def regenerate_digest(payload: dict, previous_digest: dict, warnings: list[str],
         "- Zero em-dashes, zero emojis.\n"
         "Return ONLY valid JSON."
     )
+    # One copy of the previous output, inside the feedback where it is labelled.
+    # This used to also carry an assistant turn holding the same JSON truncated
+    # to 4000 characters, which both doubled the tokens and handed the model
+    # malformed JSON as its own prior turn.
     messages = [
         {"role": "user", "content": user_prompt},
-        {"role": "assistant", "content": json.dumps(previous_digest, ensure_ascii=False)[:4000]},
         {"role": "user", "content": feedback},
     ]
     model = FAST_MODEL if attempt == 0 else PRIMARY_MODEL

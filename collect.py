@@ -80,6 +80,14 @@ TIER1_FEEDS = {
     "NYT (region)":           _gnews_us(f"({_REGION_Q})+site:nytimes.com"),
     "Politico Defense":       "https://rss.politico.com/defense.xml",
     "Politico (region)":      _gnews_us(f"({_REGION_Q})+site:politico.com"),
+    # Politico's daily on Australian federal politics, and the only
+    # Canberra-desk product any of the named international outlets runs.
+    # AU edition rather than US: it is an Australian product and the AU
+    # index carries it better. This catches the free editions only. The
+    # subscriber issues come in over IMAP instead, where the publisher has
+    # already mailed you the whole thing; see newsletters.py and SETUP 5b.
+    "Politico Canberra Playbook": _gnews(
+        'site:politico.com+%22Canberra+Playbook%22'),
 
     # ── Australian national ──────────────────────────────────────────────
     "The Age":                "https://www.theage.com.au/rss/feed.xml",
@@ -495,6 +503,7 @@ _PRESTIGE_FEEDS = {
     "The Australian", "SMH", "SMH Federal Politics", "SMH World", "AFR",
     "ABC News", "ABC Politics", "ABC Pacific", "WSJ",
     "NYT Asia Pacific", "NYT (region)", "Politico Defense", "Politico (region)",
+    "Politico Canberra Playbook",
     "RNZ Pacific", "RNZ Pacific (wire)", "Islands Business",
     "Islands Business (wire)", "Pacific Island Times", "Australian Foreign Affairs",
     # Wires that assign this region selectively, per the same prompt rule.

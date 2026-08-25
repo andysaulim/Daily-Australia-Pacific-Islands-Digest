@@ -65,6 +65,7 @@ _PUBLISHERS = [
     ("nzherald", "NZ Herald"), ("politico", "Politico"),
 ]
 _NEWSLETTERS = [
+    ("canberra playbook", "Politico Canberra Playbook"),
     ("the briefing", "The Briefing"),
     ("morning edition", "Morning Edition"),
     ("daily briefing", "Daily Briefing"),

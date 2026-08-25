@@ -147,6 +147,14 @@ subscribed would print a failure line every morning until you did.
 3. Add sender or subject fingerprints to `_PUBLISHERS` / `_NEWSLETTERS` in
    `newsletters.py`. It ships with plausible candidates for this beat; an
    unsubscribed one simply never matches.
+
+   **Politico Canberra Playbook is the one worth doing first.** It is the
+   only daily on Australian federal politics any of the named international
+   outlets runs, and it is a subscriber product: the Google News feed
+   catches free editions at best, while the mailed issue carries the whole
+   thing with the editing already done. Subscribe at
+   politico.com/newsletters/canberra-playbook with the `GMAIL_USER`
+   address; the `canberra playbook` fingerprint is already in place.
 4. Add the repository *variable* `NEWSLETTERS` = `1`.
 
 No new secret: it reuses `GMAIL_USER` and `GMAIL_APP_PASS`. Items land in tier 1

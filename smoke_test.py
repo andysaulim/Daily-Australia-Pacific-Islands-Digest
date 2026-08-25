@@ -881,6 +881,26 @@ check("the workflow exposes it as a dispatch input",
       "replace_today:" in _wf and "python run.py --replace-today" in _wf)
 check("the workflow default is off", "default: false" in _wf)
 
+print("\n=== 14o. Politico Canberra Playbook ===")
+# Politico's Canberra desk product: the only daily on Australian federal
+# politics any of the named international outlets runs.
+check("the feed is registered",
+      "Politico Canberra Playbook" in collect.TIER1_FEEDS)
+check("it routes through Google News, since the RSS path is unverifiable",
+      "news.google.com" in collect.TIER1_FEEDS["Politico Canberra Playbook"])
+check("it uses the AU edition for an Australian product",
+      "gl=AU" in collect.TIER1_FEEDS["Politico Canberra Playbook"])
+check("it is distinct from the existing Politico region feed",
+      collect.TIER1_FEEDS["Politico Canberra Playbook"]
+      != collect.TIER1_FEEDS["Politico (region)"])
+check("a qualifying item cannot be silently dropped",
+      "Politico Canberra Playbook" in collect._PRESTIGE_FEEDS
+      and "Politico Canberra Playbook" in run_mod._PRESTIGE_OUTLETS)
+check("the subscriber issues have an IMAP fingerprint",
+      any(k == "canberra playbook" for k, _ in newsletters._NEWSLETTERS))
+check("it files as Australian, which is the default",
+      collect._SOURCE_REGION.get("Politico Canberra Playbook", "AU") == "AU")
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

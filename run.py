@@ -63,7 +63,8 @@ _FLOOR_SECTIONS = ("pacific_wire", "new_zealand")
 _PRESTIGE_OUTLETS = {
     "The Australian", "SMH", "Sydney Morning Herald", "AFR",
     "Australian Financial Review", "ABC News", "WSJ", "Wall Street Journal",
-    "NYT", "New York Times", "Politico", "RNZ Pacific", "Islands Business",
+    "NYT", "New York Times", "Politico", "Politico Canberra Playbook",
+    "RNZ Pacific", "Islands Business",
     "Pacific Island Times", "Reuters", "AP", "AFP", "Financial Times",
     "The Economist", "Bloomberg", "Washington Post",
 }

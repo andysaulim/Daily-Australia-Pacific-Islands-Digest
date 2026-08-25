@@ -245,6 +245,11 @@ Keep `DIGEST_TO` as yourself and the Chair. Each morning, check:
 | Validation retries | README stats | Frequent retries mean a cap or floor is set wrong for this region's actual volume. |
 | Dead feeds | Actions log | Move anything returning 403 to Google News routing. Never delete it outright. |
 
+`SOURCES.md` lists every feed with its tier, region and routing, so you can
+check a dead one against what it was meant to be doing without opening
+`collect.py`. Regenerate it with `python list_sources.py` after any feed
+change; the smoke suite fails if the committed copy has gone stale.
+
 Tune `SECTION_CAPS` in `run.py` and the feed dicts in `collect.py` from what you
 see. Widen `DIGEST_TO` only once a fortnight of issues would have been fit to send.
 

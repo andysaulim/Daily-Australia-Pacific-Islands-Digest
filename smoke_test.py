@@ -970,6 +970,33 @@ check("from_imap tries All Mail after INBOX",
 check("the scan window is not a hundred full messages any more",
       newsletters.MAX_MESSAGES >= 400)
 
+print("\n=== 14q. The source list is published and current ===")
+# The feed set only ever existed as four dicts in collect.py, so "what does
+# this brief read?" meant opening the collector and counting. SOURCES.md is
+# generated, and checked here, because a hand-maintained list is wrong the
+# first time somebody adds a feed and nobody notices for a month.
+import list_sources
+_sources_path = Path("SOURCES.md")
+check("SOURCES.md is committed", _sources_path.exists())
+_on_disk = _sources_path.read_text(encoding="utf-8")
+check("SOURCES.md matches the feed dicts (re-run list_sources.py if this fails)",
+      _on_disk == list_sources.build())
+_n_feeds = sum(len(f) for f in (collect.TIER1_FEEDS, collect.TIER2_FEEDS,
+                                collect.TIER3_FEEDS, collect.TIER4_FEEDS))
+check("every feed appears in it",
+      all(name in _on_disk for name in collect.TIER1_FEEDS), f"{_n_feeds} feeds")
+# Table rows only. The header carries a legend line with the same marker.
+_marked = sum(1 for ln in _on_disk.splitlines()
+              if ln.startswith("| ") and "**\\***" in ln)
+check("every prestige feed is marked in the table",
+      _marked == len(collect._PRESTIGE_FEEDS), f"{_marked} marked")
+check("the marker is explained before it is used",
+      _on_disk.index("marks a prestige feed") < _on_disk.index("| Source |"))
+check("the newsletter fingerprints are listed",
+      "canberra playbook" in _on_disk and "NEWSLETTERS" in _on_disk)
+check("it says it is generated, not hand-edited",
+      "Do not edit by hand" in _on_disk)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

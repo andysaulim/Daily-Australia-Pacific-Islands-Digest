@@ -210,6 +210,8 @@ resolve.py              canonicalizes Google News redirects, cached in archive.d
 fulltext.py             fetches real article bodies, cached in archive.db
 newsletters.py          subscriber-only newsletters over IMAP, off by default
 markets.py              ASX 200, AUD/USD, NZX 50, NZD/USD, Brent, with fallbacks
+list_sources.py         Regenerates SOURCES.md from the feed dicts
+SOURCES.md              Every feed, tier, region and routing decision
 weekly.py               Friday Week in Review, synthesized from the archive
 cost_report.py          spend per issue and projected monthly, from metrics.jsonl
 BASELINES_WORKSHEET.md  staging for _REGIONAL_BASELINES, not imported anywhere

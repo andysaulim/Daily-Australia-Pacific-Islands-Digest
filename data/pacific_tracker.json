@@ -1,5 +1,5 @@
 {
-  "last_updated": null,
+  "last_updated": "2026-08-25",
   "countries": {
     "Papua New Guinea": {
       "last_event": null,
@@ -9,11 +9,11 @@
       "event_count": 0
     },
     "Fiji": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "Chinese missile landing near Tuvalu's EEZ leaves Forum ministers without a joint statement",
+      "last_event_date": "2026-08-25",
+      "last_activity_type": "senior visit",
+      "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
+      "event_count": 1
     },
     "Solomon Islands": {
       "last_event": null,
@@ -23,11 +23,11 @@
       "event_count": 0
     },
     "Vanuatu": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "PACNEWS: Pacific nations detain Chinese and Indonesian boats for illegal fishing",
+      "last_event_date": "2026-08-25",
+      "last_activity_type": "other",
+      "url": "https://islandsbusiness.com/pacnews/pacnews-one-25-august-2026/",
+      "event_count": 1
     },
     "Samoa": {
       "last_event": null,
@@ -121,5 +121,22 @@
       "event_count": 0
     }
   },
-  "recent_events": []
+  "recent_events": [
+    {
+      "date": "2026-08-25",
+      "country": "Vanuatu",
+      "activity": "other",
+      "headline": "PACNEWS: Pacific nations detain Chinese and Indonesian boats for illegal fishing",
+      "url": "https://islandsbusiness.com/pacnews/pacnews-one-25-august-2026/",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-08-25",
+      "country": "Fiji",
+      "activity": "senior visit",
+      "headline": "Chinese missile landing near Tuvalu's EEZ leaves Forum ministers without a joint statement",
+      "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
+      "section": "top_stories"
+    }
+  ]
 }

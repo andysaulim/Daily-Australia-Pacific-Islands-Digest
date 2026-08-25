@@ -1,5 +1,5 @@
 {
-  "last_updated": null,
+  "last_updated": "2026-08-25",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -108,5 +108,18 @@
       "last_seen": null
     }
   ],
-  "recent_events": []
+  "recent_events": [
+    {
+      "date": "2026-08-25",
+      "headline": "Independent AUKUS public inquiry nears its conclusion",
+      "url": "https://www.crikey.com.au/2026/08/25/aukus-inquiry-peter-garrett-rex-patrick/",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-08-25",
+      "headline": "Chinese missile landing near Tuvalu's EEZ leaves Forum ministers without a joint statement",
+      "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
+      "section": "top_stories"
+    }
+  ]
 }

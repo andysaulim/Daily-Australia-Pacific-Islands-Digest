@@ -38,9 +38,10 @@ line needs two independent working sources, per the house sourcing gate.
    and current chair, which states hold Compacts of Free Association, which
    recognise Taiwan. The file lists exactly what to fill in.
 2. **`data/aukus_tracker.json`**: every Pillar 1 milestone currently marked
-   `"confidence": "seed"`. Generate the file first by running
-   `python aukus_tracker.py`, then edit it. Change `"confidence"` to `"confirmed"`
-   only for lines you have actually sourced twice.
+   `"confidence": "seed"`. The seed ledger is already in the repo; regenerate it
+   at any time with `python aukus_tracker.py`, which writes the file if it is
+   missing and prints the block the prompt will see. Change `"confidence"` to
+   `"confirmed"` only for lines you have actually sourced twice.
 3. **The calendar**: add confirmed dates with
    `python -c "import calendar_tracker as c; c.add_event('AUSMIN 2026', '2026-11-12', ['url1','url2'])"`.
    `add_event()` refuses anything with fewer than two sources, so you cannot
@@ -61,7 +62,7 @@ pip install -r requirements.txt
 python smoke_test.py
 ```
 
-Fifty offline checks, no network and no API spend. All should pass.
+Fifty-five offline checks, no network and no API spend. All should pass.
 
 Then a real generation, no email:
 
@@ -89,28 +90,21 @@ git config --global user.name "Andy Lim"
 git config --global user.email "andysaulim@gmail.com"
 ```
 
-Create the repository on github.com: **New repository** → name it
-`australia-chair-daily-brief` → **Private** → do not add a README, .gitignore, or
-licence (the repo already has them).
-
-Then, from the project folder:
-
-```bash
-cd "C:/Users/ALim/Dropbox/Australia Newsletter"
-git init -b main
-git add .
-git status
-```
-
-Check `git status` before committing. `_reference/` (the Korea snapshot) and
-`__pycache__/` should be absent, they are gitignored. `data/.gitkeep` and
-`public/.gitkeep` should be present.
+**Already done.** The repository is
+[`andysaulim/Daily-Australia-Pacific-Islands-Digest`](https://github.com/andysaulim/Daily-Australia-Pacific-Islands-Digest),
+and the pipeline, the workflow, and the seeded tracker ledgers are on `main`.
+Clone it rather than re-initialising:
 
 ```bash
-git commit -m "Australia Chair Daily Brief pipeline v1"
-git remote add origin https://github.com/<your-username>/australia-chair-daily-brief.git
-git push -u origin main
+git clone https://github.com/andysaulim/Daily-Australia-Pacific-Islands-Digest.git
+cd Daily-Australia-Pacific-Islands-Digest
 ```
+
+If you are pushing further work from the laptop, check `git status` before
+committing. `__pycache__/`, `collected.json`, `digest.json`, `latest.html`, and
+`smoke_output.html` should be absent, they are gitignored. Everything under
+`data/` is tracked on purpose: `archive.db` and the tracker JSON are the
+cross-day memory, and the workflow commits them back after every run.
 
 ---
 
@@ -147,7 +141,7 @@ Then add a repository *variable* (the **Variables** tab, not Secrets):
 
 | Name | Value |
 | --- | --- |
-| `WEB_URL` | `https://<your-username>.github.io/australia-chair-daily-brief` |
+| `WEB_URL` | `https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest` |
 
 Leave `WEB_URL` unset and the read-online bar simply does not render.
 
@@ -185,7 +179,7 @@ only as a safety net.
 
 At cron-job.org (free, and what the Korea brief uses), create a job:
 
-- **URL:** `https://api.github.com/repos/<user>/australia-chair-daily-brief/actions/workflows/daily-brief.yml/dispatches`
+- **URL:** `https://api.github.com/repos/andysaulim/Daily-Australia-Pacific-Islands-Digest/actions/workflows/daily-brief.yml/dispatches`
 - **Method:** POST
 - **Headers:**
   - `Authorization: Bearer <your GH_PAT>`

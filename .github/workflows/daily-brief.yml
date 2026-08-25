@@ -1,0 +1,150 @@
+name: Australia Chair Daily Brief
+
+on:
+  schedule:
+    # Safety-net fallbacks only. The primary trigger is an external cron
+    # (cron-job.org) firing workflow_dispatch at 6:00 AM ET on weekdays.
+    # If that dispatch already succeeded today, these skip themselves.
+    - cron: '30 11 * * 1-5'  # 7:30 AM ET, first fallback
+    - cron: '0 13 * * 1-5'   # 9:00 AM ET, last resort
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: daily-brief
+  cancel-in-progress: false
+
+jobs:
+  send-brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # Guard: on a fallback cron, skip if a dispatch already sent today.
+      - name: Check if already sent today
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Dispatch trigger, running"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          today=$(date -u +%Y-%m-%d)
+          success_count=$(gh run list --repo ${{ github.repository }} \
+            --workflow "Australia Chair Daily Brief" \
+            --status success --created "$today" \
+            --json conclusion -q 'length' 2>/dev/null || echo "0")
+          inprogress_count=$(gh run list --repo ${{ github.repository }} \
+            --workflow "Australia Chair Daily Brief" \
+            --status in_progress --created "$today" \
+            --json conclusion -q 'length' 2>/dev/null || echo "0")
+          total=$((success_count + inprogress_count))
+          if [ "$total" -gt "1" ]; then
+            echo "A run already succeeded or is in flight, skipping fallback"
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          elif [ "$success_count" -gt "0" ]; then
+            echo "Dispatch already succeeded today, skipping fallback"
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No successful run yet today, running fallback"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.should_run == 'true'
+
+      - name: Set up Python
+        if: steps.guard.outputs.should_run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.should_run == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Generate and send the brief
+        if: steps.guard.outputs.should_run == 'true'
+        id: send
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          DIGEST_TO: ${{ secrets.DIGEST_TO }}
+          WEB_URL: ${{ vars.WEB_URL }}
+        run: python run.py
+
+      # Everything past the send is continue-on-error on purpose. A red
+      # post-send step would mark the run failed and let a fallback cron
+      # send a second copy of an issue that already went out.
+      - name: Update README with run stats
+        if: steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        run: python update_readme.py
+
+      - name: Deploy the archive to GitHub Pages
+        if: steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.GH_PAT }}
+          publish_dir: ./public
+          keep_files: true
+
+      # The cross-day memory and the trackers live in data/ and are the
+      # reason this brief does not repeat itself. They have to survive the
+      # runner, so they are committed back to main rather than cached.
+      - name: Commit archive, trackers, and stats
+        if: steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data README.md 2>/dev/null || true
+          [ -f metrics.jsonl ] && git add metrics.jsonl || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Brief state: archive, trackers, stats [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push && break
+              sleep $((i * 4))
+            done
+          fi
+
+      - name: Send failure alert
+        if: failure() && steps.guard.outputs.should_run == 'true'
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          ALERT_TO: ${{ secrets.ALERT_TO }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import os, smtplib
+          from email.mime.text import MIMEText
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          now = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d %I:%M %p ET")
+          sender = os.environ["GMAIL_USER"]
+          # Alerts go to the operator, never to the distribution list.
+          to = os.environ.get("ALERT_TO") or sender
+          body = (
+              f"The Australia Chair Daily Brief pipeline failed at {now}.\n\n"
+              f"Run: {os.environ['RUN_URL']}\n\n"
+              "The next fallback cron will retry automatically."
+          )
+          msg = MIMEText(body)
+          msg["Subject"] = f"Australia Chair Daily Brief FAILED, {now}"
+          msg["From"] = sender
+          msg["To"] = to
+          with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15) as s:
+              s.login(sender, os.environ["GMAIL_APP_PASS"])
+              s.sendmail(sender, [a.strip() for a in to.split(",") if a.strip()],
+                         msg.as_string())
+          print("Failure alert sent")
+          PY

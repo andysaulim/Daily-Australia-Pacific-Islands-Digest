@@ -120,7 +120,7 @@ the read-online link), `USE_OS_TRUSTSTORE=1` (see below).
 python smoke_test.py
 ```
 
-Forty-seven offline checks covering the relevance filters, region tagging, the
+Fifty-five offline checks covering the relevance filters, region tagging, the
 trackers, the archive's cross-day memory, the validator (including the regional
 floors, the padding check, and the em-dash and emoji gates), dedup, source caps,
 URL repair, and the renderer. No network, no API call. It writes
@@ -187,9 +187,11 @@ aukus_tracker.py        AUKUS milestone ledger
 pacific_tracker.py      China-in-the-Pacific ledger
 calendar_tracker.py     verified diplomatic calendar
 update_readme.py        refreshes the stats block above
+smoke_test.py           offline test suite, no network and no API spend
 data/                   archive.db and tracker JSON, committed each run
-public/                 GitHub Pages archive
-_reference/             read-only snapshot of the Korea pipeline, gitignored
+public/                 GitHub Pages archive, rebuilt each run
+.github/workflows/      daily-brief.yml, the scheduled send
+_reference/             read-only snapshot of the Korea pipeline
 ```
 
 ## Setting it up

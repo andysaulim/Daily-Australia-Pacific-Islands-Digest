@@ -200,4 +200,7 @@ def update_from_digest(digest: dict) -> int:
 
 
 if __name__ == "__main__":
+    if not TRACKER_PATH.exists():
+        _save(_load())
+        print(f"Wrote seed ledger to {TRACKER_PATH}\n")
     print(build_context_block())

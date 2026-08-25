@@ -1,0 +1,112 @@
+{
+  "last_updated": null,
+  "pillar1": [
+    {
+      "milestone": "Submarine Rotational Force West at HMAS Stirling",
+      "status": "seed, unverified",
+      "note": "US and UK submarine rotations through Western Australia. Confirm current rotation cadence and personnel numbers.",
+      "confidence": "seed",
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "milestone": "Virginia-class sale to Australia",
+      "status": "seed, unverified",
+      "note": "Confirm the number of boats, the delivery window, and the status of US congressional authorisation.",
+      "confidence": "seed",
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "milestone": "Australian payments to the US submarine industrial base",
+      "status": "seed, unverified",
+      "note": "Confirm total committed, amount transferred to date, and the schedule of remaining instalments.",
+      "confidence": "seed",
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "milestone": "Osborne shipyard, South Australia (SSN-AUKUS build)",
+      "status": "seed, unverified",
+      "note": "Construction and workforce milestones for the build yard.",
+      "confidence": "seed",
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "milestone": "Henderson precinct, Western Australia (sustainment)",
+      "status": "seed, unverified",
+      "note": "Dry dock and sustainment infrastructure decisions.",
+      "confidence": "seed",
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "milestone": "ITAR and export-control reform",
+      "status": "seed, unverified",
+      "note": "Licence-free defence trade between the three partners; confirm current exemption scope and excluded technologies.",
+      "confidence": "seed",
+      "source_url": null,
+      "last_seen": null
+    }
+  ],
+  "pillar2": [
+    {
+      "workstream": "undersea capabilities",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "workstream": "quantum technologies",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "workstream": "artificial intelligence and autonomy",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "workstream": "advanced cyber",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "workstream": "hypersonic and counter-hypersonic",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "workstream": "electronic warfare",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "workstream": "innovation",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    },
+    {
+      "workstream": "information sharing",
+      "status": "no recent reporting",
+      "note": null,
+      "source_url": null,
+      "last_seen": null
+    }
+  ],
+  "recent_events": []
+}

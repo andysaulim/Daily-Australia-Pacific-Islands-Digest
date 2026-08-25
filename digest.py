@@ -308,13 +308,13 @@ Return a single JSON object with these keys.
 - morning_memo: EXACTLY 3 strings. The three things a desk officer would tell their boss in a lift. One sentence each, lead with the verb, sourced from today's articles. All three must be distinct, and at least one should come from outside Australia when the day's reporting allows it.
 - top_stories: 2-4 items, aim for 3. The biggest HARD NEWS of the day, original reporting from wires, correspondents, national dailies, or government sources. Not op-eds, not think tank commentary. Each item MUST cover a different topic; span domains where the day allows (one alliance or defence story, one politics story, one Pacific or regional story). Each: url, source, category_tag (from the closed list), headline, body (2-3 sentences, facts first, specific numbers, one beat of context, no interpretation), so_what (1 sentence or null), pattern_note (1 sentence with a sourced dated precedent, or null), src_line.
   src_line FORMAT, follow exactly: `per <Outlet>: "<the article's exact published headline>"`. Copy the headline verbatim from the input data, do not paraphrase it. When a second outlet carried the same story and you drew on it, append ` · also <Outlet>`. When the byline is on the watch list, write `per <Outlet> (<Correspondent>): "<headline>"`.
-- overnight_items: 3-6 items. Source diversity is mandatory: no outlet more than 3 times. Topic diversity is mandatory. Each: url, source, category, headline (under 100 chars), body_text (2-3 sentences), signal_type.
-- aukus_watch: 0-5 items. AUKUS Pillar 1 and Pillar 2 developments: submarine milestones, yard and workforce news, congressional and parliamentary action, export-control and licensing changes, Pillar 2 workstreams. Cross-check every status claim against the AUKUS MILESTONE TRACKER. Each: url, source, headline, body_text, pillar ("1", "2", or "both"), signal_type.
-- pacific_wire: MINIMUM 2, maximum 5. Pacific Islands diplomacy, politics, security, and development, from Pacific and regional reporting. Prefer items sourced from RNZ Pacific, Islands Business, Pacific Island Times, Benar News, and the national Pacific press over Australian coverage of the Pacific, when both exist. Each: url, source, country (the Pacific state or territory, or "Regional"), headline, body_text, category, signal_type.
+- overnight_items: 3-6 items. Source diversity is mandatory: no outlet more than 3 times. Topic diversity is mandatory. Each: url, source, category, headline (under 100 chars), body_text (2-3 sentences).
+- aukus_watch: 0-5 items. AUKUS Pillar 1 and Pillar 2 developments: submarine milestones, yard and workforce news, congressional and parliamentary action, export-control and licensing changes, Pillar 2 workstreams. Cross-check every status claim against the AUKUS MILESTONE TRACKER. Each: url, source, headline, body_text, pillar ("1", "2", or "both").
+- pacific_wire: MINIMUM 2, maximum 5. Pacific Islands diplomacy, politics, security, and development, from Pacific and regional reporting. Prefer items sourced from RNZ Pacific, Islands Business, Pacific Island Times, Benar News, and the national Pacific press over Australian coverage of the Pacific, when both exist. Each: url, source, country (the Pacific state or territory, or "Regional"), headline, body_text, category.
   IF AND ONLY IF nothing qualifies: return exactly [{{"stand_in": "No significant Pacific Islands developments in the past 24 hours."}}], a one-element array containing only that object. Never pad.
-- new_zealand: MINIMUM 1, maximum 4. New Zealand foreign policy, defence policy, and politics. Each: url, source, headline, body_text, category, signal_type.
+- new_zealand: MINIMUM 1, maximum 4. New Zealand foreign policy, defence policy, and politics. Each: url, source, headline, body_text, category.
   IF AND ONLY IF nothing qualifies: return exactly [{{"stand_in": "No significant New Zealand developments in the past 24 hours."}}].
-- china_in_the_pacific: 0-4 items. PRC activity in the Pacific Islands and US-China competition there: security and policing arrangements, port and infrastructure deals, loans, senior visits, recognition questions, fisheries and maritime presence. Cross-check history claims against the CHINA IN THE PACIFIC TRACKER. Each: url, source, country, headline, body_text, activity_type, signal_type, is_reaction_source (true for Global Times, Xinhua, China Daily, People's Daily).
+- china_in_the_pacific: 0-4 items. PRC activity in the Pacific Islands and US-China competition there: security and policing arrangements, port and infrastructure deals, loans, senior visits, recognition questions, fisheries and maritime presence. Cross-check history claims against the CHINA IN THE PACIFIC TRACKER. Each: url, source, country, headline, body_text, activity_type, is_reaction_source (true for Global Times, Xinhua, China Daily, People's Daily).
 - canberra_politics: 0-5 items. Australian domestic politics where it bears on foreign or defence policy: parliamentary action, committee inquiries, portfolio changes, party positioning, budget and procurement decisions. Each: url, source, headline, body_text, category.
 - business_economy: 0-5 items. Trade, critical minerals, energy, investment screening, and economic coercion. Each: url, source, headline, body_text, category.
 - primary_documents: 0-4 items drawn from Tier 4. Each: url, source, document_type (communique, joint statement, ministerial transcript, readout, testimony), headline, body_text, key_line (the single most consequential sentence, quoted exactly from the source, or null).
@@ -464,7 +464,14 @@ _THINKING = {"type": "adaptive"}
 _EFFORT = "high"
 
 # Streaming, so a large max_tokens does not hit the HTTP timeout.
-MAX_OUTPUT_TOKENS = 32000
+#
+# 64000, not 32000. The first live run hit the 32k ceiling mid-JSON on attempt
+# one, which surfaced as "Empty response from the Claude API" and burned a whole
+# generation attempt before Opus produced a clean brief on attempt two. Enriched
+# summaries made the input, and the output, materially larger than the Korea
+# brief this was inherited from. The models support 128k here, and an unused
+# ceiling costs nothing, whereas hitting it costs a full retry.
+MAX_OUTPUT_TOKENS = 64000
 
 # Transient stream failures worth one more attempt.
 #

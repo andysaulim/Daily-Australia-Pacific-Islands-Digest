@@ -82,6 +82,22 @@ jobs:
       # Everything past the send is continue-on-error on purpose. A red
       # post-send step would mark the run failed and let a fallback cron
       # send a second copy of an issue that already went out.
+      # The rendered issue otherwise exists only in recipients' inboxes:
+      # public/ is gitignored and Pages needs GH_PAT. Keeping the HTML and the
+      # digest JSON as artifacts makes an issue auditable after the fact.
+      - name: Upload the rendered issue
+        if: always() && steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: brief-${{ github.run_number }}
+          path: |
+            latest.html
+            digest.json
+            collected.json
+          retention-days: 30
+          if-no-files-found: warn
+
       - name: Update README with run stats
         if: steps.guard.outputs.should_run == 'true'
         continue-on-error: true

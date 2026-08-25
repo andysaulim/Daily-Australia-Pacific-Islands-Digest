@@ -260,8 +260,13 @@ check("masthead present", "Australia Chair Daily Brief" in html)
 check("Pacific Wire section rendered", "Pacific Wire" in html)
 check("New Zealand section rendered", ">New Zealand<" in html or "New Zealand" in html)
 check("no unresolved f-string braces", "{_" not in html and "{TEAL" not in html)
-check("signal badges rendered", "DEVELOPMENT" in html or "ESCALATION" in html)
-check("category accent colour applied", render_mod._cat_color("China-Pacific") == "#8B0000")
+check("signal badges are gone", "DEVELOPMENT" not in html and "ESCALATION" not in html
+      and "CONFIRMATION" not in html)
+check("category accents cut to three geographies",
+      {render_mod._cat_color(c) for c in
+       ("AUKUS", "AU-Defense", "Trade-Economy")} == {render_mod.NAVY}
+      and render_mod._cat_color("China-Pacific") == render_mod.TEAL
+      and render_mod._cat_color("NZ-Politics") == render_mod.NZ_GREEN)
 check("unknown category falls back", render_mod._cat_color("Nonsense") == render_mod.NAVY)
 
 html_si = render_mod.render(d2)
@@ -277,6 +282,30 @@ print("    (wrote smoke_output.html)")
 print("\n=== 11. Landing page ===")
 idx = run_mod._build_index_html()
 check("index builds", "Australia Chair Daily Brief" in idx and len(idx) > 800)
+
+print("\n=== 11b. Survives a forward ===")
+# Gmail and most clients strip <style> and <head> when a recipient forwards or
+# replies. Simulate exactly that and confirm the fixed-width frame is still
+# there: the width must be an HTML ATTRIBUTE, and section styling must be
+# inline, or the layout sprawls full-width in the forwarded copy.
+import re as _re_fwd
+_stripped = _re_fwd.sub(r"<style[^>]*>.*?</style>", "", html, flags=_re_fwd.S | _re_fwd.I)
+_stripped = _re_fwd.sub(r"<head[^>]*>.*?</head>", "", _stripped, flags=_re_fwd.S | _re_fwd.I)
+check("no stylesheet element survives the strip",
+      not _re_fwd.search(r"<style[\s>]", _stripped, _re_fwd.I))
+check("width survives as an HTML attribute", 'width="680"' in _stripped)
+check("wrapper is a table, not a max-width div",
+      'class="wrapper"' in _stripped and "<table" in _stripped)
+check("frame keeps an inline pixel width", "width:680px" in _stripped)
+check("section padding is inline, not in a stripped class",
+      "padding:20px 32px" in _stripped)
+check("body copy keeps inline colour and size",
+      "font-size:13px" in _stripped and "color:#555" in _stripped)
+check("centring survives", 'align="center"' in _stripped)
+# The mobile/dark-mode rules legitimately die on forward; assert they were the
+# only casualties by confirming they lived in <style> and nowhere else.
+check("media queries were style-only (acceptable loss)",
+      "@media" in html and "@media" not in _stripped)
 
 print("\n=== 12. Pipeline health monitor ===")
 import pipeline_health

@@ -68,7 +68,6 @@ TIER1_FEEDS = {
     "SMH World":              "https://www.smh.com.au/rss/world.xml",
     "ABC News":               "https://www.abc.net.au/news/feed/51120/rss.xml",
     "ABC Politics":           "https://www.abc.net.au/news/feed/56166/rss.xml",
-    "ABC World":              "https://www.abc.net.au/news/feed/52278/rss.xml",
 
     # ── Requester's named international outlets ──────────────────────────
     "WSJ":                    _gnews_us(f"({_REGION_Q})+site:wsj.com"),
@@ -99,7 +98,7 @@ TIER1_FEEDS = {
     # ── Pacific Islands: requester's named outlets ──────────────────────
     "RNZ Pacific":            "https://www.rnz.co.nz/rss/pacific.xml",
     "Islands Business":       "https://islandsbusiness.com/feed/",
-    "Pacific Island Times":   "https://www.pacificislandtimes.com/blog?format=rss",
+    "Pacific Island Times":   _gnews("site:pacificislandtimes.com"),
 
     # ── Pacific Islands: national and regional press ────────────────────
     "PACNEWS":                _gnews("site:pina.com.fj+OR+%22PACNEWS%22"),
@@ -107,7 +106,7 @@ TIER1_FEEDS = {
     "Fiji Times":             "https://www.fijitimes.com.fj/feed/",
     "Samoa Observer":         _gnews("site:samoaobserver.ws"),
     "PNG Post-Courier":       "https://www.postcourier.com.pg/feed/",
-    "The National (PNG)":     "https://www.thenational.com.pg/feed/",
+    "The National (PNG)":     _gnews("site:thenational.com.pg"),
     "Solomon Star":           _gnews("site:solomonstarnews.com"),
     "Vanuatu Daily Post":     _gnews("site:dailypost.vu"),
     "Cook Islands News":      _gnews("site:cookislandsnews.com"),
@@ -198,10 +197,10 @@ TIER2_FEEDS = {
     # Substack serves RSS at /feed on every publication, so these are the
     # one class of new source whose URL shape is not a guess. They are
     # analysis, not news, which is why they sit in tier 2 on the 36h window.
-    "ASPI Fault Lines":  ("https://aspidefence.substack.com/feed", "A"),
-    "Futura Doctrina":   ("https://mickryan.substack.com/feed", "B"),
-    "Democracy Project NZ": ("https://democracyproject.substack.com/feed", "B"),
-    "Declassified Australia": ("https://declassifiedaustralia.substack.com/feed", "C"),
+    "ASPI Fault Lines":  (_gnews("site:aspidefence.substack.com"), "A"),
+    "Futura Doctrina":   (_gnews("site:mickryan.substack.com"), "B"),
+    "Democracy Project NZ": (_gnews("site:democracyproject.substack.com"), "B"),
+    "Declassified Australia": (_gnews("site:declassifiedaustralia.substack.com"), "C"),
     "Australian Defence Magazine": (_gnews("site:australiandefence.com.au"), "B"),
 }
 

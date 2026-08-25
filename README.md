@@ -133,7 +133,7 @@ the read-online link), `USE_OS_TRUSTSTORE=1` (see below).
 python smoke_test.py
 ```
 
-Eighty-six offline checks covering the relevance filters, region tagging, the
+Ninety-four offline checks covering the relevance filters, region tagging, the
 trackers, the archive's cross-day memory, the validator (including the regional
 floors, the padding check, and the em-dash and emoji gates), dedup, source caps,
 URL repair, and the renderer. No network, no API call. It writes

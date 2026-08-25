@@ -66,7 +66,7 @@ pip install -r requirements.txt
 python smoke_test.py
 ```
 
-Eighty-six offline checks, no network and no API spend. All should pass.
+Ninety-four offline checks, no network and no API spend. All should pass.
 
 Then a real generation, no email:
 
@@ -182,7 +182,7 @@ workflow**.
 
 Watch the log. What to look for:
 
-- **Source health**: how many of the 122 feeds returned data. This is the first
+- **Source health**: how many of the 121 feeds returned data. This is the first
   honest reading you will get, since your laptop's number is meaningless. Under
   about 70 means something is wrong; a handful of dead feeds is normal.
 - **Regional balance**: the AU / NZ / Pacific counts. If Pacific is under 5, the

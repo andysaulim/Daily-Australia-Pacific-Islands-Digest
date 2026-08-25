@@ -27,6 +27,7 @@ TEAL = "#17798C"   # the Australia Chair accent
 TEAL_LT = "#2E9CB0"
 ALERT = "#C0392B"
 INK = "#2C3E50"
+NZ_GREEN = "#1B6A4A"  # the third geography, and the only other accent used
 
 
 def _clean_src(raw: str) -> str:
@@ -65,15 +66,15 @@ def _esc(text) -> str:
 
 
 def _signal_badge(signal_type: str) -> str:
-    colors = {"ESCALATION": ALERT, "ANOMALY": "#8E44AD", "DEVELOPMENT": "#2980B9",
-              "CONFIRMATION": "#27AE60", "CONTEXT": "#7F8C8D"}
-    sig = _str(signal_type).upper()
-    if not sig:
-        return ""
-    color = colors.get(sig, "#7F8C8D")
-    return (f'<span style="display:inline-block;padding:2px 8px;border-radius:3px;'
-            f'font-size:11px;font-weight:600;color:#fff;background:{color};'
-            f'letter-spacing:0.5px;">{_esc(sig)}</span>')
+    """Retired. Returns nothing.
+
+    DEVELOPMENT / CONTEXT / ESCALATION badges labelled almost every item and
+    told the reader little the headline did not: a brief of this kind is
+    developments, so the modal badge carried no information while adding five
+    more colours to the page. Kept as a no-op so an older digest.json still
+    renders, and so the field can be dropped from the schema separately.
+    """
+    return ""
 
 
 def _link_or_text(text: str, url: str,
@@ -97,28 +98,56 @@ def _sec_label(label: str, color: str = NAVY) -> str:
             f'{label}</div>')
 
 
-# Category accent colours, the Korea and Japan convention: the left bar carries
-# the beat, so a reader scanning the column can see the shape of the day without
-# reading a word. Keys are the closed category list from the digest schema.
+# Category accent colours, cut to three.
+#
+# Thirteen accent colours plus five badge colours plus nine section-label
+# colours meant nothing on the page was un-coloured, so no colour meant
+# anything. The left bar now carries one distinction the reader actually reads
+# the brief for: which of the three geographies an item belongs to. Everything
+# else is navy.
 _CAT_COLORS = {
-    "US-Australia":     "#2980B9",
-    "AUKUS":            NAVY_DEEP,
-    "AU-Foreign-Policy": "#1F6FB2",
-    "AU-Defense":       "#34495E",
-    "NZ-Foreign-Policy": "#1B6A4A",
-    "NZ-Defense":       "#157A5B",
+    "US-Australia":      NAVY,
+    "AUKUS":             NAVY,
+    "AU-Foreign-Policy": NAVY,
+    "AU-Defense":        NAVY,
+    "AU-Politics":       NAVY,
+    "Trade-Economy":     NAVY,
+    "NZ-Foreign-Policy": NZ_GREEN,
+    "NZ-Defense":        NZ_GREEN,
+    "NZ-Politics":       NZ_GREEN,
     "Pacific-Diplomacy": TEAL,
-    "AU-Politics":      "#7F8C8D",
-    "NZ-Politics":      "#5D9C7A",
-    "Pacific-Politics": TEAL_LT,
-    "China-Pacific":    "#8B0000",
-    "US-China-Pacific": "#A03030",
-    "Trade-Economy":    "#B8860B",
+    "Pacific-Politics":  TEAL,
+    "China-Pacific":     TEAL,
+    "US-China-Pacific":  TEAL,
 }
 
 
 def _cat_color(cat: str, default: str = NAVY) -> str:
     return _CAT_COLORS.get(_str(cat).strip(), default)
+
+
+def _cal_stamp(date_val: str, window: str, confirmed: bool) -> str:
+    """Calendar date or window, always carrying a year.
+
+    A confirmed ISO date rendered raw as "2026-08-30"; a window rendered as
+    "expected in August" with no year at all. In a brief whose calendar reaches
+    90 days ahead and which is read next to a nine-week-out election, "August"
+    alone is ambiguous. Confirmed dates become "30 Aug 2026"; a window without a
+    four-digit year gets the current one appended.
+    """
+    if date_val and confirmed:
+        try:
+            return datetime.strptime(date_val[:10], "%Y-%m-%d").strftime(
+                "%d %b %Y").lstrip("0")
+        except ValueError:
+            return date_val                      # unparseable, show it as given
+    text = (window or "").strip()
+    if not text:
+        return "date not set"
+    if _re.search(r"\b20\d{2}\b", text):
+        return text
+    from zoneinfo import ZoneInfo
+    return f"{text} {datetime.now(ZoneInfo('America/New_York')).year}"
 
 
 def _stand_in(items: list) -> str | None:
@@ -296,7 +325,7 @@ def render(digest: dict) -> str:
             )
         sections.append(f"""
         <div {_SEC_ALERT}>
-          <a name="overnight"></a>{_sec_label("Overnight", color=ALERT)}
+          <a name="overnight"></a>{_sec_label("Overnight")}
           {html}
         </div>""")
 
@@ -372,7 +401,7 @@ def render(digest: dict) -> str:
                 )
         sections.append(f"""
         <div {_SEC}>
-          <a name="nz"></a>{_sec_label("New Zealand", color="#1B6A4A")}
+          <a name="nz"></a>{_sec_label("New Zealand", color=NZ_GREEN)}
           {html}
         </div>""")
 
@@ -431,7 +460,7 @@ def render(digest: dict) -> str:
             for i in biz)
         sections.append(f"""
         <div {_SEC}>
-          <a name="business"></a>{_sec_label("Business and Economy", color="#B8860B")}
+          <a name="business"></a>{_sec_label("Business and Economy")}
           {html}
         </div>""")
 
@@ -456,7 +485,7 @@ def render(digest: dict) -> str:
             )
         sections.append(f"""
         <div {_SEC}>
-          <a name="documents"></a>{_sec_label("Primary Documents", color="#5D6D7E")}
+          <a name="documents"></a>{_sec_label("Primary Documents")}
           {html}
         </div>""")
 
@@ -468,12 +497,9 @@ def render(digest: dict) -> str:
             date_val = _esc(_str(entry.get("date", "")))
             window = _esc(_str(entry.get("window", "")))
             confirmed = bool(entry.get("confirmed"))
-            if date_val and confirmed:
-                stamp = date_val
-                stamp_color = NAVY_DEEP
-            else:
-                stamp = window or "date not set"
-                stamp_color = "#999"
+            stamp = _esc(_cal_stamp(_str(entry.get("date", "")),
+                                    _str(entry.get("window", "")), confirmed))
+            stamp_color = NAVY_DEEP if (date_val and confirmed) else "#999"
             rows += f"""
               <tr>
                 <td width="110" style="vertical-align:top;padding:8px 12px 8px 0;">
@@ -500,7 +526,7 @@ def render(digest: dict) -> str:
             for i in wire)
         sections.append(f"""
         <div {_SEC}>
-          <a name="wire"></a>{_sec_label("The Wire", color="#7F8C8D")}
+          <a name="wire"></a>{_sec_label("The Wire")}
           {html}
         </div>""")
 
@@ -525,7 +551,7 @@ def render(digest: dict) -> str:
                 item.get("url", ""), bar_color="#8E44AD", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>
-          <a name="opeds"></a>{_sec_label("Analysis and Opinion", color="#8E44AD")}
+          <a name="opeds"></a>{_sec_label("Analysis and Opinion")}
           {html}
         </div>""")
 
@@ -546,7 +572,7 @@ def render(digest: dict) -> str:
                 item.get("url", ""), bar_color="#16A085", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>
-          <a name="academic"></a>{_sec_label("From the Journals", color="#16A085")}
+          <a name="academic"></a>{_sec_label("From the Journals")}
           {html}
         </div>""")
 
@@ -624,16 +650,32 @@ def render(digest: dict) -> str:
   <!--[if mso]>
   <style type="text/css">
     table {{ border-collapse:collapse; }}
-    .wrapper {{ width:680px; }}
   </style>
   <![endif]-->
 </head>
 <body style="margin:0;padding:0;background:#F2F3F5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
-  <!--[if mso]><table width="680" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
-  <div class="wrapper" style="max-width:680px;width:100%;margin:0 auto;background:#FFFFFF;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
-    {body}
-  </div>
-  <!--[if mso]></td></tr></table><![endif]-->
+  <!-- The frame is a TABLE whose width is an HTML ATTRIBUTE, not a div with a
+       CSS max-width. Gmail and most clients drop every stylesheet block when a
+       recipient forwards or replies, and many ignore max-width on a div, so the
+       old wrapper lost its width on forward and the content sprawled. An
+       attribute survives stylesheet stripping, so a forwarded copy keeps its
+       shape. class="wrapper" stays so the mobile media query can still flex it
+       to 100% while the stylesheet is intact. -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;padding:0;background:#F2F3F5;">
+    <tr>
+      <td align="center" valign="top" style="padding:0;">
+        <!--[if mso]><table width="680" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
+        <table role="presentation" class="wrapper" width="680" cellpadding="0" cellspacing="0" border="0" align="center" style="width:680px;max-width:680px;margin:0 auto;background:#FFFFFF;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="padding:0;">
+              {body}
+            </td>
+          </tr>
+        </table>
+        <!--[if mso]></td></tr></table><![endif]-->
+      </td>
+    </tr>
+  </table>
 </body>
 </html>"""
 

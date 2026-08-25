@@ -153,7 +153,13 @@ def send(html: str, re_line: Optional[str] = None, subject: Optional[str] = None
     msg.attach(MIMEText(_html_to_plain_text(html), "plain"))
     msg.attach(MIMEText(html, "html"))
 
-    print(f"\n  Sending (BCC) to: {', '.join(recipients)}")
+    # Count and domains only, never the addresses. This runs in GitHub Actions,
+    # and on a public repository the run log is world-readable, so printing the
+    # list would publish the Chair's distribution list. The domain breakdown is
+    # enough to spot "went to the wrong place" without naming anyone.
+    domains = sorted({r.rsplit("@", 1)[-1] for r in recipients if "@" in r})
+    print(f"\n  Sending (BCC) to {len(recipients)} recipient(s)"
+          f"{' across ' + ', '.join(domains) if domains else ''}")
     max_retries = 3
     for attempt in range(max_retries):
         try:

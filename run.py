@@ -661,6 +661,17 @@ def main():
     else:
         from collect import collect
         payload = collect()
+
+        # Fetch real article bodies before anything is cached or sent to the
+        # model. Runs here rather than inside collect() so --from-cache reuses
+        # enriched summaries and --dry-run shows what the model will actually
+        # see. Best-effort: a total failure leaves the RSS summaries intact.
+        try:
+            import fulltext
+            payload = fulltext.enrich_payload(payload)
+        except Exception as e:                              # noqa: BLE001
+            print(f"  !  Full-text enrichment failed, using RSS summaries: {e}")
+
         Path("collected.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -820,6 +831,20 @@ def main():
             "html_bytes": len(html),
             "sent": not args.no_send and validation_passed,
         }
+
+        # Health check last, so its findings ride along in the same metrics
+        # row and a drift shows up as a trend rather than as one bad morning.
+        # Runs after the send on purpose: nothing it reports should be able to
+        # stop an otherwise good brief going out.
+        try:
+            import pipeline_health
+            health = pipeline_health.check(payload=payload, digest=digest_data)
+            metrics["health_warnings"] = len(health["warnings"])
+            metrics["health_alerts"] = len(health["alerts"])
+            metrics["baseline_age_days"] = health["baseline_age_days"]
+        except Exception as e:                              # noqa: BLE001
+            print(f"\n  !  Health check failed to run: {e}")
+
         with open("metrics.jsonl", "a", encoding="utf-8") as f:
             f.write(json.dumps(metrics) + "\n")
     except Exception:

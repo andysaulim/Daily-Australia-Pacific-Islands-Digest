@@ -9,6 +9,7 @@ caps, URL repair, and the renderer.
 Writes smoke_output.html so a layout change can be eyeballed without spending an
 API call. Run this before every commit that touches the validator or renderer.
 """
+import inspect
 import json
 import os
 import sys
@@ -276,6 +277,147 @@ print("    (wrote smoke_output.html)")
 print("\n=== 11. Landing page ===")
 idx = run_mod._build_index_html()
 check("index builds", "Australia Chair Daily Brief" in idx and len(idx) > 800)
+
+print("\n=== 12. Pipeline health monitor ===")
+import pipeline_health
+
+# The model IDs digest.py actually pins must be in the known-current set.
+# This is the check that would have caught the Korea outage a quarter early.
+check("FAST_MODEL is a known-current ID",
+      digest_mod.FAST_MODEL in pipeline_health.KNOWN_MODEL_IDS,
+      digest_mod.FAST_MODEL)
+check("PRIMARY_MODEL is a known-current ID",
+      digest_mod.PRIMARY_MODEL in pipeline_health.KNOWN_MODEL_IDS,
+      digest_mod.PRIMARY_MODEL)
+
+# The baselines block must carry a parseable "Verified as at" stamp, or
+# staleness silently stops being tracked.
+check("baselines carry a parseable verified date",
+      pipeline_health._baseline_verified_date(digest_mod._REGIONAL_BASELINES) is not None)
+
+# A starved payload must actually raise something, not pass quietly.
+_starved = pipeline_health.check(
+    payload={"tier1": [{"source": "Crikey"}], "tier2": [], "tier3": [], "tier4": []})
+check("starved payload alerts on the prestige gap",
+      any("prestige" in a for a in _starved["alerts"]))
+check("starved payload warns on tier floors",
+      any("tier1" in w for w in _starved["warnings"]))
+
+_healthy = pipeline_health.check(
+    payload={"tier1": [{"source": "ABC News"}] * 50 + [{"source": "SMH"}] * 10,
+             "tier2": [{}] * 10, "tier3": [{}] * 3, "tier4": [{}] * 3})
+check("healthy payload raises no alerts", not _healthy["alerts"], str(_healthy["alerts"]))
+
+# The stream-retry tuple must catch what the SDK's backend actually raises.
+# Catching the wrong HTTP library's classes is how this silently became dead
+# code in the Korea and Japan pipelines.
+try:
+    import httpx2 as _h
+except ImportError:
+    import httpx as _h
+check("stream retry catches a real backend protocol error",
+      isinstance(_h.RemoteProtocolError("x"), digest_mod._STREAM_ERRORS))
+check("stream retry catches a real backend stream error",
+      isinstance(_h.StreamError("x"), digest_mod._STREAM_ERRORS))
+
+check("market fabrication rule is in the system prompt",
+      "MARKET AND RATE DATA" in digest_mod.SYSTEM_PROMPT)
+
+print("\n=== 13. Full-text enrichment ===")
+import fulltext
+
+_html = ('<html><head><meta property="og:description" content="Meta sentence here.">'
+         '</head><body><nav><p>Home</p></nav><article>'
+         '<p>A real paragraph of article text carrying well over forty characters.</p>'
+         '<p>Tiny.</p></article></body></html>')
+check("meta description extracted", fulltext.extract_meta(_html) == "Meta sentence here.")
+check("body drops nav and short fragments",
+      "A real paragraph" in fulltext.extract_body(_html)
+      and "Home" not in fulltext.extract_body(_html)
+      and "Tiny." not in fulltext.extract_body(_html))
+check("paywalled path takes meta only",
+      "A real paragraph" not in fulltext.extract(_html, want_body=False))
+check("google news URLs are recognised",
+      fulltext.is_gnews("https://news.google.com/rss/search?q=x")
+      and not fulltext.is_gnews("https://www.abc.net.au/news/x"))
+check("regional paywalled outlets flagged",
+      fulltext._is_paywalled("https://www.afr.com/x")
+      and fulltext._is_paywalled("https://www.theaustralian.com.au/x")
+      and not fulltext._is_paywalled("https://www.rnz.co.nz/x"))
+
+# Exercise enrich() end to end with the network stubbed out, so the ranking,
+# the Google News skip, the cache round trip and the summary append are all
+# covered without a fetch.
+_calls = []
+def _fake_fetch(url, want_body, timeout=None):
+    _calls.append((url, want_body))
+    return f"BODY({'full' if want_body else 'meta'})"
+fulltext._fetch = _fake_fetch
+
+_items = [
+    {"url": "https://news.google.com/rss/search?q=a", "source": "AAP", "summary": "skip me"},
+    {"url": "https://www.abc.net.au/news/1", "source": "ABC News", "summary": "short"},
+    {"url": "https://www.afr.com/2", "source": "AFR", "summary": "walled"},
+]
+fulltext.enrich(_items)
+check("google news item left untouched", _items[0]["summary"] == "skip me")
+check("canonical item enriched", "BODY(full)" in _items[1]["summary"]
+      and _items[1]["summary"].startswith("short"))
+check("paywalled item fetched meta-only", "BODY(meta)" in _items[2]["summary"])
+check("only canonical URLs were fetched",
+      len(_calls) == 2 and all("news.google.com" not in u for u, _ in _calls))
+
+# Second pass must come from cache, issuing no further fetches.
+_before = len(_calls)
+_again = [{"url": "https://www.abc.net.au/news/1", "source": "ABC News", "summary": "short"}]
+fulltext.enrich(_again)
+check("second pass served from cache", len(_calls) == _before
+      and "BODY(full)" in _again[0]["summary"])
+
+# The digest must not truncate the enriched text back off again.
+check("digest sends enriched summaries, not 800 chars",
+      len(json.loads(digest_mod._tier_json(
+          [{"title": "t", "url": "u", "summary": "x" * 1500,
+            "source": "s", "region": "AU"}]))[0]["summary"]) == 1500)
+
+print("\n=== 14. Newsletter ingestion ===")
+import newsletters
+
+check("disabled by default, no IMAP attempt", newsletters.ENABLED is False)
+check("returns nothing while disabled", newsletters.collect_newsletters() == [])
+
+_nl_html = """
+<a href="https://www.afr.com/politics/canberra-lifts-aukus-payment-20260825-p5abcd">
+  Canberra lifts the next AUKUS industrial-base payment</a>
+<a href="https://www.afr.com/topics/defence">Defence</a>
+<a href="https://www.afr.com/sport/afl/grand-final-preview-20260825-p5xyz">
+  Grand final preview: everything you need to know about the AFL decider</a>
+<a href="https://example.com/unsubscribe">Unsubscribe from this newsletter</a>
+<a href="https://www.rnz.co.nz/news/pacific/fiji-signs-security-arrangement-20260825">
+  Fiji signs a new security arrangement with a regional partner</a>
+"""
+_nl = newsletters.parse_newsletter_html(_nl_html, "AFR (Newsletter)")
+_nl_urls = " ".join(i["url"] for i in _nl)
+check("newsletter article extracted", "canberra-lifts-aukus-payment" in _nl_urls)
+check("sport link blocked in newsletters", "grand-final-preview" not in _nl_urls)
+check("section page not treated as an article", "topics/defence" not in _nl_urls)
+check("unsubscribe link dropped", "unsubscribe" not in _nl_urls)
+check("newsletter items carry a region tag",
+      all(i.get("region") in ("AU", "NZ", "Pacific") for i in _nl), str(_nl))
+check("Pacific newsletter item tagged Pacific",
+      any(i["region"] == "Pacific" for i in _nl if "fiji-signs" in i["url"]))
+check("newsletter sender fingerprint matches",
+      newsletters._match_source("news@afr.com", "Daily Briefing") == "AFR (Daily Briefing)"
+      and newsletters._match_source("x@example.com", "hello") is None)
+
+print("\n=== 15. Retry message shape ===")
+# The retry paths must not end on an assistant turn (a prefill, rejected with a
+# 400 on the current models) and must not ship the previous output twice.
+_dsrc = inspect.getsource(digest_mod)
+check("no assistant turn echoes the previous digest",
+      '"role": "assistant"' not in _dsrc)
+check("regenerate_digest documents that it holds FAST_MODEL first",
+      "only the second escalates" in inspect.getdoc(digest_mod.regenerate_digest))
 
 print("\n" + "=" * 50)
 if FAILS:

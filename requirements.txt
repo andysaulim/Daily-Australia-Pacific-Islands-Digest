@@ -1,4 +1,10 @@
-anthropic>=0.39.0
+# anthropic 1.x is required, not merely allowed. The pipeline uses
+# output_config.effort, adaptive thinking, and the Claude 5 model IDs, none of
+# which exist on 0.x. The old >=0.39.0 floor would resolve to a version that
+# cannot run digest.py at all.
+anthropic>=1.0.0
 feedparser>=6.0.0
 requests>=2.31.0
-httpx>=0.24.0
+# httpx is NOT pinned here on purpose. anthropic 1.x brings its own backend
+# (httpx2) and digest.py resolves whichever is present. A direct httpx pin
+# invites the mismatch where code catches httpx exceptions the SDK never raises.

@@ -52,6 +52,19 @@ SOURCE-OR-SKIP PRINCIPLE: for EVERY factual claim you write you must be able to 
 THINK TANK FABRICATION, HARD BLOCK:
 You have a strong tendency to invent generic-sounding think tank pieces when the feed is thin. For this region the tempting inventions are Lowy Institute, the Lowy Interpreter, ASPI, the ASPI Strategist, the United States Studies Centre, Devpolicy, CSIS, Brookings, Carnegie, and RAND. The fabrications follow a telltale pattern: a vague title ("examines Australia's evolving strategic environment", "argues for deeper Pacific engagement"), no specific data, and no real URL. STOP. If a think tank piece is not in the input with a real URL, it does not exist. Do not create it.
 
+USING THE ARTICLE TEXT YOU ARE GIVEN:
+Many items carry real article text in their "summary" field, fetched from the publisher, not just a feed blurb. That text is the best material in this prompt. Mine it for the specific figure, the named official, the dated commitment, and the direct quote that turn a headline restatement into something worth reading.
+- Draw quotes, numbers, and detail from that summary text. Quote it accurately and do not stretch a paraphrase into quotation marks.
+- This EXPANDS what you may say, it does not relax SOURCE-OR-SKIP. Everything still has to be in the text in front of you. An item whose summary is a bare headline gets a short entry, not an invented one.
+- Where the summary carries only one or two sentences, that publisher is paywalled and you are seeing its meta description. Use it, and do not assume the rest of the article says what you would expect.
+
+MARKET AND RATE DATA, NO FABRICATION:
+This brief collects NO market data. There is no pre-collected market strip, so there is no injected figure for you to fall back on, which makes this the easiest place in the brief to invent something plausible. The Korea brief published "KOSPI plunges 4.44% amid AI selloff" on a day no such move happened and no article reported one.
+- NEVER write an index level or move (ASX 200, All Ordinaries, NZX 50), an exchange rate (AUD/USD, NZD/USD), a commodity price (iron ore, coal, LNG), or a bond yield unless a source article in today's batch reports that specific figure.
+- The RBA cash rate and the RBNZ official cash rate come from the REGIONAL BASELINES block or from today's articles. Nowhere else. Where the baselines say a rate could not be confirmed, write around it rather than recalling one.
+- NEVER pair a training-data narrative ("a global risk-off move", "commodity rout", "the AI selloff") with a percentage you did not read in an article today.
+- A market story belongs in the brief only when an article in today's batch is about it. Australian economic coverage is dense enough that this is a real temptation on a thin news day.
+
 SPORT AND ENTERTAINMENT, HARD BLOCK:
 NEVER include AFL, NRL, rugby, cricket, the Ashes, netball, the Melbourne Cup, the Australian Open, Olympic or Commonwealth Games coverage, motorsport, horse racing, celebrity, reality television, film, music, or royal-visit colour in ANY section. Not even when a sport story carries a diplomatic angle (a Pacific rugby tour, a stadium financed by a foreign government) unless the diplomatic substance is the story and the sport is incidental. This brief covers security, foreign policy, defence, politics, trade, and development only.
 
@@ -107,31 +120,100 @@ Return ONLY valid JSON. No markdown, no preamble, no commentary outside the JSON
 # These live in the USER prompt, not the system prompt, so they can be updated
 # without touching the cached system block.
 #
-# MAINTENANCE: this block is deliberately thin and every line is marked
-# unverified. Populate it with confirmed office-holders and figures, two working
-# sources each, before the first supervised send. An out-of-date minister here is
-# worse than no baseline at all, because the model will trust it.
+# MAINTENANCE: the model trusts this block completely, so an out-of-date line
+# here is worse than a missing one. Every line carries its own "as at" date for
+# exactly that reason: a stale figure should read as stale rather than pass as
+# current. Anything that could not be confirmed twice was left out.
+#
+# Sources, kept here rather than in the string so they cost no prompt tokens:
+#   AU ministry      pmc.gov.au ministry list; foreignminister.gov.au;
+#                    ministers.dfat.gov.au/minister/pat-conroy;
+#                    ministers.treasury.gov.au/ministers/jim-chalmers-2022
+#   AU opposition    abc.net.au/news/2026-02-17/angus-taylor-preparing-to-unveil
+#                    -shadow-ministry/106354092; senatorpaterson.com.au media
+#                    release, 17 Feb 2026; defenceconnect.com.au shadow ministry
+#   AU parliament    2025 House result, Labor 94 of 150; aec.gov.au/media/2026/
+#                    07-23.htm, composition unchanged for the next election
+#   AU defence       abc.net.au/news/2026-04-17/australia-defence-spending-in
+#                    -charts/106572172; breakingdefense.com Apr and May 2026;
+#                    aspi.org.au Cost of Defence 2026-27
+#   NZ               beehive.govt.nz/release/general-election-be-held-7-november;
+#                    elections.nz 2026 key dates; ANZMIN Canberra, March 2026
+#   RBA              rba.gov.au/media-releases/2026/mr-26-19.html
+#   RBNZ             rnz.co.nz/news/business/596494; rbnz.govt.nz OCR page
+#   Pacific          forumsec.org/pacific-islands-forum; forumsec.org Troika
+#                    release; focustaiwan.tw/politics/202602240013
+#
+# REVIEW DATES, in order of urgency:
+#   1 Sep 2026   PIF chair passes to Palau during the Koror meeting
+#   2 Sep 2026   next RBNZ monetary policy decision
+#   7 Nov 2026   NZ general election; every NZ name below becomes caretaker
+#   Every ~6wk   RBA cash rate
+# Still missing, both needing two working sources: Australia's top export
+# markets and China's share, and the NZ defence capability plan status.
 
 _REGIONAL_BASELINES = """\
-UNVERIFIED: this baseline block has not been populated yet. Until it is, treat it
-as empty: take every name, title, portfolio, and figure from today's source
-articles only, and write around anything the articles do not supply.
+Verified as at 25 August 2026. Use these in preference to recall, but prefer
+today's source articles over any line here where the two disagree, and treat a
+line whose "as at" date is well behind today's date as possibly overtaken.
 
-To populate (two independent working sources per line):
-  Australia: Prime Minister, Deputy PM, Foreign Minister, Defence Minister,
-                Minister for International Development and the Pacific, Treasurer,
-                Opposition Leader and shadow foreign/defence; governing party and
-                seat margin; next federal election window.
-  New Zealand: Prime Minister, Foreign Minister, Defence Minister, coalition
-                composition, next general election window.
-  Defence: Australian defence spending as a share of GDP and its announced
-                trajectory; headline force-structure decisions; NZ defence
-                capability plan status.
-  Economy: RBA cash rate and last decision date; RBNZ official cash rate;
-                Australia's top export markets and China's share.
-  Pacific: Pacific Islands Forum membership count and current chair; states
-                holding Compacts of Free Association with the US; which states
-                recognise Taiwan.
+Australia, government (as at Aug 2026):
+  Prime Minister Anthony Albanese (Australian Labor Party, since May 2022).
+  Deputy Prime Minister and Minister for Defence Richard Marles.
+  Minister for Foreign Affairs Penny Wong.
+  Minister for Defence Industry and Pacific Island Affairs Pat Conroy.
+  Treasurer Jim Chalmers.
+Australia, opposition (as at Aug 2026):
+  Leader of the Opposition Angus Taylor (Liberal), since 13 February 2026, when
+  he defeated Sussan Ley 34 votes to 17 in a leadership spill. Deputy Liberal
+  leader Jane Hume. Shadow Treasurer Tim Wilson. Shadow Minister for Foreign
+  Affairs Ted O'Brien. Shadow Minister for Defence James Paterson.
+Australia, parliament:
+  2025 election returned Labor 94 seats of 150, Coalition 43, Greens 1, Centre
+  Alliance 1, Katter's Australian Party 1, independents 10. Labor governs in
+  majority. The next federal election must be held on or before 20 May 2028.
+
+New Zealand (as at Aug 2026):
+  Prime Minister Christopher Luxon (National). Minister of Foreign Affairs
+  Winston Peters (NZ First). Minister of Defence Judith Collins (National).
+  Coalition of National, ACT and NZ First, formed 2023.
+  General election Saturday 7 November 2026, advance voting from 26 October.
+
+Defence:
+  The 2026 National Defence Strategy was released in April 2026.
+  Australian defence spending is quoted on two different measures and they are
+  not interchangeable: roughly 2 percent of GDP on the conventional Australian
+  measure, and roughly 2.8 percent on the NATO-style measure the 2026 NDS uses.
+  Portfolio expenditure exceeds $60 billion in 2026-27. The announced trajectory
+  is 3 percent of GDP by 2033 on the NATO measure, about 2.5 percent by 2033-34
+  on the conventional one, via an extra $14 billion over four years and $53
+  billion over a decade. The United States has publicly pressed for 3.5 percent.
+  When citing a share of GDP, say which measure it is.
+
+Economy:
+  RBA cash rate 4.35 percent, held unanimously on 11 August 2026, a second
+  consecutive hold after three increases earlier in 2026. Trimmed mean inflation
+  remains above target and is not expected near the 2 to 3 percent midpoint
+  until late 2027.
+  The RBNZ official cash rate is deliberately not stated here, because it could
+  not be confirmed. Take it from today's articles or write around it. The next
+  RBNZ decision is 2 September 2026.
+
+Pacific:
+  The Pacific Islands Forum has 18 members: Australia, Cook Islands, Federated
+  States of Micronesia, Fiji, French Polynesia, Kiribati, Nauru, New Caledonia,
+  New Zealand, Niue, Palau, Papua New Guinea, Marshall Islands, Samoa, Solomon
+  Islands, Tonga, Tuvalu, Vanuatu.
+  Forum chair is Jeremiah Manele, Prime Minister of Solomon Islands. The chair
+  passes to Surangel Whipps Jr, President of Palau, at the 55th Leaders Meeting
+  in Koror, 30 August to 4 September 2026. Between those dates, check which of
+  the two an article means before naming a chair.
+  Three members are freely associated states with the United States under
+  Compacts of Free Association: the Federated States of Micronesia, the Marshall
+  Islands and Palau.
+  Three Forum members hold formal diplomatic relations with Taiwan: the Marshall
+  Islands, Palau and Tuvalu. Taiwan is reported to be attending the 2026 Leaders
+  Meeting after being excluded from the 2025 meeting in Solomon Islands.
 """
 
 
@@ -146,7 +228,11 @@ def _tier_json(articles: list, max_items: int = 60) -> str:
         item = {
             "title":   a.get("title", ""),
             "url":     a.get("url", ""),
-            "summary": a.get("summary", "")[:800],
+            # 1800, not 800. fulltext.py appends real article text to summaries,
+            # and an 800-character cap would truncate it back off, making the
+            # whole fetch a no-op. This is the line that decides whether the
+            # model sees a headline or a story.
+            "summary": a.get("summary", "")[:1800],
             "source":  a.get("source", ""),
             "region":  a.get("region", ""),
         }
@@ -380,6 +466,28 @@ _EFFORT = "high"
 # Streaming, so a large max_tokens does not hit the HTTP timeout.
 MAX_OUTPUT_TOKENS = 32000
 
+# Transient stream failures worth one more attempt.
+#
+# The SDK's HTTP backend changed under us: anthropic 1.x is built on httpx2,
+# not httpx, and httpx2.RemoteProtocolError is a DIFFERENT class from the
+# httpx one, not a subclass. The Korea and Japan pipelines still catch the
+# httpx names, so on anthropic 1.x their stream retry cannot fire at all.
+# Resolving the backend at import time keeps this working across both SDK
+# generations, and anthropic's own APIConnectionError is the part that will
+# stay correct if the backend changes again.
+try:                            # anthropic 1.x
+    import httpx2 as _http
+except ImportError:             # anthropic 0.x
+    import httpx as _http
+
+import anthropic as _anthropic_mod
+
+_STREAM_ERRORS = (
+    _anthropic_mod.APIConnectionError,
+    _http.HTTPError,            # covers RemoteProtocolError and ReadError
+    _http.StreamError,          # a RuntimeError, outside the HTTPError tree
+)
+
 
 def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
                    _retries: int = 3, model: str | None = None) -> dict:
@@ -393,8 +501,6 @@ def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
 
     Retries on transient stream errors.
     """
-    import httpx
-
     use_model = model or PRIMARY_MODEL
     model_label = use_model.split("-")[1] if "-" in use_model else use_model
 
@@ -439,7 +545,7 @@ def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
                   f"({response.usage.input_tokens} in / "
                   f"{response.usage.output_tokens} out{cache_info})")
             return _robust_json_parse(raw_text)
-        except (httpx.RemoteProtocolError, httpx.ReadError, httpx.StreamError) as e:
+        except _STREAM_ERRORS as e:
             if attempt < _retries - 1:
                 wait = 5 * (attempt + 1)
                 print(f"  !  Stream interrupted ({e.__class__.__name__}), retrying in {wait}s...")
@@ -499,10 +605,10 @@ def generate_digest(payload: dict) -> dict:
                     "- morning_memo must have exactly 3 distinct strings.\n"
                     "Return ONLY valid JSON."
                 )
+                # Same as regenerate_digest: one labelled copy of the previous
+                # output, no truncated assistant turn duplicating it.
                 messages = [
                     {"role": "user", "content": user_prompt},
-                    {"role": "assistant",
-                     "content": json.dumps(digest, ensure_ascii=False)[:4000]},
                     {"role": "user", "content": expansion},
                 ]
                 digest = _stream_claude(client, messages, model=retry_model)
@@ -531,7 +637,15 @@ def generate_digest(payload: dict) -> dict:
 
 def regenerate_digest(payload: dict, previous_digest: dict, warnings: list[str],
                       attempt: int = 0) -> dict:
-    """Re-generate with validator feedback. Escalates to the primary model."""
+    """Re-generate with validator feedback.
+
+    The first retry stays on FAST_MODEL and only the second escalates to
+    PRIMARY_MODEL. That is deliberate, not an oversight: most validation
+    failures are a section over its cap or a missing stand-in, which Sonnet
+    fixes when told exactly what broke, and escalating every time would put
+    Opus on the majority of days for no gain. The docstring used to claim it
+    escalated outright, which is what a reader would otherwise assume.
+    """
     import anthropic
 
     api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -557,9 +671,12 @@ def regenerate_digest(payload: dict, previous_digest: dict, warnings: list[str],
         "- Zero em-dashes, zero emojis.\n"
         "Return ONLY valid JSON."
     )
+    # One copy of the previous output, inside the feedback where it is labelled.
+    # This used to also carry an assistant turn holding the same JSON truncated
+    # to 4000 characters, which both doubled the tokens and handed the model
+    # malformed JSON as its own prior turn.
     messages = [
         {"role": "user", "content": user_prompt},
-        {"role": "assistant", "content": json.dumps(previous_digest, ensure_ascii=False)[:4000]},
         {"role": "user", "content": feedback},
     ]
     model = FAST_MODEL if attempt == 0 else PRIMARY_MODEL

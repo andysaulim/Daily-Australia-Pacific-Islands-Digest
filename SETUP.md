@@ -33,13 +33,14 @@ content. They are marked so the model refuses to state them as fact, which means
 the brief will simply be quieter than it should be until they are filled in. Each
 line needs two independent working sources, per the house sourcing gate.
 
-1. **`digest.py` → `_REGIONAL_BASELINES`**: the AU and NZ ministries and portfolio
-   holders, defence spending trajectory, RBA cash rate and RBNZ OCR, PIF membership
-   and current chair, which states hold Compacts of Free Association, which
-   recognise Taiwan. The file lists exactly what to fill in. A partly filled
-   research worksheet, with citations and a confidence column, sits in
-   `BASELINES_WORKSHEET.md`. It is deliberately not imported anywhere, so verify
-   a line against its two sources before copying it across.
+1. **`digest.py` → `_REGIONAL_BASELINES`**: **populated, but verify before the
+   first send.** It now carries the AU and NZ ministries, the 2025 House result,
+   the defence spending trajectory on both measures, the RBA cash rate, and the
+   Pacific set. Every value was gathered by web search from a machine that could
+   not open the cited pages, which is weaker than the house gate.
+   `BASELINES_WORKSHEET.md` opens with a ten-minute pass: five primary URLs,
+   confirm the names, then delete that section. Three lines are deliberately
+   absent rather than guessed, the RBNZ cash rate among them.
 2. **`data/aukus_tracker.json`**: every Pillar 1 milestone currently marked
    `"confidence": "seed"`. The seed ledger is already in the repo; regenerate it
    at any time with `python aukus_tracker.py`, which writes the file if it is
@@ -65,7 +66,7 @@ pip install -r requirements.txt
 python smoke_test.py
 ```
 
-Fifty-five offline checks, no network and no API spend. All should pass.
+Eighty-six offline checks, no network and no API spend. All should pass.
 
 Then a real generation, no email:
 
@@ -127,6 +128,30 @@ secret**. Six entries:
 
 `DIGEST_TO` starting as just you is the whole point of the pilot in step 8. Widen
 it deliberately, not on day one.
+
+---
+
+## 5b. Newsletters over IMAP (optional, off by default)
+
+`newsletters.py` reads subscriber-only newsletters out of the inbox that receives
+them. For a newsletter you pay for there is no wall to defeat: the publisher
+mailed it to you, and the email HTML carries the links and blurbs. That reaches
+the briefings with editorial judgement already applied, which no public feed does.
+
+It is **off** unless you turn it on, because an always-on IMAP login with nothing
+subscribed would print a failure line every morning until you did.
+
+1. Subscribe the `GMAIL_USER` inbox to the newsletters you want ingested.
+2. Enable IMAP on that account: Gmail **Settings** -> **Forwarding and POP/IMAP**
+   -> **Enable IMAP**.
+3. Add sender or subject fingerprints to `_PUBLISHERS` / `_NEWSLETTERS` in
+   `newsletters.py`. It ships with plausible candidates for this beat; an
+   unsubscribed one simply never matches.
+4. Add the repository *variable* `NEWSLETTERS` = `1`.
+
+No new secret: it reuses `GMAIL_USER` and `GMAIL_APP_PASS`. Items land in tier 1
+already region-tagged and pass the same relevance and sport gates as feed items,
+so a masthead briefing cannot smuggle the football in.
 
 ---
 

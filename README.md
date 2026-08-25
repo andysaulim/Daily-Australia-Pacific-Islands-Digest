@@ -1,7 +1,7 @@
 # Australia Chair Daily Brief
 
 An automated weekday intelligence brief covering **Australia, New Zealand, and the
-Pacific Islands**, produced for the CSIS Australia Chair. It collects roughly 90
+Pacific Islands**, produced for the CSIS Australia Chair. It collects roughly 120
 feeds overnight, synthesises them through Claude into structured JSON, validates
 the result, renders an HTML email, and sends at 6:00 AM ET.
 
@@ -67,7 +67,7 @@ COLLECT -> DIGEST -> VALIDATE -> TRACK -> RENDER -> ARCHIVE -> SEND
 | Tier | Window | Content |
 | --- | --- | --- |
 | 1 | 24h | News. Australian national, NZ, Pacific national press, wires, government, China reaction layer |
-| 2 | 36h | Analysis. Lowy Interpreter, ASPI Strategist, USSC, Devpolicy, CSIS, Brookings |
+| 2 | 36h | Analysis and newsletters. Lowy Interpreter, ASPI Strategist and Fault Lines, USSC, Devpolicy, CSIS, Brookings, Futura Doctrina, Democracy Project NZ |
 | 3 | 72h | Academic journals |
 | 4 | 48h | Primary documents. Communiques, joint statements, ministerial transcripts |
 
@@ -188,6 +188,7 @@ pacific_tracker.py      China-in-the-Pacific ledger
 calendar_tracker.py     verified diplomatic calendar
 update_readme.py        refreshes the stats block above
 smoke_test.py           offline test suite, no network and no API spend
+BASELINES_WORKSHEET.md  staging for _REGIONAL_BASELINES, not imported anywhere
 data/                   archive.db and tracker JSON, committed each run
 public/                 GitHub Pages archive, rebuilt each run
 .github/workflows/      daily-brief.yml, the scheduled send

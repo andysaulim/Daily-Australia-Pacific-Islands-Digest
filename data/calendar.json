@@ -1,0 +1,134 @@
+{
+  "last_reviewed": "2026-08-25",
+  "events": [
+    {
+      "event": "Pacific Islands Forum Leaders Meeting",
+      "date": null,
+      "window": "annual, usually August or September",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "AUSMIN (Australia-US Ministerial Consultations)",
+      "date": null,
+      "window": "annual, venue alternates",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "ANZMIN (Australia-New Zealand Foreign and Defence Ministers)",
+      "date": null,
+      "window": "annual",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Quad Leaders Summit",
+      "date": null,
+      "window": "annual, host rotates",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Quad Foreign Ministers Meeting",
+      "date": null,
+      "window": "roughly twice yearly",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Talisman Sabre",
+      "date": null,
+      "window": "biennial, odd-numbered years, Australian winter",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Australian federal budget",
+      "date": null,
+      "window": "second Tuesday in May, ordinarily",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "New Zealand budget",
+      "date": null,
+      "window": "May, ordinarily",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Shangri-La Dialogue",
+      "date": null,
+      "window": "annual, Singapore, late May or early June",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Pacific Islands Forum Foreign Ministers Meeting",
+      "date": null,
+      "window": "annual",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Melanesian Spearhead Group Leaders Summit",
+      "date": null,
+      "window": "periodic",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "Australian parliamentary sitting weeks",
+      "date": null,
+      "window": "published sitting calendar",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "New Zealand parliamentary sitting weeks",
+      "date": null,
+      "window": "published sitting calendar",
+      "confidence": "seed",
+      "sources": [],
+      "note": null
+    },
+    {
+      "event": "55th Pacific Islands Forum Leaders Meeting",
+      "date": "2026-08-30",
+      "window": null,
+      "confidence": "confirmed",
+      "sources": [
+        "https://forumsec.org/events/pacific-islands-forum-leaders-meeting",
+        "https://www.theprif.org/event/regional-event/2026-08-30/55th-pacific-islands-forum-leaders-meeting",
+        "https://sdg.iisd.org/events/55th-pacific-islands-forum-leaders-meeting/"
+      ],
+      "note": "Koror, Palau, 30 Aug to 4 Sep 2026. Theme: Building Economies. Chair passes from Jeremiah Manele (Solomon Islands) to Surangel Whipps Jr (Palau)."
+    },
+    {
+      "event": "New Zealand general election",
+      "date": "2026-11-07",
+      "window": null,
+      "confidence": "confirmed",
+      "sources": [
+        "https://www.beehive.govt.nz/release/general-election-be-held-7-november",
+        "https://elections.nz/media-and-news/2026/key-dates-for-2026-general-election",
+        "https://vote.nz/2026-general-election/about/overview"
+      ],
+      "note": "Saturday 7 November 2026. Advance voting opens 26 October. Announced by PM Christopher Luxon."
+    }
+  ],
+  "anniversaries": []
+}

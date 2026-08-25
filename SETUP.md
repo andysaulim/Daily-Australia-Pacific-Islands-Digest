@@ -36,7 +36,10 @@ line needs two independent working sources, per the house sourcing gate.
 1. **`digest.py` → `_REGIONAL_BASELINES`**: the AU and NZ ministries and portfolio
    holders, defence spending trajectory, RBA cash rate and RBNZ OCR, PIF membership
    and current chair, which states hold Compacts of Free Association, which
-   recognise Taiwan. The file lists exactly what to fill in.
+   recognise Taiwan. The file lists exactly what to fill in. A partly filled
+   research worksheet, with citations and a confidence column, sits in
+   `BASELINES_WORKSHEET.md`. It is deliberately not imported anywhere, so verify
+   a line against its two sources before copying it across.
 2. **`data/aukus_tracker.json`**: every Pillar 1 milestone currently marked
    `"confidence": "seed"`. The seed ledger is already in the repo; regenerate it
    at any time with `python aukus_tracker.py`, which writes the file if it is
@@ -154,9 +157,9 @@ workflow**.
 
 Watch the log. What to look for:
 
-- **Source health**: how many of the 105 feeds returned data. This is the first
+- **Source health**: how many of the 122 feeds returned data. This is the first
   honest reading you will get, since your laptop's number is meaningless. Under
-  about 60 means something is wrong; a handful of dead feeds is normal.
+  about 70 means something is wrong; a handful of dead feeds is normal.
 - **Regional balance**: the AU / NZ / Pacific counts. If Pacific is under 5, the
   Pacific section will lean on its stand-in and the feed set needs sources.
 - **Validation**: passed, or which gate failed and whether the retry cleared it.

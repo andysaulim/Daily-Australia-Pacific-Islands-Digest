@@ -34,11 +34,20 @@ jobs:
     runs-on: ubuntu-latest
     # 45, not 30. Run 3 on 25 August spent 22 of its 30 minutes and was
     # still on validation attempt 3. The tier-1 window is now 160 items
-    # rather than 90, roughly a 78% larger prompt, and the raised word
-    # floor makes a second generation attempt more likely, so the old
-    # budget had no headroom left. A timeout kill is the worst failure
-    # this pipeline has: the run is marked failed, which is exactly what
-    # a fallback cron reads as licence to send a second copy.
+    # rather than 90, and the raised word floor makes a second generation
+    # attempt more likely, so the old budget had no headroom left.
+    #
+    # Measured against the real corpus in data/archive.db: the tier-1
+    # block goes from ~22k to ~39k tokens, but the rest of the user
+    # prompt, the baselines, three trackers, calendar, cross-day memory
+    # and schema, is a further ~10k that does not grow at all. The whole
+    # user prompt therefore grows ~53%, not the ~78% a first estimate
+    # gave by dividing the entire prompt across tier-1's items alone.
+    # 76% is right for the tier-1 block; it is not right for the prompt.
+    #
+    # A timeout kill is the worst failure this pipeline has: the run is
+    # marked failed, which is exactly what a fallback cron reads as
+    # licence to send a second copy.
     timeout-minutes: 45
     steps:
       # Guard: on a fallback cron, skip if a dispatch already sent today.

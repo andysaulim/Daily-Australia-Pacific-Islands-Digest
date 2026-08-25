@@ -45,7 +45,12 @@ INDICATORS = [
     ("aud_usd",  "AUD/USD",   "AUDUSD=X", "audusd", (0.40, 1.20)),
     ("nzx50",    "NZX 50",    "^NZ50",   "^nz50",   (5000, 25000)),
     ("nzd_usd",  "NZD/USD",   "NZDUSD=X", "nzdusd", (0.35, 1.10)),
-    ("iron_ore", "Iron ore",  "TIO=F",   "",        (30, 300)),
+    # Iron ore was here on TIO=F, which Yahoo has stopped updating: the live
+    # runs get a quote 1,840 days stale and markets.py correctly refuses it,
+    # so the slot has never once rendered. Removed rather than replaced with
+    # a guess, because a second dead symbol would cost another month of
+    # warnings to discover. There is no free spot iron ore feed worth the
+    # dependency; SETUP says what to do if a verified symbol turns up.
     ("brent",    "Brent",     "BZ=F",    "cb.f",    (20, 250)),
 ]
 

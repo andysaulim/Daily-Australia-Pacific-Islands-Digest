@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS published (
     headline    TEXT,
     digest_date TEXT,
     section     TEXT,
+    category    TEXT,
     PRIMARY KEY (url, digest_date)
 );
 CREATE INDEX IF NOT EXISTS idx_pub_date ON published (digest_date);
@@ -63,6 +64,46 @@ _PUBLISHED_SECTIONS = (
     "business_economy", "primary_documents", "also_today",
     "opeds_today", "academic_today",
 )
+
+# The twelve topics the Australia Chair asked this brief to cover, mapped to the
+# category values the digest schema uses. Coverage is only measurable because
+# these are stored per item; before this the archive knew what shipped but not
+# what it was about.
+COVERAGE_TOPICS = {
+    "US-Australia":       "U.S.-Australia relations",
+    "AUKUS":              "AUKUS",
+    "AU-Foreign-Policy":  "Australian foreign policy",
+    "AU-Defense":         "Australian defence policy",
+    "NZ-Defense":         "New Zealand defence policy",
+    "NZ-Foreign-Policy":  "New Zealand foreign policy",
+    "Pacific-Diplomacy":  "Pacific Islands diplomacy",
+    "AU-Politics":        "Australian politics",
+    "NZ-Politics":        "New Zealand politics",
+    "Pacific-Politics":   "Pacific Islands politics",
+    "China-Pacific":      "China in the Pacific Islands",
+    "US-China-Pacific":   "U.S.-China competition in the Pacific Islands",
+}
+
+# Some sections carry no category of their own, but their existence implies one.
+# Used only when an item has no category field, so a topic is never credited on
+# a guess where the model actually said something else.
+_SECTION_TOPIC = {
+    "aukus_watch": "AUKUS",
+    "china_in_the_pacific": "China-Pacific",
+    "pacific_wire": "Pacific-Diplomacy",
+    "new_zealand": "NZ-Foreign-Policy",
+    "canberra_politics": "AU-Politics",
+}
+
+
+def item_category(item: dict, section: str) -> str:
+    """The item's own category, else the one its section implies, else ''."""
+    for key in ("category_tag", "category"):
+        val = (item.get(key) or "").strip()
+        if val:
+            return val
+    return _SECTION_TOPIC.get(section, "")
+
 
 _NORM_STRIP = re.compile(r"[^a-z0-9 ]+")
 _NORM_STOP = frozenset({
@@ -95,7 +136,34 @@ def _connect() -> sqlite3.Connection:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     conn.executescript(_SCHEMA)
+    _migrate(conn)
     return conn
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    """Add columns to a database created by an older version.
+
+    CREATE TABLE IF NOT EXISTS does nothing to a table that already
+    exists, and this database is committed back after every run, so the
+    live one predates any column added later. Without this, the first run
+    after a schema change fails on the insert.
+    """
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(published)")}
+    if "category" not in cols:
+        conn.execute("ALTER TABLE published ADD COLUMN category TEXT")
+        conn.commit()
+
+    # Backfill what the section implies, so coverage history does not start
+    # empty and read as a fortnight of silence on every topic. Idempotent
+    # and independent of the column add, because the column may already
+    # exist while older rows predate anything writing to it. Same inference
+    # item_category() falls back to.
+    for section, cat in _SECTION_TOPIC.items():
+        conn.execute(
+            "UPDATE published SET category = ? "
+            "WHERE section = ? AND (category IS NULL OR category = '')",
+            (cat, section))
+    conn.commit()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -150,14 +218,16 @@ def record_published(digest: dict, digest_date: str | None = None) -> int:
             headline = item.get("headline", "") or item.get("title", "")
             if not url and not headline:
                 continue
-            rows.append((url, normalize_title(headline), headline, digest_date, section))
+            rows.append((url, normalize_title(headline), headline, digest_date,
+                         section, item_category(item, section)))
 
     if not rows:
         return 0
     with _connect() as conn:
         conn.executemany(
             "INSERT OR REPLACE INTO published "
-            "(url, title_norm, headline, digest_date, section) VALUES (?, ?, ?, ?, ?)",
+            "(url, title_norm, headline, digest_date, section, category) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
             rows,
         )
     return len(rows)
@@ -220,6 +290,28 @@ def recent_published(days: int = 3) -> list[dict]:
     except sqlite3.Error:
         return []
     return [{"date": r[0], "section": r[1], "headline": r[2]} for r in rows]
+
+
+def topics_covered(days: int = 14) -> dict:
+    """{category: count} across the window, for every topic in the mandate.
+
+    Topics with no coverage are present with a zero rather than absent, so
+    a caller can tell "nothing published on this" from "no data at all".
+    """
+    counts = {cat: 0 for cat in COVERAGE_TOPICS}
+    cutoff = _cutoff(days)
+    try:
+        with _connect() as conn:
+            rows = conn.execute(
+                "SELECT category, COUNT(*) FROM published "
+                "WHERE digest_date >= ? AND category IS NOT NULL "
+                "AND category != '' GROUP BY category", (cutoff,)).fetchall()
+    except sqlite3.Error:
+        return {}
+    for cat, n in rows:
+        if cat in counts:
+            counts[cat] += n
+    return counts
 
 
 def build_context_block(days: int = 3) -> str:

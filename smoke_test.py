@@ -565,6 +565,52 @@ check("streamer records into the ledger",
 check("run.py writes the ledger into metrics",
       '"tokens"' in inspect.getsource(run_mod.main))
 
+print("\n=== 14f. Twelve-topic coverage ===")
+# The mandate is twelve named topics. These checks keep the prompt, the render
+# taxonomy, the archive and the health monitor from drifting apart, which is
+# the only way "are we covering all twelve" can be answered mechanically.
+_TOPICS = archive.COVERAGE_TOPICS
+check("archive tracks exactly twelve topics", len(_TOPICS) == 12, str(len(_TOPICS)))
+check("every topic is a renderable category",
+      all(c in render_mod._CAT_COLORS for c in _TOPICS),
+      str([c for c in _TOPICS if c not in render_mod._CAT_COLORS]))
+check("every topic appears in the prompt checklist",
+      all(c in digest_mod.SYSTEM_PROMPT for c in _TOPICS),
+      str([c for c in _TOPICS if c not in digest_mod.SYSTEM_PROMPT]))
+check("the twelve are named as the mandate",
+      "THE CATEGORIES ARE THE MANDATE" in digest_mod.SYSTEM_PROMPT)
+check("a topic is a mandate across the week, not a per-issue quota",
+      "not a quota per issue" in digest_mod.SYSTEM_PROMPT)
+
+# Category capture, including the section fallback for sections that carry none.
+check("item category preferred over the section",
+      archive.item_category({"category": "NZ-Defense"}, "pacific_wire") == "NZ-Defense")
+check("category_tag also read",
+      archive.item_category({"category_tag": "AUKUS"}, "also_today") == "AUKUS")
+check("section implies a topic when the item gives none",
+      archive.item_category({}, "china_in_the_pacific") == "China-Pacific")
+check("no category and no implication yields nothing, not a guess",
+      archive.item_category({}, "also_today") == "")
+
+# Round trip: record a digest and read the coverage back out.
+_cov_digest = {
+    "top_stories": [{"url": "http://c/1", "headline": "A", "category_tag": "US-Australia"}],
+    "new_zealand": [{"url": "http://c/2", "headline": "B", "category": "NZ-Defense"}],
+    "aukus_watch": [{"url": "http://c/3", "headline": "C"}],
+}
+archive.record_published(_cov_digest, digest_date=archive._today())
+_cov = archive.topics_covered(days=14)
+check("coverage reports all twelve keys", len(_cov) == 12)
+check("explicit category counted", _cov.get("US-Australia", 0) >= 1)
+check("section-implied category counted", _cov.get("AUKUS", 0) >= 1)
+check("an untouched topic reads zero, not missing",
+      _cov.get("US-China-Pacific", None) == 0)
+
+check("health monitor reports which topics are dark",
+      "topics_dark" in pipeline_health.check(payload=None))
+check("health monitor stays quiet with no categorized history",
+      isinstance(pipeline_health.check(payload=None)["topics_dark"], list))
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

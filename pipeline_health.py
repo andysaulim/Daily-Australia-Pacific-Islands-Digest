@@ -73,6 +73,10 @@ KNOWN_MODEL_IDS = {
     "claude-sonnet-4-6", "claude-haiku-4-5",
 }
 
+# Days of trailing coverage to judge the twelve topics over. Short enough
+# to notice a hole, long enough that a quiet week is not an alarm.
+COVERAGE_WINDOW_DAYS = 14
+
 PACIFIC_STAND_IN_WINDOW = 10
 PACIFIC_STAND_IN_LIMIT = 3
 
@@ -183,6 +187,28 @@ def check(payload: dict | None = None, digest: dict | None = None) -> dict:
             f"tier3 has collected nothing for {len(recent_t3)} consecutive runs. "
             f"The journal queries are matching nothing and need rewriting.")
 
+    # ── Twelve-topic coverage ────────────────────────────────────────────
+    # The brief exists to cover twelve named topics. Volume alone cannot show
+    # whether it does: an issue can be full and still have said nothing about
+    # New Zealand defence for a fortnight. This is the only check that reads
+    # the mandate rather than the plumbing.
+    dark = []
+    try:
+        import archive
+        seen = archive.topics_covered(days=COVERAGE_WINDOW_DAYS)
+        for cat, label in archive.COVERAGE_TOPICS.items():
+            if seen.get(cat, 0) == 0:
+                dark.append(label)
+        # Only judge coverage when there is categorized history to judge
+        # from. A database with none yet is silent, not failing.
+        if dark and sum(seen.values()) > 0:
+            warnings.append(
+                f"No coverage in {COVERAGE_WINDOW_DAYS} days of: "
+                f"{'; '.join(sorted(dark))}. Either the region genuinely went "
+                f"quiet, or the feed set has a hole.")
+    except Exception as e:                                  # noqa: BLE001
+        warnings.append(f"Could not measure topic coverage: {e}")
+
     # ── Pacific stand-in frequency ───────────────────────────────────────
     recent = _recent_metrics(PACIFIC_STAND_IN_WINDOW)
     stand_ins = sum(1 for m in recent if m.get("pacific_stand_in"))
@@ -196,6 +222,7 @@ def check(payload: dict | None = None, digest: dict | None = None) -> dict:
         "baseline_age_days": age,
         "tier_counts": tier_counts,
         "pacific_stand_ins_recent": stand_ins,
+        "topics_dark": dark,
         "recent_issues_considered": len(recent),
         "warnings": warnings,
         "alerts": alerts,

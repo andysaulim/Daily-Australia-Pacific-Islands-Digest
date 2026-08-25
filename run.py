@@ -820,6 +820,20 @@ def main():
             "html_bytes": len(html),
             "sent": not args.no_send and validation_passed,
         }
+
+        # Health check last, so its findings ride along in the same metrics
+        # row and a drift shows up as a trend rather than as one bad morning.
+        # Runs after the send on purpose: nothing it reports should be able to
+        # stop an otherwise good brief going out.
+        try:
+            import pipeline_health
+            health = pipeline_health.check(payload=payload, digest=digest_data)
+            metrics["health_warnings"] = len(health["warnings"])
+            metrics["health_alerts"] = len(health["alerts"])
+            metrics["baseline_age_days"] = health["baseline_age_days"]
+        except Exception as e:                              # noqa: BLE001
+            print(f"\n  !  Health check failed to run: {e}")
+
         with open("metrics.jsonl", "a", encoding="utf-8") as f:
             f.write(json.dumps(metrics) + "\n")
     except Exception:

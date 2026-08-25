@@ -65,7 +65,7 @@ pip install -r requirements.txt
 python smoke_test.py
 ```
 
-Fifty-five offline checks, no network and no API spend. All should pass.
+Sixty-four offline checks, no network and no API spend. All should pass.
 
 Then a real generation, no email:
 

@@ -52,6 +52,13 @@ SOURCE-OR-SKIP PRINCIPLE: for EVERY factual claim you write you must be able to 
 THINK TANK FABRICATION, HARD BLOCK:
 You have a strong tendency to invent generic-sounding think tank pieces when the feed is thin. For this region the tempting inventions are Lowy Institute, the Lowy Interpreter, ASPI, the ASPI Strategist, the United States Studies Centre, Devpolicy, CSIS, Brookings, Carnegie, and RAND. The fabrications follow a telltale pattern: a vague title ("examines Australia's evolving strategic environment", "argues for deeper Pacific engagement"), no specific data, and no real URL. STOP. If a think tank piece is not in the input with a real URL, it does not exist. Do not create it.
 
+MARKET AND RATE DATA, NO FABRICATION:
+This brief collects NO market data. There is no pre-collected market strip, so there is no injected figure for you to fall back on, which makes this the easiest place in the brief to invent something plausible. The Korea brief published "KOSPI plunges 4.44% amid AI selloff" on a day no such move happened and no article reported one.
+- NEVER write an index level or move (ASX 200, All Ordinaries, NZX 50), an exchange rate (AUD/USD, NZD/USD), a commodity price (iron ore, coal, LNG), or a bond yield unless a source article in today's batch reports that specific figure.
+- The RBA cash rate and the RBNZ official cash rate come from the REGIONAL BASELINES block or from today's articles. Nowhere else. Where the baselines say a rate could not be confirmed, write around it rather than recalling one.
+- NEVER pair a training-data narrative ("a global risk-off move", "commodity rout", "the AI selloff") with a percentage you did not read in an article today.
+- A market story belongs in the brief only when an article in today's batch is about it. Australian economic coverage is dense enough that this is a real temptation on a thin news day.
+
 SPORT AND ENTERTAINMENT, HARD BLOCK:
 NEVER include AFL, NRL, rugby, cricket, the Ashes, netball, the Melbourne Cup, the Australian Open, Olympic or Commonwealth Games coverage, motorsport, horse racing, celebrity, reality television, film, music, or royal-visit colour in ANY section. Not even when a sport story carries a diplomatic angle (a Pacific rugby tour, a stadium financed by a foreign government) unless the diplomatic substance is the story and the sport is incidental. This brief covers security, foreign policy, defence, politics, trade, and development only.
 
@@ -449,6 +456,28 @@ _EFFORT = "high"
 # Streaming, so a large max_tokens does not hit the HTTP timeout.
 MAX_OUTPUT_TOKENS = 32000
 
+# Transient stream failures worth one more attempt.
+#
+# The SDK's HTTP backend changed under us: anthropic 1.x is built on httpx2,
+# not httpx, and httpx2.RemoteProtocolError is a DIFFERENT class from the
+# httpx one, not a subclass. The Korea and Japan pipelines still catch the
+# httpx names, so on anthropic 1.x their stream retry cannot fire at all.
+# Resolving the backend at import time keeps this working across both SDK
+# generations, and anthropic's own APIConnectionError is the part that will
+# stay correct if the backend changes again.
+try:                            # anthropic 1.x
+    import httpx2 as _http
+except ImportError:             # anthropic 0.x
+    import httpx as _http
+
+import anthropic as _anthropic_mod
+
+_STREAM_ERRORS = (
+    _anthropic_mod.APIConnectionError,
+    _http.HTTPError,            # covers RemoteProtocolError and ReadError
+    _http.StreamError,          # a RuntimeError, outside the HTTPError tree
+)
+
 
 def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
                    _retries: int = 3, model: str | None = None) -> dict:
@@ -462,8 +491,6 @@ def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
 
     Retries on transient stream errors.
     """
-    import httpx
-
     use_model = model or PRIMARY_MODEL
     model_label = use_model.split("-")[1] if "-" in use_model else use_model
 
@@ -508,7 +535,7 @@ def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
                   f"({response.usage.input_tokens} in / "
                   f"{response.usage.output_tokens} out{cache_info})")
             return _robust_json_parse(raw_text)
-        except (httpx.RemoteProtocolError, httpx.ReadError, httpx.StreamError) as e:
+        except _STREAM_ERRORS as e:
             if attempt < _retries - 1:
                 wait = 5 * (attempt + 1)
                 print(f"  !  Stream interrupted ({e.__class__.__name__}), retrying in {wait}s...")

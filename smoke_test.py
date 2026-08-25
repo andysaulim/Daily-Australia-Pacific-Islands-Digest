@@ -277,6 +277,51 @@ print("\n=== 11. Landing page ===")
 idx = run_mod._build_index_html()
 check("index builds", "Australia Chair Daily Brief" in idx and len(idx) > 800)
 
+print("\n=== 12. Pipeline health monitor ===")
+import pipeline_health
+
+# The model IDs digest.py actually pins must be in the known-current set.
+# This is the check that would have caught the Korea outage a quarter early.
+check("FAST_MODEL is a known-current ID",
+      digest_mod.FAST_MODEL in pipeline_health.KNOWN_MODEL_IDS,
+      digest_mod.FAST_MODEL)
+check("PRIMARY_MODEL is a known-current ID",
+      digest_mod.PRIMARY_MODEL in pipeline_health.KNOWN_MODEL_IDS,
+      digest_mod.PRIMARY_MODEL)
+
+# The baselines block must carry a parseable "Verified as at" stamp, or
+# staleness silently stops being tracked.
+check("baselines carry a parseable verified date",
+      pipeline_health._baseline_verified_date(digest_mod._REGIONAL_BASELINES) is not None)
+
+# A starved payload must actually raise something, not pass quietly.
+_starved = pipeline_health.check(
+    payload={"tier1": [{"source": "Crikey"}], "tier2": [], "tier3": [], "tier4": []})
+check("starved payload alerts on the prestige gap",
+      any("prestige" in a for a in _starved["alerts"]))
+check("starved payload warns on tier floors",
+      any("tier1" in w for w in _starved["warnings"]))
+
+_healthy = pipeline_health.check(
+    payload={"tier1": [{"source": "ABC News"}] * 50 + [{"source": "SMH"}] * 10,
+             "tier2": [{}] * 10, "tier3": [{}] * 3, "tier4": [{}] * 3})
+check("healthy payload raises no alerts", not _healthy["alerts"], str(_healthy["alerts"]))
+
+# The stream-retry tuple must catch what the SDK's backend actually raises.
+# Catching the wrong HTTP library's classes is how this silently became dead
+# code in the Korea and Japan pipelines.
+try:
+    import httpx2 as _h
+except ImportError:
+    import httpx as _h
+check("stream retry catches a real backend protocol error",
+      isinstance(_h.RemoteProtocolError("x"), digest_mod._STREAM_ERRORS))
+check("stream retry catches a real backend stream error",
+      isinstance(_h.StreamError("x"), digest_mod._STREAM_ERRORS))
+
+check("market fabrication rule is in the system prompt",
+      "MARKET AND RATE DATA" in digest_mod.SYSTEM_PROMPT)
+
 print("\n" + "=" * 50)
 if FAILS:
     print(f"  {len(FAILS)} FAILURE(S): " + "; ".join(FAILS))

@@ -8,6 +8,14 @@ on:
     - cron: '30 11 * * 1-5'  # 7:30 AM ET, first fallback
     - cron: '0 13 * * 1-5'   # 9:00 AM ET, last resort
   workflow_dispatch:
+    inputs:
+      replace_today:
+        description: >-
+          Regenerate today's issue. Hides today's own publications from the
+          cross-day memory, so a second run is not stripped bare by the first.
+          Recipients get another email. Leave off for the normal daily send.
+        type: boolean
+        default: false
 
 # The built-in GITHUB_TOKEN covers everything this workflow does, so no
 # personal access token is needed to run the brief. actions:read is what
@@ -88,7 +96,12 @@ jobs:
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
           DIGEST_TO: ${{ secrets.DIGEST_TO }}
           WEB_URL: ${{ vars.WEB_URL }}
-        run: python run.py
+        run: |
+          if [ "${{ inputs.replace_today }}" = "true" ]; then
+            python run.py --replace-today
+          else
+            python run.py
+          fi
 
       # Everything past the send is continue-on-error on purpose. A red
       # post-send step would mark the run failed and let a fallback cron

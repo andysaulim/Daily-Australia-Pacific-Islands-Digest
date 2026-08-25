@@ -159,7 +159,9 @@ subscribed would print a failure line every morning until you did.
    thing with the editing already done. Subscribe at
    politico.com/newsletters/canberra-playbook with the `GMAIL_USER`
    address; the `canberra playbook` fingerprint is already in place.
-4. Add the repository *variable* `NEWSLETTERS` = `1`.
+4. Add the repository *variable* `NEWSLETTERS` = `1`. **Set as of 25 August
+   2026**, so the IMAP path is live. The Actions **Variables** tab is the
+   authority on this, not any file in the repo.
 
 No new secret: it reuses `GMAIL_USER` and `GMAIL_APP_PASS`. Items land in tier 1
 already region-tagged and pass the same relevance and sport gates as feed items,

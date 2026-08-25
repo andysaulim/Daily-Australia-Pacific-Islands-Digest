@@ -107,10 +107,13 @@ def build() -> str:
     lines += [
         "## Newsletters over IMAP",
         "",
-        "Off unless the repository variable `NEWSLETTERS` is `1`. Reads the "
-        "`GMAIL_USER` inbox, then All Mail. For a newsletter you subscribe to "
-        "there is no wall to defeat: the publisher mailed you the issue with "
-        "the editing already done.",
+        "Controlled by the repository variable `NEWSLETTERS`, off unless it is "
+        "`1`. This file is generated from the code and cannot see a repository "
+        "variable, so check the Actions Variables tab for the live setting. "
+        "Reads the `GMAIL_USER` inbox first, then All Mail, since a newsletter "
+        "is exactly the mail a Gmail filter is set up to label and skip the "
+        "inbox. For a newsletter you subscribe to there is no wall to defeat: "
+        "the publisher mailed you the issue with the editing already done.",
         "",
         "Matched on sender and subject together, so whichever the inbox "
         "receives is picked up. An unsubscribed fingerprint simply never "

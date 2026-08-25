@@ -637,8 +637,47 @@ for _sec, _pat in _cap_patterns.items():
     _got = (int(_m.group(1)), int(_m.group(2)))
     check(f"{_sec} cap matches the validator", _got == _want, f"prompt {_got} vs caps {_want}")
 
-check("pacific_wire has room for more than a handful of the 17 states",
-      run_mod.SECTION_CAPS["pacific_wire"][1] >= 8)
+check("pacific_wire has room for a meaningful share of the 17 states",
+      run_mod.SECTION_CAPS["pacific_wire"][1] >= 12)
+
+# Headroom without a dominance cap would just buy more Fiji. These two run
+# together or the extra slots do not widen coverage at all.
+_cd = {"pacific_wire": [
+    {"headline": "Fiji 1", "country": "Fiji", "source": "a"},
+    {"headline": "Fiji 2", "country": "Fiji", "source": "b"},
+    {"headline": "Fiji 3", "country": "Fiji", "source": "c"},
+    {"headline": "Fiji 4", "country": "Fiji", "source": "d"},
+    {"headline": "PNG 1", "country": "PNG", "source": "e"},
+    {"headline": "Reg 1", "country": "Regional", "source": "f"},
+    {"headline": "Reg 2", "country": "Regional", "source": "g"},
+    {"headline": "Reg 3", "country": "Regional", "source": "h"},
+    {"headline": "Reg 4", "country": "Regional", "source": "i"},
+]}
+_cd_log = run_mod._enforce_country_diversity(_cd)
+_cd_kept = [i["headline"] for i in _cd["pacific_wire"]]
+check("a fourth item on one state is dropped",
+      "Fiji 4" not in _cd_kept and len(_cd_log) == 1)
+check("three on one state is allowed", _cd_kept.count("Fiji 1") == 1
+      and "Fiji 3" in _cd_kept)
+check("regional items are exempt from the country cap",
+      len([h for h in _cd_kept if h.startswith("Reg")]) == 4)
+check("another state is untouched", "PNG 1" in _cd_kept)
+check("country aliases fold together",
+      run_mod._normalize_country("PNG") == run_mod._normalize_country("Papua New Guinea")
+      and run_mod._normalize_country("FSM") == "micronesia (fsm)"
+      and run_mod._normalize_country("East Timor") == "timor-leste")
+check("regional and blank normalise to no country",
+      run_mod._normalize_country("Regional") == ""
+      and run_mod._normalize_country("") == "")
+check("the country cap runs in post-processing",
+      "_enforce_country_diversity" in inspect.getsource(run_mod._postprocess_digest))
+check("a stand-in is never country-capped",
+      run_mod._enforce_country_diversity(
+          {"pacific_wire": [{"stand_in": "No significant developments."}]}) == [])
+check("the prompt tells the model the country cap exists",
+      "more than 3 slots" in digest_mod.SYSTEM_PROMPT)
+check("the prompt states the Regional exemption",
+      "exempt from the cap" in digest_mod.SYSTEM_PROMPT)
 check("Pacific ceiling exceeds the Canberra one",
       run_mod.SECTION_CAPS["pacific_wire"][1] > run_mod.SECTION_CAPS["canberra_politics"][1])
 

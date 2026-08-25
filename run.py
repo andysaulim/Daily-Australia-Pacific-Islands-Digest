@@ -44,7 +44,7 @@ SECTION_CAPS = {
     "top_stories":          (2, 4),
     "overnight_items":      (3, 7),
     "aukus_watch":          (0, 5),
-    "pacific_wire":         (2, 8),   # FLOOR, raised from 5
+    "pacific_wire":         (2, 12),  # FLOOR, raised from 5 then 8
     "new_zealand":          (1, 5),   # FLOOR, raised from 4
     "china_in_the_pacific": (0, 5),   # raised from 4
     "canberra_politics":    (0, 5),
@@ -294,6 +294,68 @@ def _normalize_source(src: str) -> str:
         if lowered.startswith(prefix):
             return canonical
     return lowered
+
+
+# No single Pacific state may take more than this many slots in a section.
+#
+# pacific_wire is the widest section in the brief and covers seventeen states
+# and territories. Raising its ceiling buys spread only if the extra room
+# cannot be spent on more Fiji: without this, twelve slots could be eight Fiji
+# items and the section would be bigger without being more regional. Fiji and
+# Papua New Guinea generate the most English-language copy by a wide margin,
+# which is a property of the media landscape, not of what matters.
+#
+# Three, not one: a genuine Fiji election week should be able to run three
+# items. It is a cap on dominance, not a quota of one per country.
+_COUNTRY_CAP = 3
+_COUNTRY_CAPPED_SECTIONS = ("pacific_wire", "china_in_the_pacific")
+
+
+def _normalize_country(raw: str) -> str:
+    """Fold the spellings the model reasonably varies between."""
+    c = (raw or "").strip().lower()
+    if not c or c in ("regional", "pacific", "pacific islands"):
+        return ""            # a regional item belongs to no single state
+    aliases = {
+        "png": "papua new guinea",
+        "fsm": "micronesia (fsm)",
+        "micronesia": "micronesia (fsm)",
+        "federated states of micronesia": "micronesia (fsm)",
+        "rmi": "marshall islands",
+        "solomons": "solomon islands",
+        "east timor": "timor-leste",
+        "timor leste": "timor-leste",
+    }
+    return aliases.get(c, c)
+
+
+def _enforce_country_diversity(digest: dict) -> list[str]:
+    """Stop one state monopolising a Pacific section.
+
+    Regional items are exempt: they belong to no single state, and capping them
+    would penalise exactly the Forum-wide coverage the brief wants most.
+    """
+    log = []
+    for section in _COUNTRY_CAPPED_SECTIONS:
+        items = digest.get(section)
+        if not items:
+            continue
+        counts: dict[str, int] = {}
+        kept = []
+        for item in items:
+            if not isinstance(item, dict) or _is_stand_in(item):
+                kept.append(item)
+                continue
+            country = _normalize_country(item.get("country", ""))
+            if country and counts.get(country, 0) >= _COUNTRY_CAP:
+                log.append(f"    - {section}: over country cap for {country} "
+                           f"({(item.get('headline') or '')[:50]})")
+                continue
+            if country:
+                counts[country] = counts.get(country, 0) + 1
+            kept.append(item)
+        digest[section] = kept
+    return log
 
 
 def _enforce_source_diversity(digest: dict) -> list[str]:
@@ -584,6 +646,14 @@ def _postprocess_digest(digest_data: dict, payload: dict | None = None) -> tuple
     if diversity_log:
         log.append(f"\n  Source diversity: removed {len(diversity_log)} over-represented item(s):")
         log.extend(diversity_log)
+
+    # After source diversity, so an item dropped for outlet concentration is not
+    # also counted against its country's quota.
+    country_log = _enforce_country_diversity(digest_data)
+    if country_log:
+        log.append(f"\n  Country diversity: removed {len(country_log)} item(s) "
+                   f"from over-represented states:")
+        log.extend(country_log)
 
     return digest_data, log
 

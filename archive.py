@@ -349,6 +349,45 @@ def countries_covered(days: int = 14) -> dict:
     return counts
 
 
+def build_coverage_gap_block(days: int = 14) -> str:
+    """Topics and Pacific states the brief has not touched in the window.
+
+    pipeline_health prints exactly this at the end of a run, where nothing
+    can act on it until a human reads the log. Putting it in front of the
+    model instead closes the loop: on 25 August the pipeline reported no
+    Australian defence policy and no U.S.-China competition coverage in
+    fourteen days, and three of seventeen Pacific states, to a log nobody
+    was going to read before the next issue generated the same gaps again.
+
+    Returns "" when there is nothing to say, so a healthy run adds no
+    tokens and no pressure to over-reach.
+    """
+    lines = []
+    topics = topics_covered(days=days)
+    if topics:
+        cold = sorted(COVERAGE_TOPICS[c] for c, n in topics.items() if n == 0)
+        if cold:
+            lines.append(
+                f"Topics with NO item in the last {days} days: "
+                + "; ".join(cold) + ".")
+    countries = countries_covered(days=days)
+    if countries:
+        cold_c = sorted(c for c, n in countries.items() if n == 0)
+        if cold_c and len(cold_c) < len(countries):
+            lines.append(
+                f"Pacific states with NO item in the last {days} days: "
+                + ", ".join(cold_c) + ".")
+    if not lines:
+        return ""
+    return (
+        "\n".join(lines)
+        + "\nIf today's articles genuinely support one of these, prefer it over "
+          "a fourth story on a topic or a state you have already covered this "
+          "week. This is a tie-breaker, NOT a quota: do not stretch a story to "
+          "fit a gap, and do not invent one. A gap that stays open because the "
+          "news did not supply it is the correct outcome.")
+
+
 def build_context_block(days: int = 3) -> str:
     """The ALREADY COVERED block injected into the digest prompt.
 

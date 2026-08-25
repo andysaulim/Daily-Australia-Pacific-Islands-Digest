@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Australia Chair Daily Brief - CSIS</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+         background:#F2F3F5; color:#1B2A4A; line-height:1.6; }
+  .wrap { max-width:680px; margin:0 auto; padding:48px 24px; }
+  .eyebrow { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#17798C; }
+  h1 { font-family:Georgia,serif; font-size:32px; margin:8px 0 4px; }
+  .sub { font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#7F8C8D; }
+  .rule { height:3px; background:linear-gradient(90deg,#17798C 0%,#1B2A4A 100%); margin:24px 0; }
+  a.cta { display:inline-block; background:#0D1B2A; color:#fff; padding:12px 22px;
+          border-radius:3px; text-decoration:none; font-size:14px; }
+  ul { list-style:none; margin-top:24px; }
+  li { padding:10px 0; border-bottom:1px solid #E4E6E8; font-size:14px; }
+  li a { color:#1B2A4A; text-decoration:none; border-bottom:1px solid #17798C; }
+  .date { color:#7F8C8D; font-size:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">CSIS Australia Chair</div>
+  <h1>Australia Chair Daily Brief</h1>
+  <div class="sub">Australia &middot; New Zealand &middot; the Pacific Islands</div>
+  <div class="rule"></div>
+  <p><a class="cta" href="latest.html">Read the latest issue</a></p>
+  <ul id="archive"></ul>
+</div>
+<script>
+fetch('archive.json').then(r => r.json()).then(entries => {
+  const list = document.getElementById('archive');
+  entries.sort((a, b) => b.date.localeCompare(a.date)).forEach(e => {
+    const li = document.createElement('li');
+    li.innerHTML = '<span class="date">' + e.date + '</span> &nbsp; ' +
+                   '<a href="' + e.url + '">' + (e.headline_re || 'Issue') + '</a>';
+    list.appendChild(li);
+  });
+}).catch(() => {});
+</script>
+</body>
+</html>

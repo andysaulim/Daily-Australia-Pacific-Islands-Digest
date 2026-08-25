@@ -113,6 +113,28 @@ TIER1_FEEDS = {
     "Cook Islands News":      _gnews("site:cookislandsnews.com"),
     "Kaniva Tonga":           _gnews("site:kanivatonga.nz"),
     "Marianas Variety":       _gnews("site:mvariety.com"),
+
+    # ── Pacific Islands: second wave ─────────────────────────────────────
+    # Added to lift Pacific input volume, which is what the pacific_wire
+    # floor depends on. Every one of these must also appear in
+    # _SOURCE_REGION below, or its copy files as Australian and the Pacific
+    # count, the number that protects Pacific coverage, reads low.
+    "ABC Pacific":            _gnews(
+        "site:abc.net.au+%22Pacific+Beat%22+OR+%22Pacific+Islands%22+OR+PNG+OR+Vanuatu"),
+    "Loop Pacific":           _gnews("site:loopnews.com"),
+    "FBC News (Fiji)":        _gnews("site:fbcnews.com.fj"),
+    "Fiji Sun":               _gnews("site:fijisun.com.fj"),
+    "Fijivillage":            _gnews("site:fijivillage.com"),
+    "Pacific Islands Report": _gnews("site:pireport.org"),
+    "Islands Business (wire)": _gnews("site:islandsbusiness.com"),
+    "Pacific Daily News":     _gnews_us("site:guampdn.com"),
+    "Saipan Tribune":         _gnews_us("site:saipantribune.com"),
+    "RNZ Pacific (wire)":     _gnews("site:rnz.co.nz+Pacific+Islands+OR+Fiji+OR+PNG"),
+    # French Pacific. New Caledonia and French Polynesia are live files that
+    # the anglophone Pacific press covers thinly and late.
+    "Tahiti Infos":           _gnews("site:tahiti-infos.com"),
+    "NC la 1ere":             _gnews(
+        "site:la1ere.francetvinfo.fr+%22Nouvelle-Cal%C3%A9donie%22"),
     "Pacific Islands (wire)": _gnews(
         "%22Pacific+Islands%22+OR+%22Pacific+Islands+Forum%22+diplomacy+OR+security+OR+agreement"),
 
@@ -171,6 +193,16 @@ TIER2_FEEDS = {
     "RUSI":              (_gnews("site:rusi.org+Australia+OR+Pacific+OR+AUKUS"), "B"),
     "The Diplomat":      ("https://thediplomat.com/feed/", "C"),
     "Foreign Policy":    (_gnews_us(f"({_REGION_Q})+site:foreignpolicy.com"), "C"),
+
+    # ── Newsletters ──────────────────────────────────────────────────────
+    # Substack serves RSS at /feed on every publication, so these are the
+    # one class of new source whose URL shape is not a guess. They are
+    # analysis, not news, which is why they sit in tier 2 on the 36h window.
+    "ASPI Fault Lines":  ("https://aspidefence.substack.com/feed", "A"),
+    "Futura Doctrina":   ("https://mickryan.substack.com/feed", "B"),
+    "Democracy Project NZ": ("https://democracyproject.substack.com/feed", "B"),
+    "Declassified Australia": ("https://declassifiedaustralia.substack.com/feed", "C"),
+    "Australian Defence Magazine": (_gnews("site:australiandefence.com.au"), "B"),
 }
 
 # Tier 3: academic journals. name -> (url, journal_tier)
@@ -268,10 +300,17 @@ _SOURCE_REGION = {
     "Kaniva Tonga": "Pacific", "Marianas Variety": "Pacific",
     "Pacific Islands (wire)": "Pacific", "Pacific Islands Forum": "Pacific",
     "Devpolicy Blog": "Pacific", "Pacific Forum": "Pacific",
+    "ABC Pacific": "Pacific", "Loop Pacific": "Pacific",
+    "FBC News (Fiji)": "Pacific", "Fiji Sun": "Pacific",
+    "Fijivillage": "Pacific", "Pacific Islands Report": "Pacific",
+    "Islands Business (wire)": "Pacific", "Pacific Daily News": "Pacific",
+    "Saipan Tribune": "Pacific", "RNZ Pacific (wire)": "Pacific",
+    "Tahiti Infos": "Pacific", "NC la 1ere": "Pacific",
     "RNZ National": "NZ", "RNZ Political": "NZ", "RNZ World": "NZ",
     "Newsroom NZ": "NZ", "NZ Herald": "NZ", "Stuff": "NZ",
     "The Post (Wellington)": "NZ", "1News": "NZ",
     "Beehive (NZ Govt)": "NZ", "NZ MFAT": "NZ", "NZDF": "NZ", "NZIIA": "NZ",
+    "Democracy Project NZ": "NZ",
 }
 
 # ─────────────────────────────────────────────────────────────────────────────

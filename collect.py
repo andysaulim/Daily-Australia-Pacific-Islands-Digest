@@ -239,7 +239,12 @@ TIER4_FEEDS = {
 AUSPAC_KEYWORDS = re.compile(
     # Australia
     r"australia|australian|canberra|\badf\b|defence force|aukus|anzus|ausmin"
+    # Opposition names change with the leadership and this regex is how
+    # opposition stories are picked up at all. Taylor took the Liberal
+    # leadership from Ley in February 2026; Ley and Dutton stay because both
+    # are still quoted. "angus taylor" in full: bare "taylor" is far too broad.
     r"|albanese|marles|penny wong|richard marles|conroy|sussan ley|dutton"
+    r"|angus taylor|james paterson|ted o'brien|jane hume|andrew hastie"
     r"|virginia-class|talisman sabre|hmas |osborne|henderson shipyard"
     r"|submarine rotational force|\brba\b|reserve bank of australia"
     # New Zealand

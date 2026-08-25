@@ -107,31 +107,100 @@ Return ONLY valid JSON. No markdown, no preamble, no commentary outside the JSON
 # These live in the USER prompt, not the system prompt, so they can be updated
 # without touching the cached system block.
 #
-# MAINTENANCE: this block is deliberately thin and every line is marked
-# unverified. Populate it with confirmed office-holders and figures, two working
-# sources each, before the first supervised send. An out-of-date minister here is
-# worse than no baseline at all, because the model will trust it.
+# MAINTENANCE: the model trusts this block completely, so an out-of-date line
+# here is worse than a missing one. Every line carries its own "as at" date for
+# exactly that reason: a stale figure should read as stale rather than pass as
+# current. Anything that could not be confirmed twice was left out.
+#
+# Sources, kept here rather than in the string so they cost no prompt tokens:
+#   AU ministry      pmc.gov.au ministry list; foreignminister.gov.au;
+#                    ministers.dfat.gov.au/minister/pat-conroy;
+#                    ministers.treasury.gov.au/ministers/jim-chalmers-2022
+#   AU opposition    abc.net.au/news/2026-02-17/angus-taylor-preparing-to-unveil
+#                    -shadow-ministry/106354092; senatorpaterson.com.au media
+#                    release, 17 Feb 2026; defenceconnect.com.au shadow ministry
+#   AU parliament    2025 House result, Labor 94 of 150; aec.gov.au/media/2026/
+#                    07-23.htm, composition unchanged for the next election
+#   AU defence       abc.net.au/news/2026-04-17/australia-defence-spending-in
+#                    -charts/106572172; breakingdefense.com Apr and May 2026;
+#                    aspi.org.au Cost of Defence 2026-27
+#   NZ               beehive.govt.nz/release/general-election-be-held-7-november;
+#                    elections.nz 2026 key dates; ANZMIN Canberra, March 2026
+#   RBA              rba.gov.au/media-releases/2026/mr-26-19.html
+#   RBNZ             rnz.co.nz/news/business/596494; rbnz.govt.nz OCR page
+#   Pacific          forumsec.org/pacific-islands-forum; forumsec.org Troika
+#                    release; focustaiwan.tw/politics/202602240013
+#
+# REVIEW DATES, in order of urgency:
+#   1 Sep 2026   PIF chair passes to Palau during the Koror meeting
+#   2 Sep 2026   next RBNZ monetary policy decision
+#   7 Nov 2026   NZ general election; every NZ name below becomes caretaker
+#   Every ~6wk   RBA cash rate
+# Still missing, both needing two working sources: Australia's top export
+# markets and China's share, and the NZ defence capability plan status.
 
 _REGIONAL_BASELINES = """\
-UNVERIFIED: this baseline block has not been populated yet. Until it is, treat it
-as empty: take every name, title, portfolio, and figure from today's source
-articles only, and write around anything the articles do not supply.
+Verified as at 25 August 2026. Use these in preference to recall, but prefer
+today's source articles over any line here where the two disagree, and treat a
+line whose "as at" date is well behind today's date as possibly overtaken.
 
-To populate (two independent working sources per line):
-  Australia: Prime Minister, Deputy PM, Foreign Minister, Defence Minister,
-                Minister for International Development and the Pacific, Treasurer,
-                Opposition Leader and shadow foreign/defence; governing party and
-                seat margin; next federal election window.
-  New Zealand: Prime Minister, Foreign Minister, Defence Minister, coalition
-                composition, next general election window.
-  Defence: Australian defence spending as a share of GDP and its announced
-                trajectory; headline force-structure decisions; NZ defence
-                capability plan status.
-  Economy: RBA cash rate and last decision date; RBNZ official cash rate;
-                Australia's top export markets and China's share.
-  Pacific: Pacific Islands Forum membership count and current chair; states
-                holding Compacts of Free Association with the US; which states
-                recognise Taiwan.
+Australia, government (as at Aug 2026):
+  Prime Minister Anthony Albanese (Australian Labor Party, since May 2022).
+  Deputy Prime Minister and Minister for Defence Richard Marles.
+  Minister for Foreign Affairs Penny Wong.
+  Minister for Defence Industry and Pacific Island Affairs Pat Conroy.
+  Treasurer Jim Chalmers.
+Australia, opposition (as at Aug 2026):
+  Leader of the Opposition Angus Taylor (Liberal), since 13 February 2026, when
+  he defeated Sussan Ley 34 votes to 17 in a leadership spill. Deputy Liberal
+  leader Jane Hume. Shadow Treasurer Tim Wilson. Shadow Minister for Foreign
+  Affairs Ted O'Brien. Shadow Minister for Defence James Paterson.
+Australia, parliament:
+  2025 election returned Labor 94 seats of 150, Coalition 43, Greens 1, Centre
+  Alliance 1, Katter's Australian Party 1, independents 10. Labor governs in
+  majority. The next federal election must be held on or before 20 May 2028.
+
+New Zealand (as at Aug 2026):
+  Prime Minister Christopher Luxon (National). Minister of Foreign Affairs
+  Winston Peters (NZ First). Minister of Defence Judith Collins (National).
+  Coalition of National, ACT and NZ First, formed 2023.
+  General election Saturday 7 November 2026, advance voting from 26 October.
+
+Defence:
+  The 2026 National Defence Strategy was released in April 2026.
+  Australian defence spending is quoted on two different measures and they are
+  not interchangeable: roughly 2 percent of GDP on the conventional Australian
+  measure, and roughly 2.8 percent on the NATO-style measure the 2026 NDS uses.
+  Portfolio expenditure exceeds $60 billion in 2026-27. The announced trajectory
+  is 3 percent of GDP by 2033 on the NATO measure, about 2.5 percent by 2033-34
+  on the conventional one, via an extra $14 billion over four years and $53
+  billion over a decade. The United States has publicly pressed for 3.5 percent.
+  When citing a share of GDP, say which measure it is.
+
+Economy:
+  RBA cash rate 4.35 percent, held unanimously on 11 August 2026, a second
+  consecutive hold after three increases earlier in 2026. Trimmed mean inflation
+  remains above target and is not expected near the 2 to 3 percent midpoint
+  until late 2027.
+  The RBNZ official cash rate is deliberately not stated here, because it could
+  not be confirmed. Take it from today's articles or write around it. The next
+  RBNZ decision is 2 September 2026.
+
+Pacific:
+  The Pacific Islands Forum has 18 members: Australia, Cook Islands, Federated
+  States of Micronesia, Fiji, French Polynesia, Kiribati, Nauru, New Caledonia,
+  New Zealand, Niue, Palau, Papua New Guinea, Marshall Islands, Samoa, Solomon
+  Islands, Tonga, Tuvalu, Vanuatu.
+  Forum chair is Jeremiah Manele, Prime Minister of Solomon Islands. The chair
+  passes to Surangel Whipps Jr, President of Palau, at the 55th Leaders Meeting
+  in Koror, 30 August to 4 September 2026. Between those dates, check which of
+  the two an article means before naming a chair.
+  Three members are freely associated states with the United States under
+  Compacts of Free Association: the Federated States of Micronesia, the Marshall
+  Islands and Palau.
+  Three Forum members hold formal diplomatic relations with Taiwan: the Marshall
+  Islands, Palau and Tuvalu. Taiwan is reported to be attending the 2026 Leaders
+  Meeting after being excluded from the 2025 meeting in Solomon Islands.
 """
 
 

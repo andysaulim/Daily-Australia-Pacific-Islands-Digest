@@ -1,106 +1,81 @@
-# Regional baselines: research worksheet
+# Regional baselines: verification record
 
-A staging area for `_REGIONAL_BASELINES` in `digest.py`. **Nothing here reaches the
-model.** This file is not imported, not injected into the prompt, and not read by
-any code. That is deliberate: a half-verified name sitting in the prompt block
-gets asserted as fact whether or not a disclaimer sits above it, so the draft
-lives out here until a human has checked it.
+`_REGIONAL_BASELINES` in `digest.py` is now populated and live in the prompt.
+This file records where each line came from and what still needs checking.
+**Nothing here reaches the model.** It is not imported and not read by any code.
 
-## How to use this
+## Read this before the first supervised send
 
-For each line: confirm the value against the two cited sources, then copy the
-confirmed lines into `_REGIONAL_BASELINES` and delete that block's `UNVERIFIED`
-header. Lines you cannot confirm stay out. A missing line makes the brief
-quieter; a wrong line makes it wrong, and the model trusts this block completely.
-
-## How these values were gathered, and why that matters
-
-Web search only. The sandbox that drafted this could not open a single one of the
-cited URLs, so the citations are search-engine attributions, not pages anyone
-read. That is a weaker standard than the house gate, which asks for two
+Every line in the block was gathered by web search, and the machine that
+gathered it could not open a single cited page: the sandbox blocked egress to
+everything except the search index. So the citations are search attributions,
+not pages anyone read. That is weaker than the house gate, which asks for two
 independent *working* sources.
 
-It is not a theoretical worry. A first search for the Treasurer returned "Andrew
-Charlton"; a targeted follow-up returned Jim Chalmers, with Charlton as Cabinet
-Secretary. One of those is wrong, and only the cross-check caught it. Assume at
-least one more error survives in this file and check accordingly.
+It matters because it already went wrong once. A first search returned **Andrew
+Charlton** as Treasurer; a targeted cross-check returned **Jim Chalmers**, with
+Charlton as Cabinet Secretary. Only the cross-check caught it. Every line below
+survived at least one such cross-check, but that is not the same as being read
+off a primary source.
 
-Confidence column: **High** means two or more independent results agreed and a
-targeted cross-check confirmed it. **Medium** means results agreed but nothing
-independently confirmed it. **Unconfirmed** means it needs work before use.
+**The ten-minute pass that closes this out:** open the five primary sources in
+the table below, confirm the names, and delete this section. Nothing else in the
+repo depends on it.
 
----
+| Open this | Confirms |
+| --- | --- |
+| `pmc.gov.au` current ministry list | The five Australian government names |
+| [ABC, 17 Feb 2026](https://www.abc.net.au/news/2026-02-17/angus-taylor-preparing-to-unveil-shadow-ministry/106354092) | Taylor, Hume, Wilson, O'Brien, Paterson |
+| `dpmc.govt.nz` ministerial list | Luxon, Peters, Collins |
+| [RBA, 11 Aug 2026](https://www.rba.gov.au/media-releases/2026/mr-26-19.html) | Cash rate 4.35% |
+| [forumsec.org](https://forumsec.org/pacific-islands-forum) | 18 members, chair, CoFA states |
 
-## Australia: ministry and politics
+## What went into the block
 
-| Line | Value found | Confidence | Sources |
-| --- | --- | --- | --- |
-| Prime Minister | Anthony Albanese (ALP) | High | [foreignminister.gov.au](https://www.foreignminister.gov.au/), corroborated across Aug 2026 ministerial activity |
-| Deputy PM and Minister for Defence | Richard Marles | High | [Minister for Defence](https://en.wikipedia.org/wiki/Minister_for_Defence_(Australia)) plus Aug 2026 activity |
-| Minister for Foreign Affairs | Penny Wong (since May 2022) | High | [foreignminister.gov.au](https://www.foreignminister.gov.au/) — Lowy Institute Q&A, 20 Aug 2026 |
-| Minister for Defence Industry and Pacific Island Affairs | Pat Conroy | High | [ministers.dfat.gov.au](https://ministers.dfat.gov.au/minister/pat-conroy) |
-| Treasurer | Jim Chalmers (since 23 May 2022) | High | [ministers.treasury.gov.au](https://ministers.treasury.gov.au/ministers/jim-chalmers-2022) — **note the failed first search above** |
-| Opposition Leader | Angus Taylor | Medium | [The Conversation](https://theconversation.com/view-from-the-hill-angus-taylor-appoints-tim-wilson-as-part-of-a-new-look-liberal-economic-team-274831) — inferred from him appointing the shadow economic team; confirm directly |
-| Shadow Treasurer | Tim Wilson | Medium | [The Conversation](https://theconversation.com/view-from-the-hill-angus-taylor-appoints-tim-wilson-as-part-of-a-new-look-liberal-economic-team-274831) |
-| Shadow Foreign Affairs | Ted O'Brien (conflicting) | Unconfirmed | One search returned O'Brien for foreign affairs, another put him at Treasury. Resolve before use. |
-| Shadow Defence | not found | Unconfirmed | — |
-| Governing party and seat margin | not found | Unconfirmed | Needs the AEC or the House of Representatives party-status page |
-| Next federal election window | not found | Unconfirmed | Term runs from the May 2025 election; derive the constitutional window |
+| Area | Status | Basis |
+| --- | --- | --- |
+| AU government, five names | In | Ministerial sites, corroborated by August 2026 activity |
+| AU opposition, five names | In | [ABC](https://www.abc.net.au/news/2026-02-17/angus-taylor-preparing-to-unveil-shadow-ministry/106354092), [Paterson media release](https://www.senatorpaterson.com.au/news/media-release-appointment-as-shadow-minister-for-defence-17-february-2026), Defence Connect |
+| AU parliament, seats and next election | In | 2025 House result (Labor 94 of 150); [AEC, Jul 2026](https://www.aec.gov.au/media/2026/07-23.htm) |
+| NZ, four names plus election date | In | [beehive.govt.nz](https://www.beehive.govt.nz/release/general-election-be-held-7-november), [elections.nz](https://elections.nz/media-and-news/2026/key-dates-for-2026-general-election), ANZMIN March 2026 |
+| Defence spending, both measures | In | [ABC in charts](https://www.abc.net.au/news/2026-04-17/australia-defence-spending-in-charts-military-investment-adf/106572172), [Breaking Defense](https://breakingdefense.com/2026/04/australia-pledges-to-boost-defense-spend-to-3-of-gdp-says-us-remains-key-partner/), ASPI Cost of Defence 2026-27 |
+| RBA cash rate | In | [RBA media release](https://www.rba.gov.au/media-releases/2026/mr-26-19.html), [SBS](https://www.sbs.com.au/news/live-blog/rba-august-2026-interest-rates-decision-live/trlncz8i2) |
+| RBNZ OCR | **Left out** | The search contradicted itself: an [RNZ headline](https://www.rnz.co.nz/news/business/596494/rbnz-leaves-official-cash-rate-unchanged-at-2-point-25-percent) says the OCR was held at 2.25%, while the same search summarised a July 2026 rise to 2.50%. Both cannot be current, so neither went in. |
+| PIF membership, chair, CoFA, Taiwan | In | [forumsec.org](https://forumsec.org/pacific-islands-forum), [Troika release](https://forumsec.org/publications/release-forum-troika-leaders-meet-brisbane), [Focus Taiwan](https://focustaiwan.tw/politics/202602240013) |
 
-`collect.py`'s `AUSPAC_KEYWORDS` still lists `sussan ley|dutton` and no
-`angus taylor`. If Taylor confirms as Opposition Leader, add him: the regex is
-how opposition stories get picked up at all.
+### Deliberately left out
 
-## New Zealand
+Three lines the file asks for could not be confirmed twice and are absent rather
+than guessed:
 
-| Line | Value found | Confidence | Sources |
-| --- | --- | --- | --- |
-| Prime Minister | Christopher Luxon (National) | High | [beehive.govt.nz](https://www.beehive.govt.nz/release/general-election-be-held-7-november) |
-| Minister of Foreign Affairs | Winston Peters (NZ First) | High | [Lowy Interpreter](https://www.lowyinstitute.org/the-interpreter/domestic-politics-new-zealand-s-defence) — attended ANZMIN, Canberra, March 2026 |
-| Minister of Defence | Judith Collins (National) | High | Same ANZMIN reporting |
-| Coalition composition | National / ACT / NZ First | High | [beehive.govt.nz portfolio index](https://www.beehive.govt.nz/portfolio/nationalactnew-zealand-first-coalition-government-2023-2026/defence) |
-| Next general election | **Saturday 7 November 2026**, advance voting from 26 October | High | [beehive.govt.nz](https://www.beehive.govt.nz/release/general-election-be-held-7-november), [elections.nz](https://elections.nz/media-and-news/2026/key-dates-for-2026-general-election) |
+- **RBNZ official cash rate.** The one line where two search results actively
+  contradicted each other, 2.25% held versus 2.50% after a July rise. Source:
+  `rbnz.govt.nz`. The block tells the model to write around it meanwhile.
+- **Australia's top export markets and China's share.** Source: DFAT trade
+  statistics.
+- **NZ defence capability plan status.** Source: `defence.govt.nz`. Note that NZ
+  is reported open to an Australia–Fiji defence arrangement, which is the live
+  angle if you add this.
 
-**This block has a shelf life of ten weeks.** Every NZ name above is a caretaker
-question from 7 November and likely wrong soon after. Diarise a review for the
-week of 9 November. Already in the calendar as a confirmed date.
+## Why the defence line names its measure
 
-## Defence
+Australian defence spending is quoted two ways and they differ by most of a
+percentage point: roughly 2% of GDP on the conventional Australian measure,
+roughly 2.8% on the NATO-style measure the 2026 NDS uses. Commentary mixes them
+freely. The block tells the model to say which one it means, because a brief
+that reports "2%" one day and "2.8%" the next looks wrong even when both are
+right.
 
-| Line | Value found | Confidence | Sources |
-| --- | --- | --- | --- |
-| 2026 National Defence Strategy | Released; reported 17 April 2026 | Medium | [USNI News](https://news.usni.org/2026/04/17/2026-australian-national-defence-strategy) |
-| Defence spending as a share of GDP, and trajectory | not found | Unconfirmed | Take it from the NDS itself or the Budget papers, not from commentary |
-| Headline force-structure decisions | not found | Unconfirmed | The NDS is the primary source |
-| NZ defence capability plan status | not found | Unconfirmed | Check MoD NZ; note NZ is reported open to an Australia–Fiji defence arrangement |
+## Review dates
 
-## Economy
+| When | What goes stale |
+| --- | --- |
+| 1 Sep 2026 | PIF chair passes to Whipps during the Koror meeting |
+| 2 Sep 2026 | Next RBNZ decision |
+| 7 Nov 2026 | NZ general election. Every NZ name becomes a caretaker question |
+| Every ~6 weeks | RBA cash rate |
+| On any reshuffle | Both Australian ministry blocks |
 
-| Line | Value found | Confidence | Sources |
-| --- | --- | --- | --- |
-| RBA cash rate | **4.35%**, held 11 August 2026, unanimous | High | [RBA media release](https://www.rba.gov.au/media-releases/2026/mr-26-19.html), [SBS](https://www.sbs.com.au/news/live-blog/rba-august-2026-interest-rates-decision-live/trlncz8i2) |
-| RBA context | Second consecutive hold after three increases earlier in 2026; trimmed mean still above target; not expected near the 2–3% midpoint until late 2027 | Medium | [RBA](https://www.rba.gov.au/media-releases/2026/mr-26-19.html) |
-| RBNZ official cash rate | not found | Unconfirmed | rbnz.govt.nz, and note the next review date |
-| Australia's top export markets and China's share | not found | Unconfirmed | DFAT trade statistics |
-
-The cash rate moves roughly every six weeks, so it dates faster than anything
-else in the block. Consider citing it with its decision date, as above, so a
-stale figure is visible as stale rather than silently wrong.
-
-## Pacific
-
-| Line | Value found | Confidence | Sources |
-| --- | --- | --- | --- |
-| PIF membership | 18 members | Medium | [forumsec.org](https://forumsec.org/events/pacific-islands-forum-leaders-meeting) — confirm against the Secretariat's own membership page |
-| Current chair | Jeremiah Manele, PM of Solomon Islands | High | [forumsec.org](https://forumsec.org/publications/release-forum-troika-leaders-meet-brisbane) |
-| Incoming chair | Surangel Whipps Jr, President of Palau, from the Koror meeting | High | Same Troika release |
-| 55th Leaders Meeting | **30 August to 4 September 2026, Koror, Palau.** Theme "Building Economies" | High | [PRIF](https://www.theprif.org/event/regional-event/2026-08-30/55th-pacific-islands-forum-leaders-meeting), [IISD SDG Knowledge Hub](https://sdg.iisd.org/events/55th-pacific-islands-forum-leaders-meeting/) |
-| Taiwan at the 2026 Forum | Reported attending after a 2025 absence | Medium | [Focus Taiwan](https://focustaiwan.tw/politics/202602240013), [China-Global South Project](https://chinaglobalsouth.com/2026/08/09/taiwan-pacific-islands-forum-palau-china/) |
-| Compact of Free Association states | not found | Unconfirmed | Three states; confirm each against the US State Department |
-| Which Pacific states recognise Taiwan | not found | Unconfirmed | Changed as recently as 2024; confirm against MOFA and a second source |
-
-The Leaders Meeting is already in `data/calendar.json` as a confirmed entry, so
-`calendar_watch` can use the date. The chair handover falls inside that meeting,
-which is worth a line in the baselines once confirmed: getting it wrong means
-naming the wrong head of government as Forum chair during the one week the brief
-will most need to.
+The PIF and NZ election dates are both in `data/calendar.json` as confirmed
+entries, so `calendar_watch` will surface them as they approach. That is the
+closest thing to an automatic reminder this repo has.

@@ -308,6 +308,40 @@ check("centring survives", 'align="center"' in _stripped)
 check("media queries were style-only (acceptable loss)",
       "@media" in html and "@media" not in _stripped)
 
+print("\n=== 11c. Reads on a phone ===")
+# The frame carries width="680" so a forwarded copy keeps its shape. That same
+# hard width would strand a forwarded copy at 680px on a 375px phone, where the
+# media query that used to flex it no longer exists, so the inline ceiling has
+# to be relative.
+check("wrapper flexes below 680 on a narrow screen",
+      "max-width:100%" in html and "max-width:680px" not in html)
+check("mobile query still flexes the wrapper while the stylesheet lives",
+      ".wrapper { width:100% !important; }" in html)
+
+# The market strip was a single row of white-space:nowrap table cells: five or
+# six indicators of unbreakable content, well past 375px, in a row that cannot
+# wrap. That is a horizontal scrollbar on the whole email, not just the strip.
+_mhtml_wrap = render_mod.render({
+    "re_line": "x", "morning_memo": ["a", "b", "c"],
+    "market_indicators": {k: {"label": k.upper(), "value": "1,000",
+                              "change_pct": 0.5, "as_of": "25 Aug"}
+                          for k in ("asx200", "aud", "nzx50", "nzd", "brent")}})
+check("the market strip wraps instead of overflowing",
+      'class="mkt"' in _mhtml_wrap and "display:inline-block" in _mhtml_wrap)
+check("no nowrap table cell survives in the strip",
+      '<td style="padding:0 14px 0 0;white-space:nowrap;">' not in _mhtml_wrap)
+check("each indicator still holds its own figure on one line",
+      _mhtml_wrap.count("white-space:nowrap") >= 5)
+
+# The masthead is a two-column table. On a phone the right column has to stack,
+# and on a forwarded phone copy, where no stylesheet stacks it, it has to be
+# bounded by an attribute instead.
+check("masthead meta column is stackable", 'class="hdr-meta"' in html)
+check("masthead meta column is bounded without a stylesheet",
+      'class="hdr-meta" width="130"' in html)
+check("mobile query stacks the masthead",
+      ".hdr-main, .hdr-meta" in html and "display:block !important" in html)
+
 print("\n=== 12. Pipeline health monitor ===")
 import pipeline_health
 
@@ -680,6 +714,115 @@ check("the prompt states the Regional exemption",
       "exempt from the cap" in digest_mod.SYSTEM_PROMPT)
 check("Pacific ceiling exceeds the Canberra one",
       run_mod.SECTION_CAPS["pacific_wire"][1] > run_mod.SECTION_CAPS["canberra_politics"][1])
+
+print("\n=== 14h. The corpus is ordered before it is cut ===")
+# 299 tier-1 articles were collected on 25 August and 90 reached the model,
+# taken off the front of the list in feed-completion order. Six wire services
+# were collected and never shown; the sections filled with a consumer-law suit
+# and a supermarket promotion. Ordering the corpus is what makes the cut honest.
+_plain = {"title": "Council debates parking levy", "summary": "x" * 50,
+          "region": "AU", "source": "news.com.au"}
+_prest = {"title": "Council debates parking levy", "summary": "x" * 50,
+          "region": "AU", "source": "Reuters", "prestige_outlet": True}
+_pac = {"title": "Council debates parking levy", "summary": "x" * 50,
+        "region": "Pacific", "source": "Fiji Times"}
+_seen = dict(_plain, seen_before=True)
+_mandate = {"title": "AUKUS submarine milestone slips at Osborne",
+            "summary": "x" * 50, "region": "AU", "source": "news.com.au"}
+check("a prestige outlet outranks a plain one",
+      digest_mod._relevance_score(_prest) > digest_mod._relevance_score(_plain))
+check("Pacific copy outranks Australian copy, all else equal",
+      digest_mod._relevance_score(_pac) > digest_mod._relevance_score(_plain))
+check("mandate vocabulary lifts an item",
+      digest_mod._relevance_score(_mandate) > digest_mod._relevance_score(_plain))
+check("a story already published is demoted",
+      digest_mod._relevance_score(_seen) < digest_mod._relevance_score(_plain))
+check("prioritisation is order, not filtering",
+      len(digest_mod._prioritize([_plain, _prest, _seen, _pac])) == 4)
+check("the highest scorer sorts first",
+      digest_mod._prioritize([_plain, _seen, _prest])[0] is _prest)
+check("ties keep collection order",
+      digest_mod._prioritize([_plain, dict(_plain)])[0] is _plain)
+_dsrc = inspect.getsource(digest_mod)
+check("the tier JSON orders before it slices",
+      "_prioritize(articles)[:max_items]" in _dsrc)
+check("the tier-1 window is wide enough to matter",
+      'payload.get("tier1", []), max_items=160' in _dsrc)
+# A prestige item buried at position 200 of the raw list must still make the cut.
+_bulk = [dict(_plain, title=f"filler {i}") for i in range(250)]
+_win = digest_mod._prioritize(_bulk + [_prest])[:160]
+check("a prestige item deep in the corpus survives the cut", _prest in _win)
+
+print("\n=== 14i. Length targets match a twelve-topic beat ===")
+check("pre-validation floor raised to 1,600",
+      digest_mod._check_content_minimums(
+          {"top_stories": [1, 2], "overnight_items": [1, 2, 3],
+           "morning_memo": [1, 2, 3], "re_line": "x"})
+      == ["word count 4 is below the 1600-word minimum"])
+check("the prompt asks for 2,200 to 2,600",
+      "HARD MINIMUM 1,600 WORDS" in _dsrc and "2,200-2,600 words" in _dsrc)
+check("the prompt sends a short draft to the Pacific first",
+      "add items to pacific_wire" in _dsrc)
+_rsrc_run = inspect.getsource(run_mod)
+check("the send gate blocks below 1,400",
+      "word_count < 1400" in _rsrc_run and "hard minimum 1400" in _rsrc_run)
+check("the send gate warns below 2,000",
+      "word_count < 2000" in _rsrc_run and "target 2000-2400" in _rsrc_run)
+check("no inherited Korea floor survives",
+      "hard minimum 850" not in _rsrc_run and "1000-word minimum" not in _dsrc)
+
+print("\n=== 14j. Relevance gate and coverage gaps ===")
+check("the relevance gate is in the system prompt",
+      "OFF-BEAT NEWS, THE RELEVANCE GATE" in digest_mod.SYSTEM_PROMPT)
+for _term in ("Consumer protection", "Supermarket promotions",
+              "Tourism marketing", "Recreational boating",
+              "United States domestic politics"):
+    check(f"the gate names {_term.lower()}", _term in digest_mod.SYSTEM_PROMPT)
+check("the gate states that a short section beats a padded one",
+      "worse failure than leaving it short" in digest_mod.SYSTEM_PROMPT)
+
+# Deterministic: the suite runs against a temp archive, so publish one known
+# item and read the gaps back rather than asserting against whatever the live
+# database happens to hold.
+import archive as _arch_gap
+_arch_gap.record_published({"aukus_watch": [
+    {"url": "http://example.com/gap", "headline": "Marape on AUKUS",
+     "category": "AUKUS", "country": "Papua New Guinea"}]})
+_gapblk = _arch_gap.build_coverage_gap_block(days=14)
+check("a topic just published is not listed as a gap",
+      "AUKUS" not in _gapblk.split("Pacific states")[0])
+check("a topic with nothing published is listed by its reader-facing name",
+      "Australian defence policy" in _gapblk)
+check("a state just published is not listed as a gap",
+      "Papua New Guinea" not in _gapblk)
+check("a state with nothing published is listed", "Kiribati" in _gapblk)
+check("the gap block is a tie-breaker, never a quota",
+      "NOT a quota" in _gapblk and "do not invent one" in _gapblk)
+check("the gap block is wired into the prompt",
+      "COVERAGE GAPS TO CLOSE IF TODAY ALLOWS" in _dsrc
+      and "build_coverage_gap_block(days=14)" in _dsrc)
+
+print("\n=== 14k. Dead sources removed, broken ones rerouted ===")
+check("the stale iron ore ticker is no longer queried",
+      not any("TIO=F" in str(i) for i in markets.INDICATORS))
+check("the remaining indicators are the ones that resolve",
+      [i[1] for i in markets.INDICATORS]
+      == ["ASX 200", "AUD/USD", "NZX 50", "NZD/USD", "Brent"])
+check("the 500-ing ABC politics feed is rerouted, not deleted",
+      "ABC Politics" in collect.TIER1_FEEDS
+      and "news.google.com" in collect.TIER1_FEEDS["ABC Politics"]
+      and "56166" not in collect.TIER1_FEEDS["ABC Politics"])
+
+print("\n=== 14l. Dropped prestige stories are named ===")
+_pw = run_mod.validate_digest(
+    base_digest(),
+    payload={"tier1": [{"source": "Reuters", "url": "http://example.com/wire",
+                        "title": "Marles meets Austin on submarine timetable"}]})
+_pline = [w for w in _pw if w.startswith("PRESTIGE")]
+check("the warning fires on a dropped wire story", len(_pline) == 1)
+check("the warning names the story, not just the outlet",
+      "Marles meets Austin" in _pline[0] and "Reuters" in _pline[0])
+check("the warning counts what was dropped", "1 collected but unused" in _pline[0])
 
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a

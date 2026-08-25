@@ -777,6 +777,11 @@ def main():
     if web_base:
         digest_data["web_url"] = web_base.rstrip("/") + "/latest.html"
 
+    # Market figures come from the collector, never from the model, so they are
+    # carried across here rather than trusted from the generated JSON. If the
+    # model invents a market_indicators key, this overwrites it.
+    digest_data["market_indicators"] = payload.get("market_indicators") or {}
+
     html = render(digest_data)
     date_slug = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
 
@@ -844,6 +849,7 @@ def main():
             "validation_warnings": len(validation_warnings),
             "validation_retries": validation_attempt,
             "html_bytes": len(html),
+            "tokens": list(getattr(__import__("digest"), "TOKEN_LEDGER", [])),
             "sent": not args.no_send and validation_passed,
         }
 

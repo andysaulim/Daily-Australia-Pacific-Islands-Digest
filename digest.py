@@ -59,7 +59,7 @@ Many items carry real article text in their "summary" field, fetched from the pu
 - Where the summary carries only one or two sentences, that publisher is paywalled and you are seeing its meta description. Use it, and do not assume the rest of the article says what you would expect.
 
 MARKET AND RATE DATA, NO FABRICATION:
-This brief collects NO market data. There is no pre-collected market strip, so there is no injected figure for you to fall back on, which makes this the easiest place in the brief to invent something plausible. The Korea brief published "KOSPI plunges 4.44% amid AI selloff" on a day no such move happened and no article reported one.
+A MARKET DATA block below carries pre-collected figures. Use those exact numbers and no others. Where the block says none were collected, write no market figure at all. The Korea brief published "KOSPI plunges 4.44% amid AI selloff" on a day no such move happened and no article reported one, which is what this rule exists to prevent.
 - NEVER write an index level or move (ASX 200, All Ordinaries, NZX 50), an exchange rate (AUD/USD, NZD/USD), a commodity price (iron ore, coal, LNG), or a bond yield unless a source article in today's batch reports that specific figure.
 - The RBA cash rate and the RBNZ official cash rate come from the REGIONAL BASELINES block or from today's articles. Nowhere else. Where the baselines say a rate could not be confirmed, write around it rather than recalling one.
 - NEVER pair a training-data narrative ("a global risk-off move", "commodity rout", "the AI selloff") with a percentage you did not read in an article today.
@@ -246,6 +246,16 @@ def _tier_json(articles: list, max_items: int = 60) -> str:
     return json.dumps(result, ensure_ascii=False, indent=1)
 
 
+def _markets_block(payload: dict) -> str:
+    """Pre-collected market figures, or an explicit note that there are none."""
+    try:
+        import markets
+        return markets.build_context_block(payload.get("market_indicators") or {})
+    except Exception:                                       # noqa: BLE001
+        return ("MARKET DATA: unavailable today. Write no index level, exchange "
+                "rate, or commodity price unless a source article reports it.")
+
+
 def build_user_prompt(payload: dict, date_str: str) -> str:
     from aukus_tracker import build_context_block as aukus_context
     from pacific_tracker import build_context_block as pacific_context
@@ -267,6 +277,8 @@ CRITICAL: SOURCE URLs: every item must carry the exact URL from the input data. 
 REGIONAL BASELINES
 {bar}
 {_REGIONAL_BASELINES}
+{bar}
+{_markets_block(payload)}
 {bar}
 {aukus_context()}
 {bar}
@@ -475,6 +487,11 @@ _EFFORT = "high"
 # ceiling costs nothing, whereas hitting it costs a full retry.
 MAX_OUTPUT_TOKENS = 64000
 
+# Per-call token ledger for cost_report.py. Appended by _stream_claude and
+# read by run.py after generation, because the log line alone made a month
+# of spend invisible unless somebody read every run by hand.
+TOKEN_LEDGER: list[dict] = []
+
 # Transient stream failures worth one more attempt.
 #
 # The SDK's HTTP backend changed under us: anthropic 1.x is built on httpx2,
@@ -499,7 +516,8 @@ _STREAM_ERRORS = (
 
 
 def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
-                   _retries: int = 3, model: str | None = None) -> dict:
+                   _retries: int = 3, model: str | None = None,
+                   system_prompt: str | None = None) -> dict:
     """Stream a Claude call and return the parsed digest.
 
     No assistant prefill. The Korea pipeline opens the response with an
@@ -524,7 +542,7 @@ def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
                 output_config={"effort": _EFFORT},
                 system=[{
                     "type": "text",
-                    "text": SYSTEM_PROMPT,
+                    "text": system_prompt or SYSTEM_PROMPT,
                     # The system prompt is frozen, so it caches cleanly. Every
                     # volatile thing (today's date, the articles, the trackers)
                     # lives in the user prompt, after this breakpoint.
@@ -550,6 +568,14 @@ def _stream_claude(client, messages: list, max_tokens: int = MAX_OUTPUT_TOKENS,
             cache_create = getattr(response.usage, "cache_creation_input_tokens", 0) or 0
             cache_info = (f" / {cache_read} cache-hit" if cache_read
                           else f" / {cache_create} cache-write" if cache_create else "")
+            TOKEN_LEDGER.append({
+                "model": use_model,
+                "input": response.usage.input_tokens,
+                "output": response.usage.output_tokens,
+                "cache_write": cache_create,
+                "cache_read": cache_read,
+                "seconds": round(elapsed),
+            })
             print(f"    {model_label} call: {elapsed:.0f}s "
                   f"({response.usage.input_tokens} in / "
                   f"{response.usage.output_tokens} out{cache_info})")

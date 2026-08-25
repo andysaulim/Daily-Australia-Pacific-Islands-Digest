@@ -241,10 +241,31 @@ def render(digest: dict) -> str:
     </div>
     <div style="height:3px;background-color:{TEAL};background:linear-gradient(90deg, {TEAL} 0%, {NAVY} 100%);"></div>""")
 
-    # ── 2. Market strip: reserved, not built in v1 ──────────────────────
-    # The slot and the market_indicators key are kept so ASX 200, AUD/USD,
-    # NZX 50, NZD/USD, iron ore, the RBA cash rate and the RBNZ OCR can drop in
-    # later without a re-layout.
+    # ── 2. Market strip ──────────────────────────────────────────────────
+    # Renders whatever markets.py resolved, in its declared order, and nothing
+    # when it resolved nothing. Green and red here are the one place in the
+    # brief where colour is doing real work rather than decoration, so they are
+    # the only two outside the three-geography palette.
+    markets = digest.get("market_indicators") or {}
+    if markets:
+        cells = ""
+        for m in markets.values():
+            if not isinstance(m, dict) or not m.get("value"):
+                continue
+            pct = m.get("change_pct", 0) or 0
+            colour = "#1B7A4A" if pct > 0 else ALERT if pct < 0 else "#777"
+            sign = "+" if pct > 0 else ""
+            cells += f"""
+              <td style="padding:0 14px 0 0;white-space:nowrap;">
+                <span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8A8A8A;">{_esc(m.get("label", ""))}</span>
+                <span style="font-size:12px;font-weight:600;color:{NAVY};margin-left:6px;">{_esc(m["value"])}</span>
+                <span style="font-size:11px;color:{colour};margin-left:4px;">{sign}{pct:.2f}%</span>
+              </td>"""
+        if cells:
+            sections.append(f"""
+        <div style="padding:10px 32px;background:#FAFAFA;border-bottom:1px solid #EBEBEB;" class="sec">
+          <table cellpadding="0" cellspacing="0" border="0"><tr>{cells}</tr></table>
+        </div>""")
 
     # ── 3. Today at a Glance ─────────────────────────────────────────────
     memo_items = digest.get("morning_memo") or []
@@ -445,7 +466,7 @@ def render(digest: dict) -> str:
             for i in canberra)
         sections.append(f"""
         <div {_SEC}>
-          <a name="canberra"></a>{_sec_label("Canberra")}
+          <a name="canberra"></a>{_sec_label("Canberra Politics")}
           {html}
         </div>""")
 
@@ -516,7 +537,7 @@ def render(digest: dict) -> str:
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="cal-table">{rows}</table>
         </div>""")
 
-    # ── 14. The Wire ─────────────────────────────────────────────────────
+    # ── 14. Also Today (the wire) ────────────────────────────────────────
     wire = _real_items(digest, "also_today")
     if wire:
         html = "".join(
@@ -526,7 +547,7 @@ def render(digest: dict) -> str:
             for i in wire)
         sections.append(f"""
         <div {_SEC}>
-          <a name="wire"></a>{_sec_label("The Wire")}
+          <a name="wire"></a>{_sec_label("Also Today")}
           {html}
         </div>""")
 
@@ -598,7 +619,15 @@ def render(digest: dict) -> str:
     </div>""")
 
     body = "\n".join(sections)
+    return _shell(body, date_str)
 
+
+def _shell(body: str, date_str: str) -> str:
+    """The forwarding-safe email frame, shared by the daily and weekly editions.
+
+    Extracted so weekly.py cannot drift away from the fixed-width table that
+    survives a forward. Anything that lives here is inherited by both.
+    """
     return f"""<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>

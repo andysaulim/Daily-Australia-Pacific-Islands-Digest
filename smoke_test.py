@@ -9,6 +9,7 @@ caps, URL repair, and the renderer.
 Writes smoke_output.html so a layout change can be eyeballed without spending an
 API call. Run this before every commit that touches the validator or renderer.
 """
+import datetime
 import inspect
 import json
 import os
@@ -484,6 +485,85 @@ check("Pacific newsletter item tagged Pacific",
 check("newsletter sender fingerprint matches",
       newsletters._match_source("news@afr.com", "Daily Briefing") == "AFR (Daily Briefing)"
       and newsletters._match_source("x@example.com", "hello") is None)
+
+print("\n=== 14b. Market indicators ===")
+import markets
+
+check("value formatting by instrument type",
+      markets._fmt("aud_usd", 0.65432) == "0.6543"
+      and markets._fmt("asx200", 8123.45) == "8,123"
+      and markets._fmt("brent", 71.5) == "71.50")
+check("absurd price rejected", not markets._validate(99999, 3000, 15000, None)[0])
+check("zero price rejected", not markets._validate(0, 3000, 15000, None)[0])
+check("stale price rejected",
+      not markets._validate(8000, 3000, 15000,
+                            datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc))[0])
+check("sane fresh price accepted", markets._validate(8000, 3000, 15000, None)[0])
+
+_mk = {"asx200": {"label": "ASX 200", "value": "8,123", "change_pct": -0.42,
+                  "as_of": "25 Aug"}}
+_blk = markets.build_context_block(_mk)
+check("context block carries the figure", "8,123" in _blk and "down 0.42%" in _blk)
+check("context block forbids other figures", "ONLY market figures" in _blk)
+check("empty case tells the model to write nothing", "none collected" in
+      markets.build_context_block({}))
+check("prompt injects the block",
+      "MARKET DATA (pre-collected" in digest_mod.build_user_prompt(
+          {"tier1": [], "region_counts": {}, "market_indicators": _mk}, "25 August 2026"))
+
+_mhtml = render_mod.render({"re_line": "x", "morning_memo": ["a", "b", "c"],
+                            "market_indicators": _mk})
+check("strip renders the indicator", "ASX 200" in _mhtml and "8,123" in _mhtml)
+check("a fall renders red", render_mod.ALERT in _mhtml)
+check("strip absent when nothing resolved",
+      "ASX 200" not in render_mod.render({"re_line": "x",
+                                          "morning_memo": ["a", "b", "c"]}))
+
+print("\n=== 14c. Section renames ===")
+_rsrc = inspect.getsource(render_mod)
+check("Canberra label is self-explanatory",
+      '_sec_label("Canberra Politics")' in _rsrc
+      and '_sec_label("Canberra")' not in _rsrc)
+check("The Wire renamed to Also Today",
+      '_sec_label("Also Today")' in _rsrc
+      and '_sec_label("The Wire")' not in _rsrc)
+
+print("\n=== 14d. Week in Review ===")
+import weekly
+
+_wsrc = inspect.getsource(weekly.load_week)
+check("weekly reads the archive, not disk files",
+      "FROM published" in _wsrc and "Path(" not in _wsrc
+      and ".json" not in _wsrc)
+_w = {"week_label": "25 to 29 August 2026", "re_line": "Week line.",
+      "top_stories": [{"rank": 1, "headline": "Forum meets in Koror",
+                       "body": "Body. " * 5, "category": "Pacific-Diplomacy",
+                       "sources": ["Islands Business"], "url": "https://x/y"}],
+      "pacific_thread": "Pacific text.", "nz_thread": None, "aukus_thread": None,
+      "patterns": ["Theme one."], "bottom_line": "The bottom line."}
+_wh = weekly.render_weekly(_w)
+check("weekly renders its masthead", "Week in Review" in _wh)
+check("weekly renders a story", "Koror" in _wh)
+check("null threads are omitted",
+      "Pacific Thread" in _wh and "New Zealand Thread" not in _wh)
+check("weekly inherits the forwarding-safe frame", 'width="680"' in _wh)
+check("weekly is em-dash clean", "—" not in _wh)
+check("weekly shares the daily shell", "_shell" in inspect.getsource(weekly.render_weekly))
+
+print("\n=== 14e. Cost tracking ===")
+import cost_report
+
+check("opus priced correctly", cost_report.cost_of("claude-opus-5", 0, 1_000_000) == 25.00)
+check("sonnet priced correctly", cost_report.cost_of("claude-sonnet-5", 1_000_000, 0) == 2.00)
+check("cache reads are a tenth of input",
+      abs(cost_report.cost_of("claude-opus-5", cache_read=1_000_000) - 0.50) < 1e-9)
+check("unknown model costs nothing rather than guessing",
+      cost_report.cost_of("not-a-model", 1000, 1000) == 0.0)
+check("digest keeps a token ledger", hasattr(digest_mod, "TOKEN_LEDGER"))
+check("streamer records into the ledger",
+      "TOKEN_LEDGER.append" in inspect.getsource(digest_mod._stream_claude))
+check("run.py writes the ledger into metrics",
+      '"tokens"' in inspect.getsource(run_mod.main))
 
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a

@@ -695,6 +695,15 @@ def collect() -> dict:
     except Exception as e:                                  # noqa: BLE001
         print(f"  !  Newsletter ingestion failed, continuing without it: {e}")
 
+    # Market figures, so the model has real numbers to anchor on rather
+    # than a rule telling it not to invent any. Best-effort.
+    try:
+        import markets
+        market_indicators = markets.collect_markets()
+    except Exception as e:                                  # noqa: BLE001
+        print(f"  !  Market collection failed: {e}")
+        market_indicators = {}
+
     total = len(tier1) + len(tier2) + len(tier3) + len(tier4)
     print(f"\n  Total collected: {total} items")
 
@@ -742,6 +751,7 @@ def collect() -> dict:
             print(f"  !  MAJOR FEED WARNING: {major} was not fetched")
 
     return {
+        "market_indicators": market_indicators,
         "tier1": tier1,
         "tier2": tier2,
         "tier3": tier3,

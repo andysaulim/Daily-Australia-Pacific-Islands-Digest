@@ -1,0 +1,82 @@
+name: Australia Chair Week in Review
+
+on:
+  schedule:
+    # 17:00 ET Friday. Separate from the daily workflow on purpose: this reads
+    # the archive the daily runs committed, so it must fire after the week's
+    # last issue has landed, and a failure here must not touch the daily send.
+    - cron: '0 21 * * 5'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate and send the Week in Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          DIGEST_TO: ${{ secrets.DIGEST_TO }}
+        # weekly.py exits quietly when the archive holds fewer than ten items,
+        # so an early or thin week is a no-op rather than a thin edition.
+        run: python weekly.py
+
+      - name: Upload the rendered edition
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-${{ github.run_number }}
+          path: |
+            weekly.html
+            weekly.json
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Send failure alert
+        if: failure()
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          ALERT_TO: ${{ secrets.ALERT_TO }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import os, smtplib
+          from email.mime.text import MIMEText
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          now = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d %I:%M %p ET")
+          sender = os.environ["GMAIL_USER"]
+          to = os.environ.get("ALERT_TO") or sender
+          msg = MIMEText(
+              f"The Week in Review failed at {now}.\n\n"
+              f"Run: {os.environ['RUN_URL']}\n\n"
+              "The daily brief is unaffected; they are separate workflows."
+          )
+          msg["Subject"] = f"Australia Chair Week in Review FAILED, {now}"
+          msg["From"] = sender
+          msg["To"] = to
+          with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15) as s:
+              s.login(sender, os.environ["GMAIL_APP_PASS"])
+              s.sendmail(sender, [a.strip() for a in to.split(",") if a.strip()],
+                         msg.as_string())
+          print("Failure alert sent")
+          PY

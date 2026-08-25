@@ -133,7 +133,7 @@ the read-online link), `USE_OS_TRUSTSTORE=1` (see below).
 python smoke_test.py
 ```
 
-One hundred and seven offline checks covering the relevance filters, region tagging, the
+One hundred and thirty-five offline checks covering the relevance filters, region tagging, the
 trackers, the archive's cross-day memory, the validator (including the regional
 floors, the padding check, and the em-dash and emoji gates), dedup, source caps,
 URL repair, and the renderer. No network, no API call. It writes
@@ -176,7 +176,7 @@ issue.
 - **Prestige outlet rule.** The requester's eleven outlets appear when they
   publish something qualifying.
 - **Specialist rule.** Same-day Lowy Interpreter, ASPI Strategist, and Devpolicy
-  pieces always make The Wire, even at capacity.
+  pieces always make Also Today, even at capacity.
 - **Dates from sources only.** `calendar_watch` and `on_this_day` draw from
   today's articles or the confirmed calendar, never from model recall.
 - **House style, enforced in the validator.** Zero em-dashes, no emojis, Chicago
@@ -205,10 +205,13 @@ pipeline_health.py      post-run health monitor, feeds into metrics.jsonl
 resolve.py              canonicalizes Google News redirects, cached in archive.db
 fulltext.py             fetches real article bodies, cached in archive.db
 newsletters.py          subscriber-only newsletters over IMAP, off by default
+markets.py              ASX 200, AUD/USD, NZX 50, iron ore, Brent, with fallbacks
+weekly.py               Friday Week in Review, synthesized from the archive
+cost_report.py          spend per issue and projected monthly, from metrics.jsonl
 BASELINES_WORKSHEET.md  staging for _REGIONAL_BASELINES, not imported anywhere
 data/                   archive.db and tracker JSON, committed each run
 public/                 GitHub Pages archive, rebuilt each run
-.github/workflows/      daily-brief.yml, the scheduled send
+.github/workflows/      daily-brief.yml and weekly-review.yml
 _reference/             read-only snapshot of the Korea pipeline
 ```
 

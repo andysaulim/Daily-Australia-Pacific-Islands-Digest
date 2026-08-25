@@ -997,6 +997,57 @@ check("the newsletter fingerprints are listed",
 check("it says it is generated, not hand-edited",
       "Do not edit by hand" in _on_disk)
 
+print("\n=== 14r. The journalist watch list actually fires ===")
+# It never had. Across the 366 items collected on the first live runs it
+# matched zero times, because it searched the title and the summary for a bare
+# name and a byline appears in neither.
+check("the beats are structured, not comments",
+      len(collect.JOURNALIST_BEATS) == 4)
+check("every name is reachable through the flat set",
+      collect.PRESTIGE_JOURNALISTS ==
+      {n for v in collect.JOURNALIST_BEATS.values() for n in v})
+check("no name is listed under two beats",
+      sum(len(v) for v in collect.JOURNALIST_BEATS.values())
+      == len(collect.PRESTIGE_JOURNALISTS))
+
+_j = lambda **kw: collect._flag_journalist(
+    {"title": "x", "summary": "y", "author": "", **kw}).get("flagged_journalist")
+check("the feed's author field flags",
+      _j(author="Ben Packham") == "Ben Packham")
+check("an author field with more than the name still flags",
+      _j(author="By Kirsty Needham, Reuters") == "Kirsty Needham")
+check("a By line at the head of the body flags",
+      _j(summary="By Andrew Tillett. Canberra raised the budget.") == "Andrew Tillett")
+check("a bare mention does NOT flag",
+      _j(summary="David Speers pressed the minister on the timetable.") is None)
+check("a By line deep in the body does not flag",
+      _j(summary="x" * 400 + " by Laura Tingle") is None)
+check("an unwatched byline is left alone",
+      _j(author="Some Other Reporter") is None)
+
+# The collector has to capture the byline at all, or none of the above can fire.
+_csrc = inspect.getsource(collect)
+check("_entry_to_article captures the author field",
+      '"author": author' in _csrc and 'entry.get("author")' in _csrc)
+check("re-flagging runs after full-text enrichment",
+      "reflag_journalists" in _csrc
+      and "reflag_journalists" in _rsrc_run
+      and _rsrc_run.index("enrich_payload") < _rsrc_run.index("collect.reflag_journalists"))
+_payload = {"tier1": [{"title": "t", "summary": "By Damien Cave. Something.",
+                       "author": ""},
+                      {"title": "t", "summary": "nothing here", "author": ""}]}
+check("re-flagging finds a byline the feed did not publish",
+      collect.reflag_journalists(_payload) == 1
+      and _payload["tier1"][0]["flagged_journalist"] == "Damien Cave")
+check("re-flagging does not re-count an already flagged item",
+      collect.reflag_journalists(_payload) == 0)
+
+check("the correspondents are published in SOURCES.md",
+      "## Correspondents watched" in _on_disk
+      and all(n in _on_disk for n in collect.PRESTIGE_JOURNALISTS))
+check("SOURCES.md explains the byline test, not just the names",
+      "mention, not a byline" in _on_disk)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

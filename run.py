@@ -838,6 +838,18 @@ def main():
         except Exception as e:                              # noqa: BLE001
             print(f"  !  Full-text enrichment failed, using RSS summaries: {e}")
 
+        # Byline flagging runs again now that the bodies are here. At
+        # collection time the only byline available is whatever the feed
+        # published, and the Google News routed feeds, four fifths of the
+        # corpus, publish none.
+        try:
+            n_flagged = collect.reflag_journalists(payload)
+            if n_flagged:
+                print(f"  [bylines] {n_flagged} watch-list correspondent(s) "
+                      "found in fetched article text")
+        except Exception as e:                              # noqa: BLE001
+            print(f"  !  Byline re-flagging failed: {e}")
+
         Path("collected.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 

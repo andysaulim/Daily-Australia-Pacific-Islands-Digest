@@ -352,19 +352,28 @@ _SPORT_FILTER = re.compile(
 # ─────────────────────────────────────────────────────────────────────────────
 # Kept short on purpose. Do not expand without an editorial reason, and verify
 # spelling exactly: a misspelled name here silently never matches.
-PRESTIGE_JOURNALISTS = {
-    # Australian foreign affairs and defence correspondents
-    "Andrew Tillett", "Matthew Knott", "Ben Packham", "Daniel Hurst",
-    "Peter Hartcher", "Greg Sheridan", "Laura Tingle", "David Speers",
-    "Stephen Dziedzic", "Andrew Greene",
-    # Pacific specialists
-    "Kirsty Needham", "Lice Movono", "Marian Faa", "Prianka Srinivasan",
-    "Stefan Armbruster", "Ben Bohane",
-    # New Zealand
-    "Thomas Manch", "Sam Sachdeva", "Jane Patterson",
-    # International correspondents on the region
-    "Rod McGuirk", "Damien Cave", "Nic Fildes", "Michael Smith",
+# Grouped rather than a flat set, so list_sources.py can publish the beats
+# alongside the names. The groups were comments before, which meant the only
+# way to see who this brief watches was to read the collector.
+JOURNALIST_BEATS = {
+    "Australian foreign affairs and defence": [
+        "Andrew Tillett", "Matthew Knott", "Ben Packham", "Daniel Hurst",
+        "Peter Hartcher", "Greg Sheridan", "Laura Tingle", "David Speers",
+        "Stephen Dziedzic", "Andrew Greene",
+    ],
+    "Pacific Islands specialists": [
+        "Kirsty Needham", "Lice Movono", "Marian Faa", "Prianka Srinivasan",
+        "Stefan Armbruster", "Ben Bohane",
+    ],
+    "New Zealand": [
+        "Thomas Manch", "Sam Sachdeva", "Jane Patterson",
+    ],
+    "International correspondents on the region": [
+        "Rod McGuirk", "Damien Cave", "Nic Fildes", "Michael Smith",
+    ],
 }
+
+PRESTIGE_JOURNALISTS = {n for names in JOURNALIST_BEATS.values() for n in names}
 
 # (connect, read): a slow publisher gets time to answer, an unreachable host
 # does not tie up a worker.
@@ -433,11 +442,22 @@ def _entry_to_article(entry, source: str, extra: dict | None = None) -> dict:
         if term:
             tags.append(term)
 
+    # The byline. feedparser maps dc:creator onto .author as well, which is
+    # what most of the direct RSS feeds here actually publish. Captured
+    # because the journalist watch list has no other honest way to fire:
+    # a byline appears in neither the title nor the summary.
+    author = (entry.get("author") or "").strip()
+    if not author:
+        names = [a.get("name", "").strip()
+                 for a in (getattr(entry, "authors", None) or [])]
+        author = ", ".join(n for n in names if n)
+
     article = {
         "title": title,
         "url": link,
         "summary": summary[:800],
         "source": source,
+        "author": author,
         "pub_date": pub_date,
     }
 
@@ -485,12 +505,47 @@ def _is_region_related(entry) -> bool:
 
 
 def _flag_journalist(article: dict) -> dict:
-    text = f"{article['title']} {article['summary']}".lower()
+    """Flag a watch-list byline.
+
+    Matches the feed's author field, and failing that a "By <name>" line at
+    the head of any fetched article text.
+
+    It used to search the title and the summary for a bare name, which found
+    nothing whatsoever: across the 366 items collected on the first live runs
+    it fired zero times, because a byline appears in neither field. The bare
+    name was also the wrong test even where it would have hit. "David Speers
+    pressed the minister" is a mention, not a byline, and the prompt names the
+    flagged correspondent in the source line, so a false positive is a factual
+    error in the published product rather than a missed opportunity.
+    """
+    author = (article.get("author") or "").lower()
+    head = (article.get("summary") or "")[:300].lower()
     for name in PRESTIGE_JOURNALISTS:
-        if name.lower() in text:
+        low = name.lower()
+        if low in author or f"by {low}" in head:
             article["flagged_journalist"] = name
             break
     return article
+
+
+def reflag_journalists(payload: dict) -> int:
+    """Re-run byline flagging after full-text enrichment.
+
+    Collection flags before fulltext.py has fetched anything, so at that
+    point the only byline available is whatever the feed published. Most of
+    the Google News routed feeds publish none, and those are four fifths of
+    the corpus. Once the bodies are in, the "By <name>" line at the top of
+    the article is there to be read.
+    """
+    flagged = 0
+    for key in ("tier1", "tier2", "tier3", "tier4"):
+        for article in payload.get(key) or []:
+            if article.get("flagged_journalist"):
+                continue
+            _flag_journalist(article)
+            if article.get("flagged_journalist"):
+                flagged += 1
+    return flagged
 
 
 # The eleven outlets the Australia Chair named, as they appear as feed names.

@@ -107,10 +107,13 @@ def build() -> str:
     lines += [
         "## Newsletters over IMAP",
         "",
-        "Off unless the repository variable `NEWSLETTERS` is `1`. Reads the "
-        "`GMAIL_USER` inbox, then All Mail. For a newsletter you subscribe to "
-        "there is no wall to defeat: the publisher mailed you the issue with "
-        "the editing already done.",
+        "Controlled by the repository variable `NEWSLETTERS`, off unless it is "
+        "`1`. This file is generated from the code and cannot see a repository "
+        "variable, so check the Actions Variables tab for the live setting. "
+        "Reads the `GMAIL_USER` inbox first, then All Mail, since a newsletter "
+        "is exactly the mail a Gmail filter is set up to label and skip the "
+        "inbox. For a newsletter you subscribe to there is no wall to defeat: "
+        "the publisher mailed you the issue with the editing already done.",
         "",
         "Matched on sender and subject together, so whichever the inbox "
         "receives is picked up. An unsubscribed fingerprint simply never "
@@ -126,6 +129,27 @@ def build() -> str:
         "| Sender contains | Publisher |",
         "| --- | --- |",
         *[f"| `{k}` | {d} |" for k, d in newsletters._PUBLISHERS],
+        "",
+        "## Correspondents watched",
+        "",
+        f"{sum(len(v) for v in collect.JOURNALIST_BEATS.values())} bylines. "
+        "A story carrying one is treated as higher priority, and the "
+        "correspondent is named in the source line.",
+        "",
+        "Matched on the feed's author field, and failing that a `By <name>` "
+        "line at the head of the fetched article text. Not on a bare name "
+        "anywhere in the copy: \"David Speers pressed the minister\" is a "
+        "mention, not a byline, and a false positive here is a factual error "
+        "in the published product.",
+        "",
+        "Kept short on purpose. Do not expand it without an editorial reason, "
+        "and check the spelling exactly, because a misspelled name here "
+        "silently never matches.",
+        "",
+        "| Beat | Correspondents |",
+        "| --- | --- |",
+        *[f"| {beat} | {', '.join(names)} |"
+          for beat, names in collect.JOURNALIST_BEATS.items()],
         "",
         "## Market data",
         "",

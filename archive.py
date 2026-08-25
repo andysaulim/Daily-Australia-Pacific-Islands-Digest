@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS published (
     digest_date TEXT,
     section     TEXT,
     category    TEXT,
+    country     TEXT,
     PRIMARY KEY (url, digest_date)
 );
 CREATE INDEX IF NOT EXISTS idx_pub_date ON published (digest_date);
@@ -149,9 +150,10 @@ def _migrate(conn: sqlite3.Connection) -> None:
     after a schema change fails on the insert.
     """
     cols = {r[1] for r in conn.execute("PRAGMA table_info(published)")}
-    if "category" not in cols:
-        conn.execute("ALTER TABLE published ADD COLUMN category TEXT")
-        conn.commit()
+    for col in ("category", "country"):
+        if col not in cols:
+            conn.execute(f"ALTER TABLE published ADD COLUMN {col} TEXT")
+    conn.commit()
 
     # Backfill what the section implies, so coverage history does not start
     # empty and read as a fortnight of silence on every topic. Idempotent
@@ -219,15 +221,16 @@ def record_published(digest: dict, digest_date: str | None = None) -> int:
             if not url and not headline:
                 continue
             rows.append((url, normalize_title(headline), headline, digest_date,
-                         section, item_category(item, section)))
+                         section, item_category(item, section),
+                         (item.get("country") or "").strip()))
 
     if not rows:
         return 0
     with _connect() as conn:
         conn.executemany(
             "INSERT OR REPLACE INTO published "
-            "(url, title_norm, headline, digest_date, section, category) "
-            "VALUES (?, ?, ?, ?, ?, ?)",
+            "(url, title_norm, headline, digest_date, section, category, country) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
             rows,
         )
     return len(rows)
@@ -311,6 +314,38 @@ def topics_covered(days: int = 14) -> dict:
     for cat, n in rows:
         if cat in counts:
             counts[cat] += n
+    return counts
+
+
+def countries_covered(days: int = 14) -> dict:
+    """{country: count} across the window, for all seventeen Pacific states.
+
+    pacific_wire and china_in_the_pacific already ask the model for a
+    country per item; nothing stored it, so "are we covering the region or
+    just Fiji and PNG" had no answer. Zero rather than absence for the
+    untouched, same as topics_covered.
+    """
+    try:
+        import pacific_tracker
+        names = list(pacific_tracker._load().get("countries", {}))
+    except Exception:                                   # noqa: BLE001
+        return {}
+    counts = {n: 0 for n in names}
+    cutoff = _cutoff(days)
+    try:
+        with _connect() as conn:
+            rows = conn.execute(
+                "SELECT country, COUNT(*) FROM published "
+                "WHERE digest_date >= ? AND country IS NOT NULL "
+                "AND country != '' GROUP BY country", (cutoff,)).fetchall()
+    except sqlite3.Error:
+        return {}
+    for name, n in rows:
+        # Tolerate the model writing "Micronesia" for "Micronesia (FSM)".
+        for known in counts:
+            if name == known or name in known or known.startswith(name):
+                counts[known] += n
+                break
     return counts
 
 

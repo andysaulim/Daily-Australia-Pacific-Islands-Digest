@@ -29,19 +29,29 @@ from digest import _count_digest_words
 # design: Australian volume will crowd out New Zealand and the Pacific every day
 # unless the schema reserves space. A floor may be satisfied by a stand-in line
 # (see _has_stand_in): that is honest. Padding is not, and is caught separately.
+# Raised for the Pacific and New Zealand after the first live issue, which hit
+# the ceiling in four sections at once: pacific_wire 5/5, new_zealand 4/4,
+# also_today 6/6, canberra_politics 5/5. The supply was not the constraint. That
+# day collected 94 Pacific items and published 10, leaving 84 unused, while the
+# section that carries them sat at its cap.
+#
+# The Pacific ceilings are raised and the Australian ones are not, deliberately.
+# Seventeen Pacific states and territories compete for pacific_wire; Canberra
+# has one capital and already takes the largest share of the brief. Raising both
+# would have widened the gap the REGIONAL BALANCE rule exists to close.
 SECTION_CAPS = {
     "morning_memo":         (3, 3),
     "top_stories":          (2, 4),
-    "overnight_items":      (3, 6),
+    "overnight_items":      (3, 7),
     "aukus_watch":          (0, 5),
-    "pacific_wire":         (2, 5),   # FLOOR
-    "new_zealand":          (1, 4),   # FLOOR
-    "china_in_the_pacific": (0, 4),
+    "pacific_wire":         (2, 8),   # FLOOR, raised from 5
+    "new_zealand":          (1, 5),   # FLOOR, raised from 4
+    "china_in_the_pacific": (0, 5),   # raised from 4
     "canberra_politics":    (0, 5),
     "business_economy":     (0, 5),
     "primary_documents":    (0, 4),
     "calendar_watch":       (4, 5),
-    "also_today":           (0, 6),
+    "also_today":           (0, 8),   # raised from 6
     "opeds_today":          (0, 6),
     "academic_today":       (0, 6),
     "on_this_day":          (0, 1),

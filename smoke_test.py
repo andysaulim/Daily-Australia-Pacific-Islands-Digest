@@ -611,6 +611,37 @@ check("health monitor reports which topics are dark",
 check("health monitor stays quiet with no categorized history",
       isinstance(pipeline_health.check(payload=None)["topics_dark"], list))
 
+print("\n=== 14g. Section caps agree with the schema the model is given ===")
+# The caps live in two places: SECTION_CAPS, which the validator enforces, and
+# the prose schema in the user prompt, which the model reads. They drifted once
+# already. A model told "maximum 5" while the validator allows 8 simply never
+# uses the headroom, and nothing reports it.
+_prompt = digest_mod.build_user_prompt({"tier1": [], "region_counts": {}}, "25 August 2026")
+_cap_patterns = {
+    "overnight_items":      r"- overnight_items: (\d+)-(\d+) items",
+    "pacific_wire":         r"- pacific_wire: MINIMUM (\d+), maximum (\d+)",
+    "new_zealand":          r"- new_zealand: MINIMUM (\d+), maximum (\d+)",
+    "china_in_the_pacific": r"- china_in_the_pacific: (\d+)-(\d+) items",
+    "also_today":           r"- also_today: (\d+)-(\d+) items",
+    "aukus_watch":          r"- aukus_watch: (\d+)-(\d+) items",
+    "canberra_politics":    r"- canberra_politics: (\d+)-(\d+) items",
+    "business_economy":     r"- business_economy: (\d+)-(\d+) items",
+}
+import re as _re_caps
+for _sec, _pat in _cap_patterns.items():
+    _m = _re_caps.search(_pat, _prompt)
+    if not _m:
+        check(f"{_sec} cap stated in the schema", False, "pattern not found")
+        continue
+    _want = run_mod.SECTION_CAPS[_sec]
+    _got = (int(_m.group(1)), int(_m.group(2)))
+    check(f"{_sec} cap matches the validator", _got == _want, f"prompt {_got} vs caps {_want}")
+
+check("pacific_wire has room for more than a handful of the 17 states",
+      run_mod.SECTION_CAPS["pacific_wire"][1] >= 8)
+check("Pacific ceiling exceeds the Canberra one",
+      run_mod.SECTION_CAPS["pacific_wire"][1] > run_mod.SECTION_CAPS["canberra_politics"][1])
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

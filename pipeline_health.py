@@ -209,6 +209,25 @@ def check(payload: dict | None = None, digest: dict | None = None) -> dict:
     except Exception as e:                                  # noqa: BLE001
         warnings.append(f"Could not measure topic coverage: {e}")
 
+    # ── Pacific country spread ───────────────────────────────────────────
+    # Seventeen states and territories share the Pacific sections. Volume in
+    # those sections says nothing about whether the coverage is regional or
+    # just Fiji and PNG every day.
+    quiet_countries = []
+    try:
+        import archive as _arch
+        seen_c = _arch.countries_covered(days=COVERAGE_WINDOW_DAYS)
+        if seen_c and sum(seen_c.values()) > 0:
+            quiet_countries = sorted(k for k, v in seen_c.items() if v == 0)
+            covered_n = len(seen_c) - len(quiet_countries)
+            if covered_n <= len(seen_c) // 3:
+                warnings.append(
+                    f"Only {covered_n} of {len(seen_c)} Pacific states covered in "
+                    f"{COVERAGE_WINDOW_DAYS} days. The Pacific sections are running "
+                    f"on a handful of countries.")
+    except Exception as e:                                  # noqa: BLE001
+        warnings.append(f"Could not measure Pacific country spread: {e}")
+
     # ── Pacific stand-in frequency ───────────────────────────────────────
     recent = _recent_metrics(PACIFIC_STAND_IN_WINDOW)
     stand_ins = sum(1 for m in recent if m.get("pacific_stand_in"))
@@ -223,6 +242,7 @@ def check(payload: dict | None = None, digest: dict | None = None) -> dict:
         "tier_counts": tier_counts,
         "pacific_stand_ins_recent": stand_ins,
         "topics_dark": dark,
+        "pacific_countries_quiet": quiet_countries,
         "recent_issues_considered": len(recent),
         "warnings": warnings,
         "alerts": alerts,

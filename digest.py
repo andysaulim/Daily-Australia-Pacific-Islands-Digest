@@ -435,7 +435,7 @@ Return a single JSON object with these keys.
 - on_this_day: 0-1 items, ONLY from the calendar's confirmed anniversaries. Each: date, event, relevance. Empty array if none.
 - story_count: integer, total items across all sections.
 
-TARGET LENGTH: HARD MINIMUM 1,600 WORDS. Aim for 2,200-2,600 words: post-processing strips duplicate URLs and over-represented sources, which typically removes 200-400 words, so a 2,200-word draft lands near 2,000. This brief covers Australia, New Zealand and seventeen Pacific states across twelve topics, and 1,500 words cannot carry that. Reach the target by covering MORE stories, not by inflating individual bodies. If your draft runs short, add items to pacific_wire, overnight_items or also_today, in that order: the Pacific is where the brief is thinnest and the mandate widest.
+TARGET LENGTH: the SENT brief must land between 2,000 and 2,500 words, so aim for 2,300-2,800 in your draft. Post-processing strips duplicate URLs and over-represented sources after you return, which typically removes 200-400 words. HARD MINIMUM 1,600. Do NOT exceed 2,800: past that you are padding, and the reader has a fixed amount of morning. This brief covers Australia, New Zealand and seventeen Pacific states across twelve topics, and 1,500 words cannot carry that. Reach the target by covering MORE stories, not by inflating individual bodies. If your draft runs short, add items to pacific_wire, overnight_items or also_today, in that order: the Pacific is where the brief is thinnest and the mandate widest.
 
 FINAL CHECKS before you return:
 1. Walk placement priority and delete every cross-section duplicate.

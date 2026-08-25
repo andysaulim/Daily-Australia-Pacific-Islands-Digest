@@ -759,15 +759,21 @@ check("pre-validation floor raised to 1,600",
           {"top_stories": [1, 2], "overnight_items": [1, 2, 3],
            "morning_memo": [1, 2, 3], "re_line": "x"})
       == ["word count 4 is below the 1600-word minimum"])
-check("the prompt asks for 2,200 to 2,600",
-      "HARD MINIMUM 1,600 WORDS" in _dsrc and "2,200-2,600 words" in _dsrc)
+check("the prompt targets the 2,000-2,500 sent length",
+      "between 2,000 and 2,500 words" in _dsrc and "2,300-2,800" in _dsrc)
+check("the prompt keeps the 1,600 hard minimum",
+      "HARD MINIMUM 1,600" in _dsrc)
+check("the prompt names an upper bound too",
+      "Do NOT exceed 2,800" in _dsrc)
 check("the prompt sends a short draft to the Pacific first",
       "add items to pacific_wire" in _dsrc)
 _rsrc_run = inspect.getsource(run_mod)
 check("the send gate blocks below 1,400",
       "word_count < 1400" in _rsrc_run and "hard minimum 1400" in _rsrc_run)
 check("the send gate warns below 2,000",
-      "word_count < 2000" in _rsrc_run and "target 2000-2400" in _rsrc_run)
+      "word_count < 2000" in _rsrc_run and "target 2000-2500" in _rsrc_run)
+check("the send gate warns above 2,500 as well",
+      "word_count > 2500" in _rsrc_run and "over the 2500 ceiling" in _rsrc_run)
 check("no inherited Korea floor survives",
       "hard minimum 850" not in _rsrc_run and "1000-word minimum" not in _dsrc)
 
@@ -849,6 +855,31 @@ _wf = Path(".github/workflows/daily-brief.yml").read_text(encoding="utf-8")
 check("the job budget has headroom over the observed worst case",
       "timeout-minutes: 45" in _wf)
 check("the timeout says why it is not 30", "22 of its 30 minutes" in _wf)
+
+print("\n=== 14n. Replacing today's issue is possible and narrow ===")
+# The third run of 25 August died with 65 of its own items stripped out from
+# under it. A replacement issue is not a repeat of the issue it replaces.
+_before = len(_arch_gap.recent_published(days=3))
+check("the archive has today's items to hide", _before > 0, f"{_before} items")
+from datetime import datetime as _dt
+from zoneinfo import ZoneInfo as _zi
+_today_str = _dt.now(_zi("America/New_York")).strftime("%Y-%m-%d")
+_arch_gap.exclude_date(_today_str)
+check("excluding today hides them from the cross-day memory",
+      len(_arch_gap.recent_published(days=3)) == 0)
+check("and from the per-URL lookup the stale filter uses",
+      _arch_gap.lookup_published("http://example.com/gap", "", days=7) is None)
+_arch_gap.exclude_date(None)
+check("clearing the exclusion restores the memory",
+      len(_arch_gap.recent_published(days=3)) == _before)
+check("the flag exists and says what it does",
+      "--replace-today" in _rsrc_run and "hide today" in _rsrc_run)
+check("it is never set on the scheduled path",
+      "args.replace_today" in _rsrc_run
+      and "_EXCLUDE_DATE" not in _rsrc_run)
+check("the workflow exposes it as a dispatch input",
+      "replace_today:" in _wf and "python run.py --replace-today" in _wf)
+check("the workflow default is off", "default: false" in _wf)
 
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a

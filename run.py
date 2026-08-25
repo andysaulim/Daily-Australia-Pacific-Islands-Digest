@@ -565,7 +565,13 @@ def validate_digest(digest: dict, payload: dict | None = None) -> list[str]:
     if word_count < 1400:
         warnings.append(f"WORD COUNT CRITICAL: ~{word_count} words (hard minimum 1400)")
     elif word_count < 2000:
-        warnings.append(f"WORD COUNT: ~{word_count} words (target 2000-2400)")
+        warnings.append(f"WORD COUNT: ~{word_count} words (target 2000-2500)")
+    elif word_count > 2500:
+        # An upper bound, which this validator never had. The reader has a
+        # fixed amount of morning, and a brief that runs long is padding
+        # rather than covering more, which is the failure the length floor
+        # invites if nothing catches it at the other end.
+        warnings.append(f"WORD COUNT: ~{word_count} words, over the 2500 ceiling")
 
     # ── House style: em-dashes and emojis ────────────────────────────────
     em_hits = [loc for loc, text in _all_text(digest) if _EM_DASH.search(text)]
@@ -769,7 +775,25 @@ def main():
                         help="Collect only, do not call Claude")
     parser.add_argument("--no-track", action="store_true",
                         help="Skip tracker and archive write-back")
+    parser.add_argument("--replace-today", action="store_true",
+                        help="Regenerate today's issue: hide today's own "
+                             "publications from the cross-day memory")
     args = parser.parse_args()
+
+    # A replacement issue is not a repeat of the issue it replaces. Without
+    # this the cross-day memory strips every story that went out earlier
+    # today, which is what killed the third run of 25 August: 65 of its own
+    # items pulled out from under it, then a section floor it could not meet.
+    # Yesterday and the day before stay in force, so this cannot turn into a
+    # licence to repeat the week.
+    if args.replace_today:
+        import archive as _arch
+        _today = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
+        _arch.exclude_date(_today)
+        print(f"\n  REPLACING today's issue: {_today} hidden from the "
+              "cross-day memory.")
+        print("  Earlier issues still apply. Recipients will receive another "
+              "email.")
 
     print("=" * 60)
     print("  Australia Chair Daily Brief")

@@ -244,6 +244,26 @@ def _cutoff(days: int) -> str:
     return (datetime.now(ZoneInfo("America/New_York")) - timedelta(days=days)).strftime("%Y-%m-%d")
 
 
+# One date hidden from the cross-day memory, for a deliberate re-run.
+#
+# The memory exists so Tuesday does not repeat Monday, and it treats an issue
+# published earlier TODAY exactly like one published yesterday. That is right
+# for the daily cadence and wrong for the one case an operator actually hits:
+# regenerating today's issue after changing the pipeline. The third run of
+# 25 August died that way, with 65 of its own items stripped out from under it.
+# A replacement issue is not a repeat of the issue it replaces.
+#
+# Set only from run.py --replace-today. Never set on the scheduled path, where
+# hiding a date would be exactly the bug the memory exists to prevent.
+_EXCLUDE_DATE: str | None = None
+
+
+def exclude_date(date_str: str | None) -> None:
+    """Hide one digest_date from lookup_published and recent_published."""
+    global _EXCLUDE_DATE
+    _EXCLUDE_DATE = date_str or None
+
+
 def lookup_published(url: str, title: str = "", days: int = 7) -> dict | None:
     """Has this story already run? Returns {date, section, headline} or None.
 
@@ -258,8 +278,9 @@ def lookup_published(url: str, title: str = "", days: int = 7) -> dict | None:
             if url:
                 row = conn.execute(
                     "SELECT digest_date, section, headline FROM published "
-                    "WHERE url = ? AND digest_date >= ? ORDER BY digest_date DESC LIMIT 1",
-                    (url, cutoff),
+                    "WHERE url = ? AND digest_date >= ? AND digest_date != ? "
+                    "ORDER BY digest_date DESC LIMIT 1",
+                    (url, cutoff, _EXCLUDE_DATE or ""),
                 ).fetchone()
                 if row:
                     return {"date": row[0], "section": row[1], "headline": row[2],
@@ -286,9 +307,9 @@ def recent_published(days: int = 3) -> list[dict]:
         with _connect() as conn:
             rows = conn.execute(
                 "SELECT digest_date, section, headline FROM published "
-                "WHERE digest_date >= ? AND headline != '' "
+                "WHERE digest_date >= ? AND digest_date != ? AND headline != '' "
                 "ORDER BY digest_date DESC, section",
-                (cutoff,),
+                (cutoff, _EXCLUDE_DATE or ""),
             ).fetchall()
     except sqlite3.Error:
         return []

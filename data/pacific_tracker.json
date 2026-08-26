@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-08-25",
+  "last_updated": "2026-08-26",
   "countries": {
     "Papua New Guinea": {
       "last_event": null,
@@ -44,11 +44,11 @@
       "event_count": 0
     },
     "Kiribati": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "Kiribati considers constitutional change to cement diplomatic recognition of China",
+      "last_event_date": "2026-08-26",
+      "last_activity_type": "recognition switch",
+      "url": "https://www.abc.net.au/news/2026-08-26/kiribati-changing-constitution-to-cement-recognition-china/107080764",
+      "event_count": 1
     },
     "Tuvalu": {
       "last_event": "Chinese missile near Tuvalu's EEZ leaves Pacific Forum without a joint statement",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-08-26",
+      "country": "Kiribati",
+      "activity": "recognition switch",
+      "headline": "Kiribati considers constitutional change to cement diplomatic recognition of China",
+      "url": "https://www.abc.net.au/news/2026-08-26/kiribati-changing-constitution-to-cement-recognition-china/107080764",
+      "section": "top_stories"
+    },
     {
       "date": "2026-08-25",
       "country": "Tuvalu",

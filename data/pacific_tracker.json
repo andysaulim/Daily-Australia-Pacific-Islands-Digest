@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-08-26",
+  "last_updated": "2026-08-27",
   "countries": {
     "Papua New Guinea": {
       "last_event": null,
@@ -16,11 +16,11 @@
       "event_count": 1
     },
     "Solomon Islands": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "Taiwan's foreign minister departs for Palau ahead of Forum meeting",
+      "last_event_date": "2026-08-27",
+      "last_activity_type": "senior visit",
+      "url": "https://www.rti.org.tw/en/news?uid=3&pid=228667",
+      "event_count": 1
     },
     "Vanuatu": {
       "last_event": "PACNEWS: Pacific nations detain Chinese and Indonesian boats for illegal fishing",
@@ -44,11 +44,11 @@
       "event_count": 0
     },
     "Kiribati": {
-      "last_event": "Kiribati considers constitutional change to cement diplomatic recognition of China",
-      "last_event_date": "2026-08-26",
+      "last_event": "Kiribati bill would bar any future recognition of Taiwan",
+      "last_event_date": "2026-08-27",
       "last_activity_type": "recognition switch",
-      "url": "https://www.abc.net.au/news/2026-08-26/kiribati-changing-constitution-to-cement-recognition-china/107080764",
-      "event_count": 1
+      "url": "https://www.rnz.co.nz/news/pacific/1150376/kiribati-considers-constitutional-change-to-cement-diplomatic-recognition-of-china",
+      "event_count": 2
     },
     "Tuvalu": {
       "last_event": "Chinese missile near Tuvalu's EEZ leaves Pacific Forum without a joint statement",
@@ -65,11 +65,11 @@
       "event_count": 0
     },
     "Palau": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "What Lowy's Pacific team will be watching at the 2026 Forum",
+      "last_event_date": "2026-08-27",
+      "last_activity_type": "other",
+      "url": "https://www.lowyinstitute.org/the-interpreter/pacific-islands-forum-2026-what-lowy-s-pacific-team-will-be-watching",
+      "event_count": 1
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,30 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-08-27",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "What Lowy's Pacific team will be watching at the 2026 Forum",
+      "url": "https://www.lowyinstitute.org/the-interpreter/pacific-islands-forum-2026-what-lowy-s-pacific-team-will-be-watching",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-08-27",
+      "country": "Solomon Islands",
+      "activity": "senior visit",
+      "headline": "Taiwan's foreign minister departs for Palau ahead of Forum meeting",
+      "url": "https://www.rti.org.tw/en/news?uid=3&pid=228667",
+      "section": "primary_documents"
+    },
+    {
+      "date": "2026-08-27",
+      "country": "Kiribati",
+      "activity": "recognition switch",
+      "headline": "Kiribati bill would bar any future recognition of Taiwan",
+      "url": "https://www.rnz.co.nz/news/pacific/1150376/kiribati-considers-constitutional-change-to-cement-diplomatic-recognition-of-china",
+      "section": "top_stories"
+    },
     {
       "date": "2026-08-26",
       "country": "Kiribati",

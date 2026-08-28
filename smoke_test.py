@@ -1048,6 +1048,34 @@ check("the correspondents are published in SOURCES.md",
 check("SOURCES.md explains the byline test, not just the names",
       "mention, not a byline" in _on_disk)
 
+print("\n=== 14s. Schedule slots and the double-send guard ===")
+# GitHub's scheduler ran 9.6 hours late on this repo on 27 August, turning a
+# morning brief into an evening one. Six slots instead of two so a single late
+# slot no longer decides the day. That is only safe because the guard skips
+# every slot after the first, so the cost of five extra slots is ~8s each and
+# not five extra emails.
+import yaml as _yaml
+_wf_doc = _yaml.safe_load(_wf)
+_crons = [c["cron"] for c in _wf_doc[True]["schedule"]]
+check("six schedule slots", len(_crons) == 6, str(len(_crons)))
+check("the first slot aims at the intended 6:00 AM ET hour", _crons[0] == "0 10 * * 1-5")
+check("every slot is weekdays only", all(c.endswith("* * 1-5") for c in _crons))
+check("slots are distinct", len(set(_crons)) == len(_crons))
+check("slots are in ascending order",
+      _crons == sorted(_crons, key=lambda c: (int(c.split()[1]), int(c.split()[0]))))
+check("the comment records the measured delays, not a guess",
+      "+9.6h" in _wf and "27 Aug" in _wf)
+check("the daylight-saving caveat is stated", "daylight saving" in _wf)
+
+# The guard is what makes six slots safe rather than six sends.
+check("a dispatch never consults the guard", 'if [ "${{ github.event_name }}" != "schedule" ]' in _wf)
+check("a slot skips once one has succeeded", 'elif [ "$success_count" -gt "0" ]' in _wf)
+# A run counts ITSELF in the in-progress query, so the threshold is 1, not 0.
+check("a slot skips while another is still in flight", '"$total" -gt "1"' in _wf)
+check("runs queue rather than overlap",
+      _wf_doc["concurrency"]["group"] == "daily-brief"
+      and _wf_doc["concurrency"]["cancel-in-progress"] is False)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

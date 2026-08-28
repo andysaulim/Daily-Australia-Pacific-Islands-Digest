@@ -215,9 +215,21 @@ crons should skip once a dispatch has succeeded.
 
 ## 8. The external cron
 
-GitHub's own scheduler has no SLA and drifts 30 minutes to 4 hours, which is why
-both the Korea and Japan briefs trigger from outside and keep the Actions crons
-only as a safety net.
+**Not optional. Do this one.** GitHub's own scheduler has no SLA, and on this
+repository it has been far worse than the 30 minutes to 4 hours the Korea and
+Japan briefs budget for:
+
+| Date | 7:30 AM ET slot | 9:00 AM ET slot |
+| --- | --- | --- |
+| 26 Aug | 22 min late | 54 min late |
+| 27 Aug | **9.6 h late**, fired 5:03 PM | **9.8 h late**, fired 6:50 PM |
+| 28 Aug | 3 h overdue, had not fired | 1.5 h overdue, had not fired |
+
+The workflow now spreads six slots between 6:00 and 9:00 AM ET so one late slot
+does not decide the day, but spreading attempts cannot make GitHub punctual. A
+brief that lands at 6:50 PM is not a morning brief, and worse, it writes those
+stories into the cross-day memory so the next morning's issue cannot re-run
+them. The external cron is the only thing that actually fixes this.
 
 At cron-job.org (free, and what the Korea brief uses), create a job:
 

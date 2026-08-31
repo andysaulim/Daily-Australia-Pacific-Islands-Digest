@@ -294,8 +294,31 @@ back to you. That is the trade for not running your own scheduler, and it is
 why 8a scopes the token to Actions on this one public repository: if it leaks,
 what it can do is trigger this brief.
 
-Test it before you trust it. From a terminal, with the token in a shell
-variable rather than typed into the command where it lands in your history:
+Test it before you trust it, but know what the test is: **there is no dry run.**
+A dispatch generates and sends a real issue to everyone in `DIGEST_TO`. A 204
+does not mean the request was well formed and nothing else happened. It means
+the brief is on its way.
+
+So run it at an hour you would have been glad to receive it, and check Actions
+first for a run that already succeeded today. A second dispatch on a day that
+has already sent is the brief-3 case: the cross-day memory strips every story
+the first issue published, and what is left usually cannot meet a section
+floor, so the run spends ten minutes and about a dollar of API budget to either
+fail validation or send a thin duplicate. When you do want a second issue, the
+`replace_today` input is what makes it work.
+
+To stop one you did not mean to start, cancel it from the Actions tab, or with
+the same token:
+
+```bash
+curl -i -X POST \
+  -H "Authorization: Bearer $GH_PAT" \
+  -H "Accept: application/vnd.github+json" \
+  https://api.github.com/repos/andysaulim/Daily-Australia-Pacific-Islands-Digest/actions/runs/<RUN_ID>/cancel
+```
+
+202 means cancelled. The dispatch itself, with the token in a shell variable
+rather than typed into the command where it lands in your history:
 
 ```bash
 read -rs GH_PAT                     # paste the token, press enter

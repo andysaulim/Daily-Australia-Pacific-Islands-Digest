@@ -1093,6 +1093,15 @@ check("the workflow scope is called out as unnecessary",
       "`workflow` is NOT needed" in _setup)
 check("the response codes are documented", "204 No Content" in _setup
       and "401" in _setup and "403" in _setup)
+# A 204 is not a test result, it is an issue in flight. Saying so is the
+# difference between verifying the plumbing and mailing a duplicate.
+check("SETUP warns the dispatch test is a live send",
+      "there is no dry run" in _setup and "sends a real issue" in _setup)
+check("SETUP names the same-day cost", "brief-3 case" in _setup)
+check("SETUP points at replace_today for a deliberate second issue",
+      "`replace_today` input is what makes it work" in _setup)
+check("SETUP says how to cancel a run started by mistake",
+      "/cancel" in _setup and "202 means cancelled" in _setup)
 check("expiry is treated as a real failure mode", "8c. When it expires" in _setup)
 check("the schedule is set in ET rather than hand-converted to UTC",
       "timezone **America/New_York**" in _setup)

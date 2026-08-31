@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-08-28",
+  "last_updated": "2026-08-31",
   "countries": {
     "Papua New Guinea": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "US ties biotech, food safety reform to PNG agri-export growth",
+      "last_event_date": "2026-08-31",
+      "last_activity_type": "other",
+      "url": "https://www.postcourier.com.pg/us-points-to-biotech-harmonised-food-safety-rules-to-boost-png-agri-exports-at-apec-summit/",
+      "event_count": 2
     },
     "Fiji": {
       "last_event": "Chinese missile landing near Tuvalu's EEZ leaves Forum ministers without a joint statement",
@@ -44,11 +44,11 @@
       "event_count": 0
     },
     "Kiribati": {
-      "last_event": "Kiribati bill would bar any future recognition of Taiwan",
-      "last_event_date": "2026-08-27",
-      "last_activity_type": "recognition switch",
-      "url": "https://www.rnz.co.nz/news/pacific/1150376/kiribati-considers-constitutional-change-to-cement-diplomatic-recognition-of-china",
-      "event_count": 2
+      "last_event": "NZ officials call Kiribati absence a boycott tied to Beijing",
+      "last_event_date": "2026-08-31",
+      "last_activity_type": "other",
+      "url": "https://www.thepost.co.nz/nz-news/361071265/nz-officials-say-pro-china-kiribati-boycotting-pacific-summit-organisers-blame-travel-difficulties",
+      "event_count": 3
     },
     "Tuvalu": {
       "last_event": "Forum struggles with missile dilemma",
@@ -65,11 +65,11 @@
       "event_count": 0
     },
     "Palau": {
-      "last_event": "New Zealand says its ties with its Realm countries remain strong and stable",
-      "last_event_date": "2026-08-28",
-      "last_activity_type": "security agreement",
-      "url": "https://www.rnz.co.nz/news/pacific/1164525/new-zealand-says-its-ties-with-its-realm-countries-remain-strong-and-stable",
-      "event_count": 2
+      "last_event": "Climate, missiles and fuel costs crowd the Koror agenda",
+      "last_event_date": "2026-08-31",
+      "last_activity_type": "senior visit",
+      "url": "https://www.theguardian.com/australia-news/commentisfree/2026/aug/31/pacific-islands-forum-palau-summit-climate-change-greatest-threat",
+      "event_count": 7
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,70 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "senior visit",
+      "headline": "Climate, missiles and fuel costs crowd the Koror agenda",
+      "url": "https://www.theguardian.com/australia-news/commentisfree/2026/aug/31/pacific-islands-forum-palau-summit-climate-change-greatest-threat",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Postcard from PIF: Pacific leaders gather as China looms",
+      "url": "https://www.aspistrategist.org.au/postcard-from-pif-pacific-leaders-gather-as-china-looms/",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Papua New Guinea",
+      "activity": "other",
+      "headline": "US ties biotech, food safety reform to PNG agri-export growth",
+      "url": "https://www.postcourier.com.pg/us-points-to-biotech-harmonised-food-safety-rules-to-boost-png-agri-exports-at-apec-summit/",
+      "section": "pacific_wire"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Kiribati",
+      "activity": "other",
+      "headline": "NZ officials call Kiribati absence a boycott tied to Beijing",
+      "url": "https://www.thepost.co.nz/nz-news/361071265/nz-officials-say-pro-china-kiribati-boycotting-pacific-summit-organisers-blame-travel-difficulties",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "CGTN: Forum 'must not become a loophole for Taiwan separatism'",
+      "url": "https://news.cgtn.com/news/2026-08-30/Pacific-Islands-Forum-must-not-become-a-loophole-for-Taiwan-separatism-1Q0bGAtRUfm/p.html",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Beijing's Taiwan fury linked to Pacific leaders chaos",
+      "url": "https://www.theaustralian.com.au/nation/beijings-taiwan-fury-linked-to-pacific-leaders-chaos/news-story/022d839e3ed5fd6a0ba1780dea975059",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Papua New Guinea",
+      "activity": "security agreement",
+      "headline": "Albanese's Pacific diplomacy meets 'geopolitical turmoil' in Palau",
+      "url": "https://www.smh.com.au/politics/federal/narco-subs-and-ballistic-missiles-pm-s-pacific-trip-a-swirl-of-geopolitical-turmoil-20260831-p60sxe.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "top_stories"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "US, Taiwan accuse China of coercive travel warning against Palau",
+      "url": "https://www.rnz.co.nz/news/pacific/1198494/us-and-taiwan-say-china-used-travel-advisory-to-undermine-palau",
+      "section": "top_stories"
+    },
     {
       "date": "2026-08-28",
       "country": "Solomon Islands",

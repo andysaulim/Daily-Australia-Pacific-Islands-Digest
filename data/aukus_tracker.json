@@ -74,10 +74,10 @@
     },
     {
       "workstream": "advanced cyber",
-      "status": "no recent reporting",
-      "note": null,
-      "source_url": null,
-      "last_seen": null
+      "status": "reported",
+      "note": "Politico: 'There should be a Pillar 3 in AUKUS: Polar Security'",
+      "source_url": "https://www.politico.com/news/2026/08/30/there-should-be-pillar-3-aukus-polar-security-01056234",
+      "last_seen": "2026-08-31"
     },
     {
       "workstream": "hypersonic and counter-hypersonic",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-08-31",
+      "headline": "Politico: 'There should be a Pillar 3 in AUKUS: Polar Security'",
+      "url": "https://www.politico.com/news/2026/08/30/there-should-be-pillar-3-aukus-polar-security-01056234",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-08-31",
       "headline": "Howard weighs in on ANZUS, AUKUS and Trump-era alliance doubts",

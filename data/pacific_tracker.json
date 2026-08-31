@@ -65,11 +65,11 @@
       "event_count": 0
     },
     "Palau": {
-      "last_event": "Climate, missiles and fuel costs crowd the Koror agenda",
+      "last_event": "Albanese warned he risks a 'bust-up' at Pacific Forum meeting",
       "last_event_date": "2026-08-31",
-      "last_activity_type": "senior visit",
-      "url": "https://www.theguardian.com/australia-news/commentisfree/2026/aug/31/pacific-islands-forum-palau-summit-climate-change-greatest-threat",
-      "event_count": 7
+      "last_activity_type": "other",
+      "url": "https://www.abc.net.au/news/2026-08-31/pacific-islands-forum-leaders-meeting-politically-charged/107095316",
+      "event_count": 10
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,30 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Albanese warned he risks a 'bust-up' at Pacific Forum meeting",
+      "url": "https://www.abc.net.au/news/2026-08-31/pacific-islands-forum-leaders-meeting-politically-charged/107095316",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Global Times: Forum should not become a stage for geopolitical rivalry",
+      "url": "https://www.globaltimes.cn/page/202608/1369472.shtml",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-08-31",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "US and Taiwan accuse China of weaponising travel advisory against Palau",
+      "url": "https://www.rnz.co.nz/news/pacific/1198494/us-and-taiwan-say-china-used-travel-advisory-to-undermine-palau",
+      "section": "top_stories"
+    },
     {
       "date": "2026-08-31",
       "country": "Palau",

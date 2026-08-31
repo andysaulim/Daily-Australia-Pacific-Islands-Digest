@@ -1076,6 +1076,42 @@ check("runs queue rather than overlap",
       _wf_doc["concurrency"]["group"] == "daily-brief"
       and _wf_doc["concurrency"]["cancel-in-progress"] is False)
 
+print("\n=== 14t. The external cron is documented correctly ===")
+# This is the step that actually fixes delivery, and the token advice is the
+# part a reader will act on literally, so it is worth pinning.
+_setup = Path("SETUP.md").read_text(encoding="utf-8")
+check("the dispatch endpoint matches the workflow file name",
+      "actions/workflows/daily-brief.yml/dispatches" in _setup)
+check("the body is the minimal one the workflow accepts",
+      '{"ref":"main"}' in _setup)
+check("a fine-grained token is what is recommended",
+      "fine-grained token, not a classic one" in _setup
+      and "Actions: Read and write" in _setup)
+check("the over-wide classic scope is warned against, not prescribed",
+      "every private repository" in _setup and "`public_repo` alone is enough" in _setup)
+check("the workflow scope is called out as unnecessary",
+      "`workflow` is NOT needed" in _setup)
+check("the response codes are documented", "204 No Content" in _setup
+      and "401" in _setup and "403" in _setup)
+check("expiry is treated as a real failure mode", "8c. When it expires" in _setup)
+check("SETUP no longer claims there are two Actions crons",
+      "two Actions crons at 7:30 and 9:00" not in _setup)
+check("SETUP counts the six slots the workflow actually has",
+      "six Actions crons" in _setup or "six slots" in _setup)
+# The token belongs at cron-job.org, not in GitHub Secrets. Nothing in either
+# workflow reads GH_PAT, so a copy stored there is exposure with no benefit.
+_wf_all = _wf + Path(".github/workflows/weekly-review.yml").read_text(encoding="utf-8")
+check("no workflow actually reads GH_PAT", "GH_PAT" not in _wf_all)
+check("SETUP says not to store it as a repository secret",
+      "deliberately not in that table" in _setup)
+_readme = Path("README.md").read_text(encoding="utf-8")
+check("README agrees it is not a repository secret",
+      "GH_PAT` is not a repository secret" in _readme)
+check("README no longer prescribes the wide classic scopes",
+      "`repo` and `workflow` scopes" not in _readme)
+check("README counts six fallback crons",
+      "six Actions cron entries" in _readme)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

@@ -115,7 +115,7 @@ cross-day memory, and the workflow commits them back after every run.
 ## 5. Add the secrets
 
 Repo → **Settings** → **Secrets and variables** → **Actions** → **New repository
-secret**. Five required, plus one only if you wire up the external cron:
+secret**. Five, and only five:
 
 | Name | Value |
 | --- | --- |
@@ -124,7 +124,12 @@ secret**. Five required, plus one only if you wire up the external cron:
 | `GMAIL_APP_PASS` | the 16-character app password |
 | `DIGEST_TO` | **your address only, for now.** Comma-separated when you widen it. |
 | `ALERT_TO` | your address. Failure alerts must never reach the distribution list. |
-| `GH_PAT` | **only if you set up the external cron in step 8.** The workflow itself no longer needs it: the Pages deploy and the double-send guard both run on the built-in `GITHUB_TOKEN`. |
+
+**`GH_PAT` is deliberately not in that table.** Nothing in either workflow
+reads it: the Pages deploy and the double-send guard both run on the built-in
+`GITHUB_TOKEN`. The step 8 token lives at cron-job.org and nowhere else. A
+token stored as a repository secret that nothing reads is exposure without
+benefit, so do not add it here.
 
 `DIGEST_TO` starting as just you is the whole point of the pilot in step 8. Widen
 it deliberately, not on day one.
@@ -231,19 +236,73 @@ brief that lands at 6:50 PM is not a morning brief, and worse, it writes those
 stories into the cross-day memory so the next morning's issue cannot re-run
 them. The external cron is the only thing that actually fixes this.
 
+### 8a. The token
+
+This is the one place a personal access token is genuinely needed: the dispatch
+fires from outside Actions, so it cannot use the built-in `GITHUB_TOKEN`.
+
+**Use a fine-grained token, not a classic one.** github.com -> Settings ->
+Developer settings -> Personal access tokens -> Fine-grained tokens ->
+Generate new token:
+
+- **Repository access:** Only select repositories ->
+  `Daily-Australia-Pacific-Islands-Digest`
+- **Permissions:** Repository permissions -> **Actions: Read and write**. That
+  is the only one. Metadata read-only is added automatically and cannot be
+  removed.
+- **Expiration:** set a reminder for the day before. See 8c.
+
+A classic token would work, but every classic scope that can dispatch a
+workflow is far wider than this job needs: `repo` grants read and write to the
+contents of every private repository on the account, to trigger one public
+workflow. If you must use a classic token, this repository is public, so
+`public_repo` alone is enough. `workflow` is NOT needed: that scope is for
+pushing changes to workflow files, not for running them.
+
+### 8b. The job
+
 At cron-job.org (free, and what the Korea brief uses), create a job:
 
 - **URL:** `https://api.github.com/repos/andysaulim/Daily-Australia-Pacific-Islands-Digest/actions/workflows/daily-brief.yml/dispatches`
 - **Method:** POST
 - **Headers:**
-  - `Authorization: Bearer <your GH_PAT>`
+  - `Authorization: Bearer <the token from 8a>`
   - `Accept: application/vnd.github+json`
   - `Content-Type: application/json`
 - **Body:** `{"ref":"main"}`
 - **Schedule:** 06:00 America/New_York, Monday to Friday
 
-A 204 back means it fired. The two Actions crons at 7:30 and 9:00 AM ET stay as
-they are; the guard stops them duplicating a successful dispatch.
+`{"ref":"main"}` is the whole body. The workflow's one input, `replace_today`,
+defaults to false, so omitting it is correct for the daily send.
+
+Test it before you trust it. From a terminal, with the token in a shell
+variable rather than typed into the command where it lands in your history:
+
+```bash
+read -rs GH_PAT                     # paste the token, press enter
+curl -i -X POST \
+  -H "Authorization: Bearer $GH_PAT" \
+  -H "Accept: application/vnd.github+json" \
+  https://api.github.com/repos/andysaulim/Daily-Australia-Pacific-Islands-Digest/actions/workflows/daily-brief.yml/dispatches \
+  -d '{"ref":"main"}'
+```
+
+**204 No Content** means it fired; check Actions for a new run. **401** is a bad
+or expired token. **403** is a token without Actions write. **404** usually
+means the token cannot see the repository, not that the workflow is missing.
+
+### 8c. When it expires
+
+A fine-grained token expires, and when it does the dispatch starts returning
+401 and simply stops running the brief. Nothing in this repository can detect
+that: from the workflow's side an absent dispatch is indistinguishable from a
+quiet morning.
+
+Two things make it visible. Turn on cron-job.org's failure notifications, which
+email you when a job stops returning 204. And put the expiry date in your
+calendar with a day's warning. The six Actions crons keep the brief alive
+meanwhile, at whatever hour GitHub feels like, which is the situation this step
+exists to end.
 
 ---
 

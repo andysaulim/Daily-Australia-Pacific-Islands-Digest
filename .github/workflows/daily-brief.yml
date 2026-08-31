@@ -2,10 +2,30 @@ name: Australia Chair Daily Brief
 
 on:
   schedule:
-    # Safety-net fallbacks only. The primary trigger is an external cron
-    # (cron-job.org) firing workflow_dispatch at 6:00 AM ET on weekdays.
-    # If that dispatch already succeeded today, these skip themselves.
-    - cron: '30 11 * * 1-5'  # 7:30 AM ET, first fallback
+    # Safety-net fallbacks. The intended primary trigger is an external cron
+    # (cron-job.org) firing workflow_dispatch at 6:00 AM ET on weekdays; see
+    # SETUP step 8. Until that exists these ARE the delivery mechanism, which
+    # they were never meant to be.
+    #
+    # Six slots, not two, because GitHub's scheduler does not keep time.
+    # Measured on this repo:
+    #   26 Aug   11:30 slot fired 11:52 (+22m),  13:00 slot fired 13:54 (+54m)
+    #   27 Aug   11:30 slot fired 21:03 (+9.6h), 13:00 slot fired 22:50 (+9.8h)
+    #   28 Aug   neither slot had fired 3h after the first was due
+    # A 9.6 hour delay turns a morning brief into an evening one. Spreading the
+    # attempts does not make any single slot punctual, but it means one late
+    # slot no longer decides the day: the guard runs the first that arrives and
+    # every later one costs about eight seconds to skip itself.
+    #
+    # Times are UTC and GitHub does NOT adjust for daylight saving. These are
+    # set for EDT (UTC-4), so 10:00 is 6:00 AM ET. From November they land an
+    # hour earlier in ET, at 5:00 AM. Shift them an hour later for EST if that
+    # matters; the guard makes an early run harmless either way.
+    - cron: '0 10 * * 1-5'   # 6:00 AM ET, the intended hour
+    - cron: '30 10 * * 1-5'  # 6:30 AM ET
+    - cron: '0 11 * * 1-5'   # 7:00 AM ET
+    - cron: '30 11 * * 1-5'  # 7:30 AM ET
+    - cron: '0 12 * * 1-5'   # 8:00 AM ET
     - cron: '0 13 * * 1-5'   # 9:00 AM ET, last resort
   workflow_dispatch:
     inputs:

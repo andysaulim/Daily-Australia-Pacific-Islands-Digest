@@ -270,10 +270,29 @@ At cron-job.org (free, and what the Korea brief uses), create a job:
   - `Accept: application/vnd.github+json`
   - `Content-Type: application/json`
 - **Body:** `{"ref":"main"}`
-- **Schedule:** 06:00 America/New_York, Monday to Friday
+- **Schedule:** 06:00, Monday to Friday, timezone **America/New_York**
+
+Most of that lives under the job's **Advanced** section: request method,
+headers, and body. Leave **HTTP authentication** (the user and password pair)
+empty; that is Basic auth, and the token belongs in the `Authorization` header
+and nowhere else. The default timeout is fine, since the dispatch returns 204
+immediately and the workflow then runs on its own.
+
+Set the timezone on the job rather than converting to UTC yourself.
+cron-job.org handles daylight saving; GitHub's cron does not, which is why the
+Actions fallbacks shift an hour in November and this job will not.
+
+Turn on two things while you are in there. **Save responses**, so a failure
+tells you whether GitHub said 401 or 403 rather than just going red. And
+**failure notifications**, which is how you find out the token expired: see 8c.
 
 `{"ref":"main"}` is the whole body. The workflow's one input, `replace_today`,
 defaults to false, so omitting it is correct for the daily send.
+
+The token sits in cron-job.org's own storage in a form their UI can display
+back to you. That is the trade for not running your own scheduler, and it is
+why 8a scopes the token to Actions on this one public repository: if it leaks,
+what it can do is trigger this brief.
 
 Test it before you trust it. From a terminal, with the token in a shell
 variable rather than typed into the command where it lands in your history:

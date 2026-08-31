@@ -1094,6 +1094,16 @@ check("the workflow scope is called out as unnecessary",
 check("the response codes are documented", "204 No Content" in _setup
       and "401" in _setup and "403" in _setup)
 check("expiry is treated as a real failure mode", "8c. When it expires" in _setup)
+check("the schedule is set in ET rather than hand-converted to UTC",
+      "timezone **America/New_York**" in _setup)
+check("the DST advantage over GitHub cron is stated",
+      "cron-job.org handles daylight saving" in _setup)
+check("Basic auth is called out as the wrong field",
+      "HTTP authentication" in _setup and "Basic auth" in _setup)
+check("the two settings worth enabling are named",
+      "Save responses" in _setup and "failure notifications" in _setup)
+check("where the token actually rests is stated plainly",
+      "cron-job.org's own storage" in _setup)
 check("SETUP no longer claims there are two Actions crons",
       "two Actions crons at 7:30 and 9:00" not in _setup)
 check("SETUP counts the six slots the workflow actually has",

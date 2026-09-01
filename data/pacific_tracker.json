@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-08-31",
+  "last_updated": "2026-09-01",
   "countries": {
     "Papua New Guinea": {
       "last_event": "US ties biotech, food safety reform to PNG agri-export growth",
@@ -65,11 +65,11 @@
       "event_count": 0
     },
     "Palau": {
-      "last_event": "Albanese warned he risks a 'bust-up' at Pacific Forum meeting",
-      "last_event_date": "2026-08-31",
+      "last_event": "Albanese pushes back against China over Taiwan warning at Pacific Islands Forum",
+      "last_event_date": "2026-09-01",
       "last_activity_type": "other",
-      "url": "https://www.abc.net.au/news/2026-08-31/pacific-islands-forum-leaders-meeting-politically-charged/107095316",
-      "event_count": 10
+      "url": "https://www.smh.com.au/politics/federal/there-will-be-consequences-china-issues-warning-over-taiwan-s-pacific-role-20260831-p60t7a.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "event_count": 11
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-01",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Albanese pushes back against China over Taiwan warning at Pacific Islands Forum",
+      "url": "https://www.smh.com.au/politics/federal/there-will-be-consequences-china-issues-warning-over-taiwan-s-pacific-role-20260831-p60t7a.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "top_stories"
+    },
     {
       "date": "2026-08-31",
       "country": "Palau",

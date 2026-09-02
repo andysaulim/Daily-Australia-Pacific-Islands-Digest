@@ -1,11 +1,11 @@
 [
   {
-    "date": "2026-09-01",
-    "headline_re": "China warns of 'consequences' over Taiwan's PIF role · Solomon Islands PM flies home mid-summit · US and NZ fund Cook Islands port · Peters-Luxon split over Paris Agreement · AU bond yields hit 15-year high",
+    "date": "2026-09-02",
+    "headline_re": "PIF fractures over Taiwan, five leaders absent · US and NZ fund $60 million Cook Islands port · Canberra pledges $600 million Pacific drug plan · Australian GDP surprise fuels RBA hike bets · RBNZ delivers back-to-back hike",
     "top_stories_count": 4,
-    "pacific_count": 7,
-    "nz_count": 1,
-    "word_count": 1731,
-    "url": "digest_2026-09-01.html"
+    "pacific_count": 10,
+    "nz_count": 2,
+    "word_count": 1828,
+    "url": "digest_2026-09-02.html"
   }
 ]

@@ -1198,6 +1198,51 @@ check("a browser that will not install cannot fail the run",
       _wf.split("Install Chromium for PDF export")[1].split("- name:")[0]
       .count("continue-on-error: true") == 1)
 
+print("\n=== 14v. AUKUS collection and topic-vs-section counting ===")
+# aukus_watch ran empty five issues running. The cause was collection, not the
+# model: 9 AUKUS-mentioning items out of 2,284 collected across seven issues,
+# because every AUKUS query in the feed set was scoped to one masthead.
+check("AUKUS has a topic feed, not only outlet-scoped queries",
+      "AUKUS (wire)" in collect.TIER1_FEEDS)
+check("the topic feed asks Google News for AUKUS across all publishers",
+      collect.TIER1_FEEDS["AUKUS (wire)"].endswith("q=AUKUS&hl=en-AU&gl=AU&ceid=AU:en"))
+check("a submarine-programme feed exists too",
+      "AUKUS submarines (wire)" in collect.TIER1_FEEDS)
+check("both are tier 1, where the daily corpus comes from",
+      {"AUKUS (wire)", "AUKUS submarines (wire)"} <= set(collect.TIER1_FEEDS))
+
+# The gate was dropping programme copy that never names the country.
+_gate = lambda t: collect._is_region_related(
+    {"title": t, "summary": "", "source": "Defense News", "url": "http://x"})
+for _t in ("Submarine industrial base funding boosted",
+           "SSN-AUKUS design milestone reached at Barrow-in-Furness",
+           "Collins-class life-of-type extension slips again",
+           "Hunter-class frigate build rate questioned"):
+    check(f"kept: {_t[:44]}", _gate(_t))
+# ...without becoming a magnet for every submarine story on earth.
+for _t in ("Russia launches new nuclear-powered submarine",
+           "Chinese submarine spotted in the Taiwan Strait",
+           "India commissions its third ballistic missile submarine"):
+    check(f"still dropped: {_t[:40]}", not _gate(_t))
+
+# Topic coverage is counted by category, because section counts and mandate
+# coverage come apart whenever a topic is big enough to lead the brief.
+_d = {"top_stories": [{"category_tag": "China-Pacific", "headline": "a", "url": "u"},
+                      {"category_tag": "China-Pacific", "headline": "b", "url": "u"}],
+      "china_in_the_pacific": [],
+      "pacific_wire": [{"category_tag": "Pacific-Politics", "headline": "c", "url": "u"}]}
+_tc = run_mod._topic_counts(_d)
+check("a topic that led the brief is not counted as zero",
+      len(run_mod._real_items(_d, "china_in_the_pacific")) == 0
+      and _tc.get("China-Pacific") == 2)
+check("counts span every section", _tc.get("Pacific-Politics") == 1)
+check("stand-ins are not counted as coverage",
+      run_mod._topic_counts({"pacific_wire": [
+          {"stand_in": True, "category_tag": "Pacific-Politics"}]}) == {}
+      or "Pacific-Politics" not in run_mod._topic_counts(
+          {"pacific_wire": [{"stand_in": True, "category_tag": "Pacific-Politics"}]}))
+check("metrics record it", '"topic_counts": _topic_counts(digest_data)' in _rsrc_run)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

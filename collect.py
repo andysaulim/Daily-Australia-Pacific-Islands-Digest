@@ -149,6 +149,16 @@ TIER1_FEEDS = {
         "site:la1ere.francetvinfo.fr+%22Nouvelle-Cal%C3%A9donie%22"),
     "Pacific Islands (wire)": _gnews(
         "%22Pacific+Islands%22+OR+%22Pacific+Islands+Forum%22+diplomacy+OR+security+OR+agreement"),
+    # AUKUS as a TOPIC, not as a term inside somebody else's site: query.
+    # Every other AUKUS query here is scoped to one masthead, so the brief
+    # could only find AUKUS news on the days the WSJ or Breaking Defense
+    # happened to run it. Across the first seven issues that produced 9
+    # AUKUS-mentioning items out of 2,284 collected, and aukus_watch ran
+    # empty five issues in a row. This is the Pacific Islands (wire)
+    # pattern applied to the beat the brief is named for.
+    "AUKUS (wire)":           _gnews("AUKUS"),
+    "AUKUS submarines (wire)": _gnews(
+        "AUKUS+OR+%22SSN-AUKUS%22+submarine+Australia+OR+%22submarine+industrial+base%22"),
 
     # ── Wires and international correspondents ───────────────────────────
     "Reuters":                _gnews(f"({_REGION_Q})+site:reuters.com"),
@@ -259,6 +269,15 @@ AUSPAC_KEYWORDS = re.compile(
     r"|angus taylor|james paterson|ted o'brien|jane hume|andrew hastie"
     r"|virginia-class|talisman sabre|hmas |osborne|henderson shipyard"
     r"|submarine rotational force|\brba\b|reserve bank of australia"
+    # AUKUS programme vocabulary. Defence trade copy writes about the
+    # programme without naming the country, so "Submarine industrial base
+    # funding boosted" was being dropped at the gate as off-region. Each
+    # of these names one specific boat class, yard or programme, which is
+    # why bare "submarine" and "nuclear-powered" are NOT here: they would
+    # pull in every Russian and Chinese boat story on earth.
+    r"|ssn-aukus|submarine industrial base|collins-class|collins class"
+    r"|hunter-class|astute-class|barrow-in-furness|aukus pillar"
+    r"|defence strategic review|guided weapons and explosive ordnance"
     # New Zealand
     r"|new zealand|aotearoa|wellington|\bnzdf\b|anzmin|christopher luxon"
     r"|winston peters|judith collins|five eyes"

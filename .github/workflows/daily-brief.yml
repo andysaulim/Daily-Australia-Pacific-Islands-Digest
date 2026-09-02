@@ -116,6 +116,14 @@ jobs:
         if: steps.guard.outputs.should_run == 'true'
         run: pip install -r requirements.txt
 
+      # Chromium for the PDF export. continue-on-error because a browser
+      # that will not install is a missing convenience, not a reason to skip
+      # the morning brief: pdf_export.py checks and degrades on its own.
+      - name: Install Chromium for PDF export
+        if: steps.guard.outputs.should_run == 'true'
+        continue-on-error: true
+        run: python -m playwright install --with-deps chromium
+
       - name: Generate and send the brief
         if: steps.guard.outputs.should_run == 'true'
         id: send

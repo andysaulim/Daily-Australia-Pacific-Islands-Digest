@@ -717,6 +717,24 @@ def _postprocess_digest(digest_data: dict, payload: dict | None = None) -> tuple
 # ARCHIVE LANDING PAGE
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _topic_counts(digest: dict) -> dict:
+    """{category: count} across every section, for the twelve-topic mandate.
+
+    Section counts answer "did this section fill", which is a layout question.
+    This answers "was the topic covered", which is the mandate question, and
+    the two come apart whenever a topic is important enough to lead.
+    """
+    counts = {}
+    for section in _ALL_ITEM_SECTIONS:
+        for item in (digest.get(section) or []):
+            if not isinstance(item, dict) or _is_stand_in(item):
+                continue
+            cat = (item.get("category_tag") or item.get("category") or "").strip()
+            if cat:
+                counts[cat] = counts.get(cat, 0) + 1
+    return dict(sorted(counts.items()))
+
+
 def _build_index_html() -> str:
     return """<!DOCTYPE html>
 <html lang="en">
@@ -1045,6 +1063,14 @@ def main():
             "new_zealand": len(_real_items(digest_data, "new_zealand")),
             "nz_stand_in": _has_stand_in(digest_data, "new_zealand"),
             "china_in_the_pacific": len(_real_items(digest_data, "china_in_the_pacific")),
+            # Topic coverage counted by CATEGORY, not by which section an
+            # item landed in. The section counts above read as coverage
+            # and are not: across the first seven issues 19 items carried
+            # a China-in-the-Pacific category and only 4 sat in that
+            # section, because 9 of them were the biggest story of the day
+            # and correctly led the brief. "china_in_the_pacific: 0" then
+            # reads as a hole on a morning the topic ran at the top.
+            "topic_counts": _topic_counts(digest_data),
             "tier1_input": len(payload.get("tier1", [])),
             "tier_counts": {t: len(payload.get(t) or [])
                             for t in ("tier1", "tier2", "tier3", "tier4")},

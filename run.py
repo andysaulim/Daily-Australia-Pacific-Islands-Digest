@@ -735,6 +735,9 @@ def _build_index_html() -> str:
   .rule { height:3px; background:linear-gradient(90deg,#17798C 0%,#1B2A4A 100%); margin:24px 0; }
   a.cta { display:inline-block; background:#0D1B2A; color:#fff; padding:12px 22px;
           border-radius:3px; text-decoration:none; font-size:14px; }
+  a.cta.alt { background:#fff; color:#0D1B2A; border:1px solid #C8CDD2; margin-left:8px; }
+  .pdf { color:#7F8C8D; font-size:12px; text-decoration:none; margin-left:10px; }
+  .pdf:hover { color:#17798C; }
   ul { list-style:none; margin-top:24px; }
   li { padding:10px 0; border-bottom:1px solid #E4E6E8; font-size:14px; }
   li a { color:#1B2A4A; text-decoration:none; border-bottom:1px solid #17798C; }
@@ -747,7 +750,7 @@ def _build_index_html() -> str:
   <h1>Australia Chair Daily Brief</h1>
   <div class="sub">Australia &middot; New Zealand &middot; the Pacific Islands</div>
   <div class="rule"></div>
-  <p><a class="cta" href="latest.html">Read the latest issue</a></p>
+  <p><a class="cta" href="latest.html">Read the latest issue</a><a class="cta alt" href="latest.pdf">Download PDF</a></p>
   <ul id="archive"></ul>
 </div>
 <script>
@@ -756,7 +759,9 @@ fetch('archive.json').then(r => r.json()).then(entries => {
   entries.sort((a, b) => b.date.localeCompare(a.date)).forEach(e => {
     const li = document.createElement('li');
     li.innerHTML = '<span class="date">' + e.date + '</span> &nbsp; ' +
-                   '<a href="' + e.url + '">' + (e.headline_re || 'Issue') + '</a>';
+                   '<a href="' + e.url + '">' + (e.headline_re || 'Issue') + '</a>' +
+                   '<a class="pdf" href="' + e.url.replace(/\.html$/, '.pdf') +
+                   '">PDF</a>';
     list.appendChild(li);
   });
 }).catch(() => {});
@@ -952,6 +957,13 @@ def main():
     web_base = os.environ.get("WEB_URL", "")
     if web_base:
         digest_data["web_url"] = web_base.rstrip("/") + "/latest.html"
+        # Dated rather than latest.pdf, because a reader who opens the
+        # link a week later should get the issue they were sent, not
+        # whatever shipped this morning. The file is written below, a
+        # moment after this URL is baked into the email; Pages publishes
+        # it in the same run, seconds later.
+        _slug = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
+        digest_data["pdf_url"] = f'{web_base.rstrip("/")}/digest_{_slug}.pdf'
 
     # Market figures come from the collector, never from the model, so they are
     # carried across here rather than trusted from the generated JSON. If the
@@ -991,6 +1003,21 @@ def main():
     manifest_path.write_text(json.dumps(entries, ensure_ascii=False, indent=2),
                              encoding="utf-8")
     (archive_dir / "index.html").write_text(_build_index_html(), encoding="utf-8")
+
+    # PDF, best-effort. Generated from the archived HTML rather than
+    # re-rendered, so the file a reader downloads is byte-for-byte the
+    # issue that was sent. Wrapped because nothing here is worth losing
+    # the brief over: a missing PDF is a missing convenience, and the
+    # link in the email simply 404s until the next run.
+    try:
+        import pdf_export
+        _src = archive_dir / f"digest_{date_slug}.html"
+        if pdf_export.to_pdf(_src, archive_dir / f"digest_{date_slug}.pdf"):
+            import shutil
+            shutil.copyfile(archive_dir / f"digest_{date_slug}.pdf",
+                            archive_dir / "latest.pdf")
+    except Exception as e:                              # noqa: BLE001
+        print(f"  !  PDF export failed, continuing without it: {e}")
 
     # ── Step 6: Send ─────────────────────────────────────────────────────
     if not validation_passed:

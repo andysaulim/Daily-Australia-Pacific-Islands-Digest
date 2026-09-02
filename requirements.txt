@@ -5,6 +5,12 @@
 anthropic>=1.0.0
 feedparser>=6.0.0
 requests>=2.31.0
+# PDF export. Chromium rather than a pure-Python renderer because the issue
+# is email HTML, nested presentational tables and inline styles, which
+# WeasyPrint and friends lay out badly. pdf_export.py degrades to no PDF if
+# this is absent, so the brief still sends on a host without a browser.
+playwright>=1.40.0
+
 # httpx is NOT pinned here on purpose. anthropic 1.x brings its own backend
 # (httpx2) and digest.py resolves whichever is present. A direct httpx pin
 # invites the mismatch where code catches httpx exceptions the SDK never raises.

@@ -1131,6 +1131,73 @@ check("README no longer prescribes the wide classic scopes",
 check("README counts six fallback crons",
       "six Actions cron entries" in _readme)
 
+print("\n=== 14u. Read online and download PDF ===")
+import pdf_export
+# Both links are relative to a published archive, so both are gated on WEB_URL:
+# without Pages there is nothing on the end of either.
+_hp = render_mod.render({"re_line": "x", "morning_memo": ["a", "b", "c"],
+                         "web_url": "https://example.org/latest.html",
+                         "pdf_url": "https://example.org/digest_2026-09-02.pdf"})
+check("the read-online link renders", "Read online" in _hp)
+check("the PDF link renders", "Download PDF" in _hp
+      and "digest_2026-09-02.pdf" in _hp)
+_bare = render_mod.render({"re_line": "x", "morning_memo": ["a", "b", "c"]})
+check("neither renders without WEB_URL",
+      "Read online" not in _bare and "Download PDF" not in _bare)
+_web_only = render_mod.render({"re_line": "x", "morning_memo": ["a", "b", "c"],
+                               "web_url": "https://example.org/latest.html"})
+check("the bar survives with no PDF url", "Read online" in _web_only
+      and "Download PDF" not in _web_only)
+
+# The print rules are what decide whether the PDF reads as a document or a
+# long screenshot, and they are invisible until someone prints it.
+check("a print stylesheet exists", "@media print" in _hp)
+check("the navigation bar is marked no-print", 'class="sec no-print"' in _hp)
+_pr = _hp.split("@media print")[1].split("}}")[0] if "@media print" in _hp else ""
+_pr = _hp[_hp.index("@media print"):_hp.index("@media print") + 900]
+check("no-print is actually hidden in print", ".no-print" in _pr
+      and "display:none" in _pr)
+check("items are not split across a page break",
+      "page-break-inside:avoid" in _pr and "story-card" in _pr)
+check("the frame goes full width on paper",
+      "max-width:100% !important" in _pr and "box-shadow:none" in _pr)
+
+# run.py wiring
+check("pdf_url is dated, not latest.pdf",
+      'digest_{_slug}.pdf' in _rsrc_run)
+check("the PDF is generated from the archived HTML, not re-rendered",
+      'pdf_export.to_pdf(_src' in _rsrc_run and 'digest_{date_slug}.html' in _rsrc_run)
+check("a PDF failure cannot block the send",
+      _rsrc_run.index("import pdf_export")
+      < _rsrc_run.index("Skipping email due to critical")
+      and "PDF export failed, continuing without it" in _rsrc_run)
+check("latest.pdf is kept alongside the dated file", 'archive_dir / "latest.pdf"' in _rsrc_run)
+
+# pdf_export degrades rather than raising, on every path.
+check("a missing source file returns False, not an exception",
+      pdf_export.to_pdf("/nonexistent/nope.html", "/tmp/never.pdf") is False)
+check("it reports whether a browser is even available",
+      isinstance(pdf_export.available(), bool))
+_psrc = inspect.getsource(pdf_export)
+check("backgrounds are printed, or the navy header comes out white",
+      "print_background=True" in _psrc)
+check("an implausibly small file is treated as a failure",
+      "st_size < 1000" in _psrc)
+check("a preinstalled browser can be pointed at", "CHROMIUM_PATH" in _psrc)
+
+# The archive index offers it too.
+_idx = run_mod._build_index_html()
+check("the landing page offers the latest PDF", "latest.pdf" in _idx)
+check("each archived issue gets a PDF link", ".pdf" in _idx and "class=\"pdf\"" in _idx)
+
+_reqs = Path("requirements.txt").read_text(encoding="utf-8")
+check("playwright is a declared dependency", "playwright>=" in _reqs)
+check("the workflow installs Chromium",
+      "playwright install --with-deps chromium" in _wf)
+check("a browser that will not install cannot fail the run",
+      _wf.split("Install Chromium for PDF export")[1].split("- name:")[0]
+      .count("continue-on-error: true") == 1)
+
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a
 # 400 on the current models) and must not ship the previous output twice.

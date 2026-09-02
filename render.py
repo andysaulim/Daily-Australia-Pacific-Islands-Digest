@@ -205,10 +205,19 @@ def render(digest: dict) -> str:
     sections = []
 
     # ── 0. View in browser ───────────────────────────────────────────────
+    # The bar is also the only place the PDF is advertised. It renders only
+    # when WEB_URL is set, because both links are relative to a published
+    # archive: without Pages there is nothing on the end of either.
+    pdf_url = digest.get("pdf_url", "")
     if web_url:
+        pdf_link = ""
+        if pdf_url:
+            pdf_link = (f'&nbsp; &middot; &nbsp;<a href="{_esc(pdf_url)}" '
+                        f'style="color:{TEAL};text-decoration:none;">'
+                        f'Download PDF &#8595;</a>')
         sections.append(f"""
-        <div style="background:#F0F0F0;padding:6px 32px;text-align:center;font-size:11px;color:#888;" class="sec">
-          Email not rendering? <a href="{_esc(web_url)}" style="color:{TEAL};text-decoration:none;">Read online &#8594;</a>
+        <div style="background:#F0F0F0;padding:6px 32px;text-align:center;font-size:11px;color:#888;" class="sec no-print">
+          Email not rendering? <a href="{_esc(web_url)}" style="color:{TEAL};text-decoration:none;">Read online &#8594;</a>{pdf_link}
         </div>""")
 
     # ── 1. Header ────────────────────────────────────────────────────────
@@ -671,6 +680,23 @@ def _shell(body: str, date_str: str) -> str:
       .wrapper {{ width:100% !important; }}
       .sec, .footer {{ padding:14px 20px !important; }}
       h1 {{ font-size:21px !important; }}
+    }}
+
+    @media print {{
+      /* The PDF is generated from this same HTML, so the print rules are what
+         decide whether it reads as a document or a long screenshot. */
+      body {{ background:#FFFFFF !important; }}
+      .wrapper {{ width:100% !important; max-width:100% !important;
+                  box-shadow:none !important; }}
+      /* The read-online bar and the back-to-top links are navigation. On
+         paper they are dead text. */
+      .no-print {{ display:none !important; }}
+      /* An item split across a page break loses its source line, which is the
+         part that makes it checkable. */
+      .story-card, .cal-table tr {{ page-break-inside:avoid;
+                                    break-inside:avoid; }}
+      h1, h2, h3 {{ page-break-after:avoid; break-after:avoid; }}
+      a {{ text-decoration:none !important; }}
     }}
 
     @media (prefers-color-scheme: dark) {{

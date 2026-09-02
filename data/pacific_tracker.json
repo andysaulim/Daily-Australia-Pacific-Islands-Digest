@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-01",
+  "last_updated": "2026-09-02",
   "countries": {
     "Papua New Guinea": {
       "last_event": "US ties biotech, food safety reform to PNG agri-export growth",
@@ -9,11 +9,11 @@
       "event_count": 2
     },
     "Fiji": {
-      "last_event": "Chinese missile landing near Tuvalu's EEZ leaves Forum ministers without a joint statement",
-      "last_event_date": "2026-08-25",
+      "last_event": "Five Pacific leaders skip PIF as China-Taiwan rift dominates Palau summit",
+      "last_event_date": "2026-09-02",
       "last_activity_type": "senior visit",
-      "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
-      "event_count": 1
+      "url": "https://www.rnz.co.nz/news/political/1215738/christopher-luxon-denies-pacific-islands-forum-s-clout-weakened-by-five-leaders-absence",
+      "event_count": 2
     },
     "Solomon Islands": {
       "last_event": "Taiwan Returns to PIF Stage Despite Chinese Pressure as Cross-Strait Diplomatic Rivalry Resurfaces in Pacific",
@@ -65,11 +65,11 @@
       "event_count": 0
     },
     "Palau": {
-      "last_event": "Albanese pushes back against China over Taiwan warning at Pacific Islands Forum",
-      "last_event_date": "2026-09-01",
+      "last_event": "ASPI: China backs down from threat after Pacific leaders react",
+      "last_event_date": "2026-09-02",
       "last_activity_type": "other",
-      "url": "https://www.smh.com.au/politics/federal/there-will-be-consequences-china-issues-warning-over-taiwan-s-pacific-role-20260831-p60t7a.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
-      "event_count": 11
+      "url": "https://www.aspistrategist.org.au/postcard-from-pif-china-backs-down-from-threat-after-pacific-leaders-react/",
+      "event_count": 12
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-02",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "ASPI: China backs down from threat after Pacific leaders react",
+      "url": "https://www.aspistrategist.org.au/postcard-from-pif-china-backs-down-from-threat-after-pacific-leaders-react/",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-09-02",
+      "country": "Fiji",
+      "activity": "senior visit",
+      "headline": "Five Pacific leaders skip PIF as China-Taiwan rift dominates Palau summit",
+      "url": "https://www.rnz.co.nz/news/political/1215738/christopher-luxon-denies-pacific-islands-forum-s-clout-weakened-by-five-leaders-absence",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-01",
       "country": "Palau",

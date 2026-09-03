@@ -1,11 +1,11 @@
 [
   {
-    "date": "2026-09-02",
-    "headline_re": "PIF fractures over Taiwan, five leaders absent · US and NZ fund $60 million Cook Islands port · Canberra pledges $600 million Pacific drug plan · Australian GDP surprise fuels RBA hike bets · RBNZ delivers back-to-back hike",
-    "top_stories_count": 4,
-    "pacific_count": 10,
+    "date": "2026-09-03",
+    "headline_re": "PIF split over China missile condemnation · Marles, Hegseth flag bigger US force posture in Australia · Solomon Islands no-confidence vote set for Sept 7 · Peters holds 1992 Taiwan protocol for NZ-hosted 2027 PIF · US pledges $150 million Pacific aid package",
+    "top_stories_count": 3,
+    "pacific_count": 6,
     "nz_count": 2,
-    "word_count": 1828,
-    "url": "digest_2026-09-02.html"
+    "word_count": 1752,
+    "url": "digest_2026-09-03.html"
   }
 ]

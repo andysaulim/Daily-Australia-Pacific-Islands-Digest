@@ -15,6 +15,9 @@
   .rule { height:3px; background:linear-gradient(90deg,#17798C 0%,#1B2A4A 100%); margin:24px 0; }
   a.cta { display:inline-block; background:#0D1B2A; color:#fff; padding:12px 22px;
           border-radius:3px; text-decoration:none; font-size:14px; }
+  a.cta.alt { background:#fff; color:#0D1B2A; border:1px solid #C8CDD2; margin-left:8px; }
+  .pdf { color:#7F8C8D; font-size:12px; text-decoration:none; margin-left:10px; }
+  .pdf:hover { color:#17798C; }
   ul { list-style:none; margin-top:24px; }
   li { padding:10px 0; border-bottom:1px solid #E4E6E8; font-size:14px; }
   li a { color:#1B2A4A; text-decoration:none; border-bottom:1px solid #17798C; }
@@ -27,7 +30,7 @@
   <h1>Australia Chair Daily Brief</h1>
   <div class="sub">Australia &middot; New Zealand &middot; the Pacific Islands</div>
   <div class="rule"></div>
-  <p><a class="cta" href="latest.html">Read the latest issue</a></p>
+  <p><a class="cta" href="latest.html">Read the latest issue</a><a class="cta alt" href="latest.pdf">Download PDF</a></p>
   <ul id="archive"></ul>
 </div>
 <script>
@@ -36,7 +39,9 @@ fetch('archive.json').then(r => r.json()).then(entries => {
   entries.sort((a, b) => b.date.localeCompare(a.date)).forEach(e => {
     const li = document.createElement('li');
     li.innerHTML = '<span class="date">' + e.date + '</span> &nbsp; ' +
-                   '<a href="' + e.url + '">' + (e.headline_re || 'Issue') + '</a>';
+                   '<a href="' + e.url + '">' + (e.headline_re || 'Issue') + '</a>' +
+                   '<a class="pdf" href="' + e.url.replace(/\.html$/, '.pdf') +
+                   '">PDF</a>';
     list.appendChild(li);
   });
 }).catch(() => {});

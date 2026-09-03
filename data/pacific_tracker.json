@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-02",
+  "last_updated": "2026-09-03",
   "countries": {
     "Papua New Guinea": {
       "last_event": "US ties biotech, food safety reform to PNG agri-export growth",
@@ -9,11 +9,11 @@
       "event_count": 2
     },
     "Fiji": {
-      "last_event": "Five Pacific leaders skip PIF as China-Taiwan rift dominates Palau summit",
-      "last_event_date": "2026-09-02",
-      "last_activity_type": "senior visit",
-      "url": "https://www.rnz.co.nz/news/political/1215738/christopher-luxon-denies-pacific-islands-forum-s-clout-weakened-by-five-leaders-absence",
-      "event_count": 2
+      "last_event": "Rabuka denies China influenced decision to skip PIF summit",
+      "last_event_date": "2026-09-03",
+      "last_activity_type": "other",
+      "url": "https://fijisun.com.fj/news/nation/pm-rabuka-defends-forum-absence",
+      "event_count": 3
     },
     "Solomon Islands": {
       "last_event": "Taiwan Returns to PIF Stage Despite Chinese Pressure as Cross-Strait Diplomatic Rivalry Resurfaces in Pacific",
@@ -44,11 +44,11 @@
       "event_count": 0
     },
     "Kiribati": {
-      "last_event": "NZ officials call Kiribati absence a boycott tied to Beijing",
-      "last_event_date": "2026-08-31",
+      "last_event": "Beijing accuses PIF host Palau of 'hype' over missile test criticism",
+      "last_event_date": "2026-09-03",
       "last_activity_type": "other",
-      "url": "https://www.thepost.co.nz/nz-news/361071265/nz-officials-say-pro-china-kiribati-boycotting-pacific-summit-organisers-blame-travel-difficulties",
-      "event_count": 3
+      "url": "https://www.reuters.com/world/china/chair-pacific-leaders-meeting-urges-united-front-china-missile-test-2026-09-03/",
+      "event_count": 5
     },
     "Tuvalu": {
       "last_event": "Forum struggles with missile dilemma",
@@ -65,11 +65,11 @@
       "event_count": 0
     },
     "Palau": {
-      "last_event": "ASPI: China backs down from threat after Pacific leaders react",
-      "last_event_date": "2026-09-02",
-      "last_activity_type": "other",
-      "url": "https://www.aspistrategist.org.au/postcard-from-pif-china-backs-down-from-threat-after-pacific-leaders-react/",
-      "event_count": 12
+      "last_event": "Taiwan's foreign minister thanks Palau for rare PIF appearance",
+      "last_event_date": "2026-09-03",
+      "last_activity_type": "senior visit",
+      "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/09/02/2003863542",
+      "event_count": 14
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,46 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-03",
+      "country": "Palau",
+      "activity": "senior visit",
+      "headline": "Taiwan's foreign minister thanks Palau for rare PIF appearance",
+      "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/09/02/2003863542",
+      "section": "primary_documents"
+    },
+    {
+      "date": "2026-09-03",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "State Department ties $150 million Pacific package to Taiwan-partnered Palau projects",
+      "url": "https://www.taipeitimes.com/News/front/archives/2026/09/03/2003863594",
+      "section": "primary_documents"
+    },
+    {
+      "date": "2026-09-03",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Rabuka denies China influenced decision to skip PIF summit",
+      "url": "https://fijisun.com.fj/news/nation/pm-rabuka-defends-forum-absence",
+      "section": "pacific_wire"
+    },
+    {
+      "date": "2026-09-03",
+      "country": "Kiribati",
+      "activity": "other",
+      "headline": "Beijing accuses PIF host Palau of 'hype' over missile test criticism",
+      "url": "https://www.reuters.com/world/china/chair-pacific-leaders-meeting-urges-united-front-china-missile-test-2026-09-03/",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-09-03",
+      "country": "Kiribati",
+      "activity": "senior visit",
+      "headline": "Australia and Palau press PIF for condemnation of China's missile test, Kiribati and Nauru resist",
+      "url": "https://www.smh.com.au/politics/federal/no-respect-albanese-blasts-china-missile-testing-rejects-us-comparison-20260903-p60u3c.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-02",
       "country": "Palau",

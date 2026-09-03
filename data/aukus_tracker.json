@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-08-31",
+  "last_updated": "2026-09-03",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-03",
+      "headline": "Former officials warn AUKUS exposes Australia to great-power war without a veto",
+      "url": "https://www.smh.com.au/politics/federal/aukus-makes-australia-a-nuclear-target-top-experts-warn-20260902-p60tnk.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-09-03",
+      "headline": "Marles, Hegseth flag bigger US military presence on Australian soil",
+      "url": "https://www.abc.net.au/news/2026-09-03/federal-politics-us-military-presence-in-australia-set-to-grow/107111352",
+      "section": "top_stories"
+    },
     {
       "date": "2026-08-31",
       "headline": "Politico: 'There should be a Pillar 3 in AUKUS: Polar Security'",

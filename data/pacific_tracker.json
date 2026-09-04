@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-03",
+  "last_updated": "2026-09-04",
   "countries": {
     "Papua New Guinea": {
       "last_event": "US ties biotech, food safety reform to PNG agri-export growth",
@@ -44,11 +44,11 @@
       "event_count": 0
     },
     "Kiribati": {
-      "last_event": "Beijing accuses PIF host Palau of 'hype' over missile test criticism",
-      "last_event_date": "2026-09-03",
+      "last_event": "Pacific summit backs concerns over China missile test despite Nauru dissent",
+      "last_event_date": "2026-09-04",
       "last_activity_type": "other",
-      "url": "https://www.reuters.com/world/china/chair-pacific-leaders-meeting-urges-united-front-china-missile-test-2026-09-03/",
-      "event_count": 5
+      "url": "https://www.reuters.com/world/china/pacific-summit-backs-concerns-over-china-missile-test-despite-nauru-dissent-2026-09-04/",
+      "event_count": 6
     },
     "Tuvalu": {
       "last_event": "Forum struggles with missile dilemma",
@@ -65,11 +65,11 @@
       "event_count": 0
     },
     "Palau": {
-      "last_event": "Taiwan's foreign minister thanks Palau for rare PIF appearance",
-      "last_event_date": "2026-09-03",
-      "last_activity_type": "senior visit",
-      "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/09/02/2003863542",
-      "event_count": 14
+      "last_event": "Smaller Pacific states warn against confusing friendship with dependence",
+      "last_event_date": "2026-09-04",
+      "last_activity_type": "other",
+      "url": "https://www.abc.net.au/listen/programs/the-radio-national-hour/pacific-nations-clamour-to-be-heard-at-the-pif/107118212",
+      "event_count": 16
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,30 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-04",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Smaller Pacific states warn against confusing friendship with dependence",
+      "url": "https://www.abc.net.au/listen/programs/the-radio-national-hour/pacific-nations-clamour-to-be-heard-at-the-pif/107118212",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-09-04",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Pacific nations seek to turn geopolitics into climate funding",
+      "url": "https://www.washingtonpost.com/world/2026/09/03/palau-pacific-islands-forum-climate-change-un/3bd115c6-a754-11f1-9e38-f705d048bd5a_story.html",
+      "section": "pacific_wire"
+    },
+    {
+      "date": "2026-09-04",
+      "country": "Kiribati",
+      "activity": "other",
+      "headline": "Pacific summit backs concerns over China missile test despite Nauru dissent",
+      "url": "https://www.reuters.com/world/china/pacific-summit-backs-concerns-over-china-missile-test-despite-nauru-dissent-2026-09-04/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-03",
       "country": "Palau",

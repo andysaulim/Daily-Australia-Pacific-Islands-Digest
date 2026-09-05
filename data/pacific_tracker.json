@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-09-04",
+  "last_updated": "2026-09-05",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "US ties biotech, food safety reform to PNG agri-export growth",
-      "last_event_date": "2026-08-31",
-      "last_activity_type": "other",
-      "url": "https://www.postcourier.com.pg/us-points-to-biotech-harmonised-food-safety-rules-to-boost-png-agri-exports-at-apec-summit/",
-      "event_count": 2
+      "last_event": "Five leaders absent from Palau summit as Australia's treaty run reaches Fiji",
+      "last_event_date": "2026-09-05",
+      "last_activity_type": "security agreement",
+      "url": "https://www.thesaturdaypaper.com.au/news/foreign-relations/2026/09/05/did-china-undercut-pacific-islands-forum",
+      "event_count": 3
     },
     "Fiji": {
       "last_event": "Rabuka denies China influenced decision to skip PIF summit",
@@ -16,11 +16,11 @@
       "event_count": 3
     },
     "Solomon Islands": {
-      "last_event": "Taiwan Returns to PIF Stage Despite Chinese Pressure as Cross-Strait Diplomatic Rivalry Resurfaces in Pacific",
-      "last_event_date": "2026-08-28",
-      "last_activity_type": "other",
-      "url": "http://www.koreapost.com/news/articleViewAmp.html?idxno=49384",
-      "event_count": 2
+      "last_event": "Taiwan's foreign minister attacks China's 'wolf warrior' diplomacy at PIF",
+      "last_event_date": "2026-09-05",
+      "last_activity_type": "senior visit",
+      "url": "https://www.taipeitimes.com/News/front/archives/2026/09/05/2003863714",
+      "event_count": 3
     },
     "Vanuatu": {
       "last_event": "PACNEWS: Pacific nations detain Chinese and Indonesian boats for illegal fishing",
@@ -44,11 +44,11 @@
       "event_count": 0
     },
     "Kiribati": {
-      "last_event": "Pacific summit backs concerns over China missile test despite Nauru dissent",
-      "last_event_date": "2026-09-04",
+      "last_event": "Kiribati calls PIF closing snub 'disappointing'",
+      "last_event_date": "2026-09-05",
       "last_activity_type": "other",
-      "url": "https://www.reuters.com/world/china/pacific-summit-backs-concerns-over-china-missile-test-despite-nauru-dissent-2026-09-04/",
-      "event_count": 6
+      "url": "https://www.1news.co.nz/2026/09/05/disappointing-kiribati-snubbed-at-pacific-islands-forum-closing/",
+      "event_count": 7
     },
     "Tuvalu": {
       "last_event": "Forum struggles with missile dilemma",
@@ -58,11 +58,11 @@
       "event_count": 2
     },
     "Nauru": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "Pacific Islands Forum closes with joint statement on China's missile test, Nauru alone dissents",
+      "last_event_date": "2026-09-05",
+      "last_activity_type": "other",
+      "url": "https://www.samoaobserver.ws/category/samoa/121898",
+      "event_count": 1
     },
     "Palau": {
       "last_event": "Smaller Pacific states warn against confusing friendship with dependence",
@@ -122,6 +122,38 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-05",
+      "country": "Papua New Guinea",
+      "activity": "security agreement",
+      "headline": "Five leaders absent from Palau summit as Australia's treaty run reaches Fiji",
+      "url": "https://www.thesaturdaypaper.com.au/news/foreign-relations/2026/09/05/did-china-undercut-pacific-islands-forum",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-09-05",
+      "country": "Kiribati",
+      "activity": "other",
+      "headline": "Kiribati calls PIF closing snub 'disappointing'",
+      "url": "https://www.1news.co.nz/2026/09/05/disappointing-kiribati-snubbed-at-pacific-islands-forum-closing/",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-09-05",
+      "country": "Solomon Islands",
+      "activity": "senior visit",
+      "headline": "Taiwan's foreign minister attacks China's 'wolf warrior' diplomacy at PIF",
+      "url": "https://www.taipeitimes.com/News/front/archives/2026/09/05/2003863714",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-09-05",
+      "country": "Nauru",
+      "activity": "other",
+      "headline": "Pacific Islands Forum closes with joint statement on China's missile test, Nauru alone dissents",
+      "url": "https://www.samoaobserver.ws/category/samoa/121898",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-04",
       "country": "Palau",

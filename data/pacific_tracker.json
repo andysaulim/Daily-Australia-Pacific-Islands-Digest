@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-05",
+  "last_updated": "2026-09-07",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Five leaders absent from Palau summit as Australia's treaty run reaches Fiji",
@@ -23,11 +23,11 @@
       "event_count": 3
     },
     "Vanuatu": {
-      "last_event": "PACNEWS: Pacific nations detain Chinese and Indonesian boats for illegal fishing",
-      "last_event_date": "2026-08-25",
+      "last_event": "Forum's China rebuke buried in communique as Micronesian rift persists",
+      "last_event_date": "2026-09-07",
       "last_activity_type": "other",
-      "url": "https://islandsbusiness.com/pacnews/pacnews-one-25-august-2026/",
-      "event_count": 1
+      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/pif-wrap/107123014",
+      "event_count": 2
     },
     "Samoa": {
       "last_event": null,
@@ -65,11 +65,11 @@
       "event_count": 1
     },
     "Palau": {
-      "last_event": "Smaller Pacific states warn against confusing friendship with dependence",
-      "last_event_date": "2026-09-04",
+      "last_event": "Forum communique criticises China's July ICBM test",
+      "last_event_date": "2026-09-07",
       "last_activity_type": "other",
-      "url": "https://www.abc.net.au/listen/programs/the-radio-national-hour/pacific-nations-clamour-to-be-heard-at-the-pif/107118212",
-      "event_count": 16
+      "url": "https://www.islapublic.org/news/2026-09-07/pacific-islands-forum-leaders-criticize-chinas-july-icbm-test",
+      "event_count": 17
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-07",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Forum communique criticises China's July ICBM test",
+      "url": "https://www.islapublic.org/news/2026-09-07/pacific-islands-forum-leaders-criticize-chinas-july-icbm-test",
+      "section": "primary_documents"
+    },
+    {
+      "date": "2026-09-07",
+      "country": "Vanuatu",
+      "activity": "other",
+      "headline": "Forum's China rebuke buried in communique as Micronesian rift persists",
+      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/pif-wrap/107123014",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-05",
       "country": "Papua New Guinea",

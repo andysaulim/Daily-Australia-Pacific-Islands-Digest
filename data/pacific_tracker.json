@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-07",
+  "last_updated": "2026-09-08",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Five leaders absent from Palau summit as Australia's treaty run reaches Fiji",
@@ -16,11 +16,11 @@
       "event_count": 3
     },
     "Solomon Islands": {
-      "last_event": "Taiwan's foreign minister attacks China's 'wolf warrior' diplomacy at PIF",
-      "last_event_date": "2026-09-05",
-      "last_activity_type": "senior visit",
-      "url": "https://www.taipeitimes.com/News/front/archives/2026/09/05/2003863714",
-      "event_count": 3
+      "last_event": "ABC questions value for money in Australia's Solomon Islands spending",
+      "last_event_date": "2026-09-08",
+      "last_activity_type": "recognition switch",
+      "url": "https://www.abc.net.au/news/2026-09-08/solomon-islands-australia-china-pacific-contest/107127740",
+      "event_count": 5
     },
     "Vanuatu": {
       "last_event": "Forum's China rebuke buried in communique as Micronesian rift persists",
@@ -37,11 +37,11 @@
       "event_count": 0
     },
     "Tonga": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "China reaffirms Cook Islands seabed backing as US scientist heads to Rarotonga",
+      "last_event_date": "2026-09-08",
+      "last_activity_type": "other",
+      "url": "https://www.rnz.co.nz/news/pacific/1300022/china-reaffirms-seabed-minerals-support-as-us-prepares-to-station-scientist-in-rarotonga",
+      "event_count": 1
     },
     "Kiribati": {
       "last_event": "Kiribati calls PIF closing snub 'disappointing'",
@@ -122,6 +122,30 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-08",
+      "country": "Solomon Islands",
+      "activity": "recognition switch",
+      "headline": "ABC questions value for money in Australia's Solomon Islands spending",
+      "url": "https://www.abc.net.au/news/2026-09-08/solomon-islands-australia-china-pacific-contest/107127740",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-09-08",
+      "country": "Tonga",
+      "activity": "other",
+      "headline": "China reaffirms Cook Islands seabed backing as US scientist heads to Rarotonga",
+      "url": "https://www.rnz.co.nz/news/pacific/1300022/china-reaffirms-seabed-minerals-support-as-us-prepares-to-station-scientist-in-rarotonga",
+      "section": "top_stories"
+    },
+    {
+      "date": "2026-09-08",
+      "country": "Solomon Islands",
+      "activity": "other",
+      "headline": "Leaked texts reveal $1b Australia-Solomon Islands treaty push",
+      "url": "https://www.smh.com.au/politics/federal/the-political-survivor-whose-next-move-could-decide-the-pacific-s-security-future-20260907-p60v43.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-07",
       "country": "Palau",

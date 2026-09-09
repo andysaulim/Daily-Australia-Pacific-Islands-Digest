@@ -1,5 +1,5 @@
 """
-Australia Chair Daily Brief: HTML Renderer
+Australia Daily Brief: HTML Renderer
 CSIS Australia Chair
 
 Takes the validated digest JSON and renders the email. Table-based layout,
@@ -91,10 +91,16 @@ _SEC_ALERT = (f'style="padding:20px 32px;border-top:3px solid {ALERT};'
               'border-bottom:1px solid #EBEBEB;" class="sec"')
 
 
-def _sec_label(label: str, color: str = NAVY) -> str:
-    return (f'<div style="font-size:10px;font-weight:700;text-transform:uppercase;'
-            f'letter-spacing:2px;color:{color};font-family:Arial,sans-serif;'
-            f'margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid {color};">'
+def _sec_label(label: str, color: str = TEAL) -> str:
+    """Section label — the house metrics, in the edition's accent.
+
+    It was 10px over 2px of tracking in navy, so the headings read as a
+    different system from Korea's and the teal appeared only where a caller
+    passed it explicitly. One accent, one size, everywhere.
+    """
+    return (f'<div style="font-size:11px;font-weight:700;text-transform:uppercase;'
+            f'letter-spacing:1.5px;color:{color};font-family:Arial,sans-serif;'
+            f'margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid {color};">'
             f'{label}</div>')
 
 
@@ -166,6 +172,22 @@ def _compact_row(cat: str, headline: str, url: str, src: str, body: str = "") ->
 
 def _cat_color(cat: str, default: str = NAVY) -> str:
     return _CAT_COLORS.get(_str(cat).strip(), default)
+
+
+def _cal_block(date_val: str, confirmed: bool) -> tuple[str, str]:
+    """("Sep", "12") for a confirmed ISO date, ("", "") otherwise.
+
+    Only a confirmed, parseable date earns the solid block. A window such as
+    "expected in August" has no day, and picking one would state a precision
+    the source did not.
+    """
+    if not (date_val and confirmed):
+        return "", ""
+    try:
+        when = datetime.strptime(date_val[:10], "%Y-%m-%d")
+    except ValueError:
+        return "", ""
+    return when.strftime("%b"), str(when.day)
 
 
 def _cal_stamp(date_val: str, window: str, confirmed: bool) -> str:
@@ -292,7 +314,7 @@ def render(digest: dict) -> str:
         <td class="hdr-main" style="vertical-align:top;">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:rgba(255,255,255,0.88);font-family:Arial,sans-serif;margin-bottom:6px;">CSIS Australia Chair</div>
           <h1 style="margin:0;font-size:26px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#fff;letter-spacing:0.3px;">
-            Australia Chair Daily Brief
+            Australia Daily Brief
           </h1>
           <div style="margin-top:4px;font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif;">Australia &nbsp;&middot;&nbsp; New Zealand &nbsp;&middot;&nbsp; the Pacific Islands</div>
           <div style="margin-top:8px;font-size:16px;color:rgba(255,255,255,0.9);font-family:Georgia,serif;">{_esc(date_str)}</div>
@@ -317,29 +339,41 @@ def render(digest: dict) -> str:
     # the only two outside the three-geography palette.
     markets = digest.get("market_indicators") or {}
     if markets:
-        # Each indicator is an inline-block that keeps its own figure on one
-        # line but lets the GROUP wrap. It was a single table row of
-        # white-space:nowrap cells, which is six indicators of unbreakable
-        # content, roughly 600px, in a 375px phone: the strip could not wrap,
-        # so it pushed a horizontal scrollbar onto the whole email. Outlook
-        # degrades inline-block to inline, which still wraps and still reads.
-        cells = ""
-        for m in markets.values():
-            if not isinstance(m, dict) or not m.get("value"):
-                continue
-            pct = m.get("change_pct", 0) or 0
-            colour = "#1B7A4A" if pct > 0 else ALERT if pct < 0 else "#777"
-            sign = "+" if pct > 0 else ""
-            cells += f"""
-            <span class="mkt" style="display:inline-block;white-space:nowrap;padding:2px 16px 2px 0;">
-              <span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8A8A8A;">{_esc(m.get("label", ""))}</span>
-              <span style="font-size:13px;font-weight:600;color:{NAVY};margin-left:6px;">{_esc(m["value"])}</span>
-              <span style="font-size:11px;color:{colour};margin-left:4px;">{sign}{pct:.2f}%</span>
-            </span>"""
-        if cells:
-            sections.append(f"""
-        <div style="padding:10px 32px;background:#FAFAFA;border-bottom:1px solid #EBEBEB;line-height:1.9;" class="sec">{cells}
-        </div>""")
+        # One row of four on the dark ground the other editions use. It was a
+        # pale grey band of inline-blocks — as many indicators as resolved, in
+        # navy on near-white — which read as a caption rather than as the
+        # day's figures, and looked nothing like the other three briefs.
+        #
+        # Four tiles fit a phone without wrapping and without the horizontal
+        # scrollbar the old nowrap table caused. Whatever resolved beyond the
+        # first four is dropped rather than wrapped: the strip is a glance.
+        _MONO = "'Courier New',Courier,monospace"
+        _resolved = [m for m in markets.values()
+                     if isinstance(m, dict) and m.get("value")][:4]
+        if _resolved:
+            _w = int(100 / len(_resolved))
+            tiles = ""
+            for idx, m in enumerate(_resolved):
+                pct = m.get("change_pct", 0) or 0
+                colour = "#5FD08A" if pct > 0 else "#FF8A8A" if pct < 0 else "#9DB2CE"
+                sign = "+" if pct > 0 else ""
+                edge = ("" if idx == 0 else
+                        "border-left:1px solid rgba(255,255,255,0.10);")
+                tiles += (f'<td width="{_w}%" align="center" '
+                          f'style="padding:11px 6px 13px;{edge}">'
+                          f'<div style="font-size:10px;text-transform:uppercase;'
+                          f'letter-spacing:1px;color:#9DB2CE;">'
+                          f'{_esc(m.get("label", ""))}</div>'
+                          f'<div style="font-family:{_MONO};font-size:16px;'
+                          f'font-weight:700;color:#fff;margin-top:3px;">'
+                          f'{_esc(m["value"])}</div>'
+                          f'<div style="font-family:{_MONO};font-size:11px;'
+                          f'margin-top:2px;color:{colour};">{sign}{pct:.2f}%</div></td>')
+            sections.append(
+                f'<table class="mkt-table" width="100%" cellpadding="0" '
+                f'cellspacing="0" border="0" style="background:{NAVY_DEEP};'
+                f'color:#fff;border-bottom:1px solid rgba(255,255,255,0.10);">'
+                f'<tr>{tiles}</tr></table>')
 
     # ── 3. Today at a Glance ─────────────────────────────────────────────
     memo_items = digest.get("morning_memo") or []
@@ -352,18 +386,26 @@ def render(digest: dict) -> str:
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
               <tr>
                 <td width="28" style="vertical-align:top;padding-top:2px;">
-                  <div style="width:24px;height:24px;border-radius:50%;background:{NAVY_DEEP};color:{TEAL_LT};text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">{i + 1}</div>
+                  <div style="width:24px;height:24px;border-radius:50%;background:{TEAL};color:#FFFFFF;text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">{i + 1}</div>
                 </td>
                 <td style="padding-left:10px;vertical-align:top;">
                   <div style="font-size:14px;line-height:1.6;color:{INK};font-family:Georgia,serif;">{text}</div>
                 </td>
               </tr>
             </table>"""
+        # A tinted panel with a rule down the left, as in Korea. The near-white
+        # #FAFBFC ground was indistinguishable from the page, so the summary
+        # read as the first news section rather than as the summary of all of
+        # them.
         sections.append(f"""
-        <div style="padding:20px 32px;border-bottom:1px solid #EAEAEA;background:#FAFBFC;" class="sec">
+        <div {_SEC}>
           <a name="memo"></a>
-          {_sec_label("Today at a Glance", color=TEAL)}
-          {memo_html}
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="glance-panel" style="background:#E9F2F4;border-left:3px solid {TEAL};">
+            <tr><td style="padding:16px 20px 8px;">
+              {_sec_label("Today at a Glance")}
+              {memo_html}
+            </td></tr>
+          </table>
         </div>""")
 
     # ── 4. Top Stories ───────────────────────────────────────────────────
@@ -621,30 +663,47 @@ def render(digest: dict) -> str:
           {html}
         </div>""")
 
-    # ── 13. Calendar Watch ───────────────────────────────────────────────
+    # ── 13. Upcoming ─────────────────────────────────────────────────────
+    # "Calendar Watch" in this edition, "Upcoming" everywhere else; one name.
+    # A confirmed date now gets the solid accent block Korea uses, so the
+    # column scans as a calendar. An entry with only a window keeps its text
+    # stamp — inventing a day for "expected in August" would be worse than
+    # showing the phrase.
     calendar = _real_items(digest, "calendar_watch")
     if calendar:
         rows = ""
         for entry in calendar:
-            date_val = _esc(_str(entry.get("date", "")))
-            window = _esc(_str(entry.get("window", "")))
             confirmed = bool(entry.get("confirmed"))
-            stamp = _esc(_cal_stamp(_str(entry.get("date", "")),
-                                    _str(entry.get("window", "")), confirmed))
-            stamp_color = NAVY_DEEP if (date_val and confirmed) else "#999"
+            mon, day = _cal_block(_str(entry.get("date", "")), confirmed)
+            if mon:
+                stamp_cell = (f'<table cellpadding="0" cellspacing="0" border="0" '
+                              f'style="background:{TEAL};"><tr>'
+                              f'<td align="center" style="padding:4px 0 5px;width:46px;">'
+                              f'<div style="font-family:Arial,sans-serif;font-size:10px;'
+                              f'font-weight:700;letter-spacing:1.5px;'
+                              f'color:rgba(255,255,255,0.85);">{_esc(mon)}</div>'
+                              f'<div style="font-family:Georgia,serif;font-size:16px;'
+                              f'font-weight:700;color:#fff;line-height:1;">{_esc(day)}</div>'
+                              f'</td></tr></table>')
+                cell_width = "54"
+            else:
+                stamp = _esc(_cal_stamp(_str(entry.get("date", "")),
+                                        _str(entry.get("window", "")), confirmed))
+                stamp_cell = (f'<div class="cal-date" style="font-size:11px;font-weight:700;'
+                              f'color:{MUTE};font-family:Arial,sans-serif;'
+                              f'letter-spacing:0.5px;">{stamp}</div>')
+                cell_width = "110"
             rows += f"""
               <tr>
-                <td width="110" style="vertical-align:top;padding:8px 12px 8px 0;">
-                  <div class="cal-date" style="font-size:11px;font-weight:700;color:{stamp_color};font-family:Arial,sans-serif;letter-spacing:0.5px;">{stamp}</div>
-                </td>
-                <td style="vertical-align:top;padding:8px 0;border-top:1px solid #EEE;">
-                  <div style="font-size:13px;font-weight:600;color:{NAVY};">{_esc(entry.get("event", ""))}</div>
-                  <div style="font-size:13px;line-height:1.5;color:#666;">{_esc(entry.get("why_it_matters", ""))}</div>
+                <td width="{cell_width}" style="vertical-align:top;padding:9px 12px 9px 0;">{stamp_cell}</td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:{NAVY};">{_esc(entry.get("event", ""))}</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">{_esc(entry.get("why_it_matters", ""))}</div>
                 </td>
               </tr>"""
         sections.append(f"""
         <div {_SEC}>
-          <a name="calendar"></a>{_sec_label("Calendar Watch")}
+          <a name="calendar"></a>{_sec_label("Upcoming")}
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="cal-table">{rows}</table>
         </div>""")
 
@@ -812,7 +871,7 @@ def _shell(body: str, date_str: str) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Australia Chair Daily Brief &ndash; {_esc(date_str)}</title>
+  <title>Australia Daily Brief &ndash; {_esc(date_str)}</title>
   <style type="text/css">
     body, table, td, div, p {{ margin:0; padding:0; }}
     img {{ border:0; display:block; }}

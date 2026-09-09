@@ -435,6 +435,32 @@ def render(digest: dict) -> str:
           {html}
         </div>""")
 
+    # ── 5b. Stat of the Day ──────────────────────────────────────────────
+    # A light panel, matching the other editions. It is the one number the
+    # reader should carry out of the brief, so it gets the column the rest of
+    # the brief reads down rather than a band across the page.
+    #
+    # The model returns {} on a day whose articles hold no figure worth
+    # pulling out, and an absent panel is correct on such a day — a stat
+    # invented to fill the slot is exactly what SOURCE-OR-SKIP forbids.
+    key_stat = digest.get("key_stat") or {}
+    _ks_num = str(key_stat.get("number", "")).strip() if isinstance(key_stat, dict) else ""
+    if _ks_num:
+        _ks_context = _esc(key_stat.get("context", ""))
+        _ks_source = _esc(_clean_src(_str(key_stat.get("source", ""))))
+        sections.append(f"""
+        <div {_SEC}>
+          <a name="key-stat"></a>{_sec_label("Stat of the Day")}
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFF6F8;border-left:3px solid {TEAL};border-radius:3px;">
+            <tr><td style="padding:14px 16px;">
+              <div style="font-family:Georgia,serif;font-size:26px;font-weight:700;color:{TEAL};line-height:1;">{_esc(_ks_num)}</div>
+              <div style="font-family:Georgia,serif;font-size:14px;color:{INK};margin-top:5px;line-height:1.4;">{_esc(key_stat.get("label", ""))}</div>
+              {"<div style='font-family:Georgia,serif;font-size:13px;color:#4A5260;margin-top:4px;line-height:1.5;'>" + _ks_context + "</div>" if _ks_context else ""}
+              {"<div style='font-family:Arial,sans-serif;font-size:11px;color:#55607A;margin-top:7px;'>" + _ks_source + "</div>" if _ks_source else ""}
+            </td></tr>
+          </table>
+        </div>""")
+
     # ── 6. AUKUS Watch ───────────────────────────────────────────────────
     aukus = _real_items(digest, "aukus_watch")
     if aukus:
@@ -749,7 +775,7 @@ def render(digest: dict) -> str:
     # only when the section actually emitted its anchor, so a quiet day that
     # drops sections simply gets fewer links rather than dead ones.
     _NAV = [("Top Stories", "top-stories"), ("Overnight", "overnight"),
-            ("AUKUS", "aukus"), ("Pacific", "pacific"),
+            ("Stat", "key-stat"), ("AUKUS", "aukus"), ("Pacific", "pacific"),
             ("New Zealand", "nz"), ("China-Pacific", "china-pacific"),
             ("Canberra", "canberra"), ("Markets", "business"),
             ("Documents", "documents"), ("Upcoming", "calendar"),

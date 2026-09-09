@@ -553,6 +553,40 @@ check("strip absent when nothing resolved",
       "ASX 200" not in render_mod.render({"re_line": "x",
                                           "morning_memo": ["a", "b", "c"]}))
 
+print("\n=== 14b-stat. Stat of the Day ===")
+# This edition had no stat panel at all: nothing produced key_stat and no
+# section read it. The risk in adding one is the reverse of the usual — a
+# slot the model feels obliged to fill invites a number from memory, which
+# is what SOURCE-OR-SKIP exists to stop. So the panel must disappear
+# entirely on a day that has no figure, rather than render empty.
+_base_stat = {"re_line": "x", "morning_memo": ["a", "b", "c"],
+              "top_stories": [{"headline": "H", "body": "B", "source": "ABC",
+                               "url": "https://x/a"}]}
+_hs = render_mod.render(dict(_base_stat, key_stat={
+    "number": "$368B", "label": "AUKUS submarine programme cost to 2055",
+    "context": "Restated in Senate estimates.", "source": "AFR"}))
+check("the stat panel renders", 'a name="key-stat"' in _hs and "$368B" in _hs)
+check("the figure is set in the display face",
+      'font-size:26px;font-weight:700;color:' + render_mod.TEAL in _hs)
+check("absent key_stat renders no panel",
+      'a name="key-stat"' not in render_mod.render(_base_stat))
+check("an empty key_stat renders no panel",
+      'a name="key-stat"' not in render_mod.render(dict(_base_stat, key_stat={})))
+check("a stat with no number renders no panel",
+      'a name="key-stat"' not in render_mod.render(
+          dict(_base_stat, key_stat={"label": "L", "context": "C"})))
+# The prompt has to ask for it, or the renderer reads a key nothing writes.
+check("the prompt asks for key_stat", "- key_stat:" in inspect.getsource(digest_mod))
+check("the prompt forbids a remembered number",
+      "never from a tracker, a database, or your own knowledge"
+      in inspect.getsource(digest_mod))
+# Panel text is text the reader reads, so the length budget must see it.
+check("the panel counts toward the word count",
+      digest_mod._count_digest_words(dict(_base_stat, key_stat={
+          "number": "1", "label": "two three four", "context": "five six",
+          "source": "seven"}))
+      == digest_mod._count_digest_words(_base_stat) + 7)
+
 print("\n=== 14c. Section renames ===")
 _rsrc = inspect.getsource(render_mod)
 check("Canberra label is self-explanatory",

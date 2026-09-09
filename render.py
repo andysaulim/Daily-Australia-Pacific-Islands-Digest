@@ -970,7 +970,7 @@ def _shell(body: str, date_str: str) -> str:
       .cal-table td[width="110"] {{ width:80px !important; padding:8px 8px 8px 0 !important; }}
       .cal-date {{ font-size:11px !important; }}
       .china-dark > div {{ padding:16px 14px !important; }}
-      h1 {{ font-size:16px !important; }}
+      h1 {{ font-size:22px !important; }}   /* the shared phone nameplate size */
       h2 {{ font-size:13px !important; }}
       h3 {{ font-size:14px !important; }}
       .story-card {{ padding:12px 10px !important; }}

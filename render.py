@@ -997,7 +997,7 @@ def _shell(body: str, date_str: str) -> str:
     }}
 
     @media only screen and (min-width: 621px) and (max-width: 768px) {{
-      .wrapper {{ width:100% !important; }}
+      .wrapper {{ width:100% !important; max-width:680px !important; }}
       .sec, .footer {{ padding:14px 20px !important; }}
       h1 {{ font-size:22px !important; }}
     }}

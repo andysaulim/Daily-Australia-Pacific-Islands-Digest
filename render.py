@@ -218,11 +218,15 @@ def render(digest: dict) -> str:
               'border:1px solid rgba(255,255,255,0.22);border-radius:3px;'
               'text-decoration:none;white-space:nowrap;')
         _links = [f'<a href="{_esc(web_url)}" style="{_a}">Read online</a>']
+        # The dated PDF when the run published one, so the link names the issue
+        # a reader is holding rather than whatever "latest" has since become.
+        _pdf = digest.get("pdf_url") or ""
+        if _pdf:
+            _links.append(f'<a href="{_esc(_pdf)}" style="{_a}">Download PDF</a>')
         if _base:
-            _links.append(f'<a href="{_esc(_base + "latest.pdf")}" style="{_a}">Download PDF</a>')
             _links.append(f'<a href="{_esc(_base + "archive.html")}" style="{_a}">Past issues</a>')
         sections.append(f"""
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#2E3644;" class="util-row">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#2E3644;" class="util-row no-print">
           <tr>
             <td class="util-cell" style="padding:7px 32px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.72);white-space:nowrap;">For Internal Use Only</td>
             <td class="util-cell" align="right" style="padding:5px 32px 5px 0;text-align:right;">{''.join(_links)}</td>
@@ -329,8 +333,6 @@ def render(digest: dict) -> str:
             cat_badge = (f'<span style="display:inline-block;font-size:10px;'
                          f'text-transform:uppercase;letter-spacing:1px;color:{TEAL};'
                          f'font-weight:700;margin-bottom:6px;">{cat}</span>') if cat else ""
-            pattern_html = ("<p style='margin:0 0 6px 0;font-size:13px;line-height:1.5;"
-                            f"color:#7B5BA6;'><strong>Pattern:</strong> {pattern}</p>") if pattern else ""
             html += f"""
             <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid {_cat_color(_str(story.get("category_tag", story.get("category", ""))), NAVY_DEEP)};box-shadow:0 1px 3px rgba(0,0,0,0.06);">
               {cat_badge}
@@ -576,14 +578,10 @@ def render(digest: dict) -> str:
         for item in opeds:
             authors = _esc(_str(item.get("authors", "")))
             arg = _esc(item.get("central_argument", ""))
-            so_what = _esc(item.get("policy_so_what", ""))
             extra = ""
             if arg:
                 extra += (f"<div style='font-size:13px;line-height:1.5;color:#555;"
                           f"margin-top:3px;'><strong>Argument:</strong> {arg}</div>")
-            if so_what:
-                extra += (f"<div style='font-size:13px;line-height:1.5;color:{TEAL};"
-                          f"margin-top:3px;'><strong>So what:</strong> {so_what}</div>")
             html += _item_block(
                 authors, _esc(_clean_src(_str(item.get("source", "")))),
                 _esc(item.get("headline", "")), _esc(item.get("summary", "")),
@@ -602,9 +600,7 @@ def render(digest: dict) -> str:
             tier = _esc(_str(item.get("journal_tier", "")))
             authors = _esc(_str(item.get("authors", "")))
             meta = " &middot; ".join(p for p in (authors, f"Tier {tier}" if tier else "") if p)
-            so_what = _esc(item.get("policy_so_what", ""))
-            extra = (f"<div style='font-size:13px;line-height:1.5;color:{TEAL};"
-                     f"margin-top:3px;'><strong>So what:</strong> {so_what}</div>") if so_what else ""
+            extra = ""
             html += _item_block(
                 meta, _esc(_clean_src(_str(item.get("source", "")))),
                 _esc(item.get("headline", "")), _esc(item.get("summary", "")),
@@ -627,14 +623,45 @@ def render(digest: dict) -> str:
           <div style="font-size:11px;color:rgba(255,255,255,0.6);font-style:italic;margin-top:4px;line-height:1.4;">{_esc(item.get("relevance", ""))}</div>
         </div>"""
 
+    # Both footer links point into the published archive, so neither exists
+    # until a run has published one.
+    _foot_links = ""
+    if web_url:
+        _fa = 'color:rgba(255,255,255,0.95);text-decoration:none;'
+        _fbase = web_url[:-len("latest.html")] if web_url.endswith("latest.html") else ""
+        _parts = [f'<a href="{_esc(web_url)}" style="{_fa}">Read online</a>']
+        if _fbase:
+            _parts.append(f'<a href="{_esc(_fbase + "archive.html")}" style="{_fa}">Past issues</a>')
+        _foot_links = ('<div style="margin-top:11px;font-family:Arial,sans-serif;'
+                       'font-size:11px;letter-spacing:0.5px;">'
+                       + '<span style="color:rgba(255,255,255,0.45);">&nbsp;&middot;&nbsp;</span>'.join(_parts)
+                       + '</div>')
+
     sections.append(f"""
-    <div style="padding:20px 32px;background:{TEAL};text-align:center;" class="sec footer">
-      {otd_footer}
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.45);font-family:Arial,sans-serif;line-height:2;">
-        CSIS Australia Chair &nbsp;&middot;&nbsp; Australia Chair Daily Brief &nbsp;&middot;&nbsp; Generated {gen_time}
-      </div>
-      <a href="#top" style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:none;letter-spacing:1px;">&#8593; Back to top</a>
-    </div>""")
+    <!-- The house footer. Korea carries a CSIS lockup built in HTML; this
+         edition has no wordmark to reproduce, so it leads with the chair name
+         instead. Everything else matches: centred, the city and domain on
+         their own line, the links as links rather than a run-on sentence, and
+         the disclaimer set in the reading face. -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec footer" style="background:{NAVY};border-top:4px solid {TEAL};">
+      <tr><td style="padding:20px 32px 6px;text-align:center;">
+        {otd_footer}
+        <div style="font-family:Georgia,serif;font-size:22px;font-weight:700;color:#FFFFFF;letter-spacing:0.5px;line-height:1.2;">CSIS Australia Chair</div>
+        <div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-top:6px;">Australia Daily Brief</div>
+        <div style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.72);margin-top:12px;">Washington, DC &middot; csis.org</div>
+        {_foot_links}
+      </td></tr>
+      <tr><td style="padding:14px 32px 10px;text-align:center;">
+        <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:12px;font-family:Georgia,serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.82);max-width:560px;margin:0 auto;">
+          This newsletter is automatically generated, so it may contain errors. Please check all information and sources before citing.
+          To report errors or other issues, please contact Andy Lim at <a href="mailto:alim@csis.org" style="color:rgba(255,255,255,0.95);">alim@csis.org</a>.
+        </div>
+      </td></tr>
+      <tr><td style="padding:0 32px 20px;text-align:center;">
+        <div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:0.5px;color:rgba(255,255,255,0.70);margin-bottom:9px;">generated {gen_time}</div>
+        <a href="#top" style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.95);text-decoration:none;">&#8593; Back to top</a>
+      </td></tr>
+    </table>""")
 
     body = "\n".join(sections)
     return _shell(body, date_str)

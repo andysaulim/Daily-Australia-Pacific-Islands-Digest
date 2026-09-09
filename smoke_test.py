@@ -1152,7 +1152,7 @@ check("the bar survives with no PDF url", "Read online" in _web_only
 # The print rules are what decide whether the PDF reads as a document or a
 # long screenshot, and they are invisible until someone prints it.
 check("a print stylesheet exists", "@media print" in _hp)
-check("the navigation bar is marked no-print", 'class="sec no-print"' in _hp)
+check("the navigation bar is marked no-print", 'class="util-row no-print"' in _hp)
 _pr = _hp.split("@media print")[1].split("}}")[0] if "@media print" in _hp else ""
 _pr = _hp[_hp.index("@media print"):_hp.index("@media print") + 900]
 check("no-print is actually hidden in print", ".no-print" in _pr

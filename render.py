@@ -204,21 +204,31 @@ def render(digest: dict) -> str:
 
     sections = []
 
-    # ── 0. View in browser ───────────────────────────────────────────────
-    # The bar is also the only place the PDF is advertised. It renders only
-    # when WEB_URL is set, because both links are relative to a published
-    # archive: without Pages there is nothing on the end of either.
-    pdf_url = digest.get("pdf_url", "")
+    # ── 0. Utility row: internal-use notice left, links right ─────────────
+    # The house treatment, matching the other editions. "Email not rendering?"
+    # asked the reader to diagnose their own client; the links are buttons and
+    # say what they do. Notice and links share one row rather than taking a
+    # band each, which is ~90px of chrome above the nameplate.
     if web_url:
-        pdf_link = ""
-        if pdf_url:
-            pdf_link = (f'&nbsp; &middot; &nbsp;<a href="{_esc(pdf_url)}" '
-                        f'style="color:{TEAL};text-decoration:none;">'
-                        f'Download PDF &#8595;</a>')
+        _base = web_url[:-len("latest.html")] if web_url.endswith("latest.html") else ""
+        _a = ('display:inline-block;padding:4px 12px;margin:0 2px;'
+              'font-family:Arial,sans-serif;font-size:11px;font-weight:700;'
+              'letter-spacing:0.5px;color:rgba(255,255,255,0.92);'
+              'background:rgba(255,255,255,0.10);'
+              'border:1px solid rgba(255,255,255,0.22);border-radius:3px;'
+              'text-decoration:none;white-space:nowrap;')
+        _links = [f'<a href="{_esc(web_url)}" style="{_a}">Read online</a>']
+        if _base:
+            _links.append(f'<a href="{_esc(_base + "latest.pdf")}" style="{_a}">Download PDF</a>')
+            _links.append(f'<a href="{_esc(_base + "archive.html")}" style="{_a}">Past issues</a>')
         sections.append(f"""
-        <div style="background:#F0F0F0;padding:6px 32px;text-align:center;font-size:11px;color:#888;" class="sec no-print">
-          Email not rendering? <a href="{_esc(web_url)}" style="color:{TEAL};text-decoration:none;">Read online &#8594;</a>{pdf_link}
-        </div>""")
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#2E3644;" class="util-row">
+          <tr>
+            <td class="util-cell" style="padding:7px 32px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.72);white-space:nowrap;">For Internal Use Only</td>
+            <td class="util-cell" align="right" style="padding:5px 32px 5px 0;text-align:right;">{''.join(_links)}</td>
+          </tr>
+        </table>
+        """)
 
     # ── 1. Header ────────────────────────────────────────────────────────
     re_block = ""
@@ -314,15 +324,11 @@ def render(digest: dict) -> str:
             cat = _esc(_str(story.get("category_tag", story.get("category", ""))))
             headline = _esc(story.get("headline", ""))
             body = _esc(story.get("body", ""))
-            so_what = _esc(story.get("so_what", ""))
-            pattern = _esc(story.get("pattern_note", ""))
             src_line = _esc(_clean_src(_str(story.get("src_line", story.get("source", "")))))
             url = story.get("url", "")
             cat_badge = (f'<span style="display:inline-block;font-size:10px;'
                          f'text-transform:uppercase;letter-spacing:1px;color:{TEAL};'
                          f'font-weight:700;margin-bottom:6px;">{cat}</span>') if cat else ""
-            so_what_html = (f"<p style='margin:0 0 6px 0;font-size:13px;line-height:1.5;"
-                            f"color:{TEAL};'><strong>So what:</strong> {so_what}</p>") if so_what else ""
             pattern_html = ("<p style='margin:0 0 6px 0;font-size:13px;line-height:1.5;"
                             f"color:#7B5BA6;'><strong>Pattern:</strong> {pattern}</p>") if pattern else ""
             html += f"""
@@ -332,8 +338,6 @@ def render(digest: dict) -> str:
                 {_link_or_text(headline, url, style=f"color:{NAVY_DEEP};text-decoration:none;")}
               </h3>
               <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;">{body}</p>
-              {so_what_html}
-              {pattern_html}
               <div style="font-size:10px;color:#AAA;margin-top:6px;">{src_line}</div>
             </div>"""
         sections.append(f"""
@@ -654,6 +658,11 @@ def _shell(body: str, date_str: str) -> str:
     img {{ border:0; display:block; }}
 
     @media only screen and (max-width: 620px) {{
+      .util-row .util-cell {{ display:block !important; text-align:center !important;
+        padding:5px 8px !important; white-space:normal !important; }}
+      .util-row .util-cell a {{ padding:4px 7px !important; margin:1px !important;
+        font-size:11px !important; letter-spacing:0.3px !important; }}
+
       .wrapper {{ width:100% !important; }}
       .sec, .footer {{ padding:16px 14px !important; }}
       .hdr-main, .hdr-meta {{ display:block !important; width:100% !important;

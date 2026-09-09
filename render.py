@@ -231,7 +231,7 @@ def render(digest: dict) -> str:
 
     sections.append(f"""
     <a name="top"></a>
-    <div bgcolor="{NAVY_DEEP}" style="background-color:{NAVY_DEEP};background:linear-gradient(135deg, {NAVY_DEEP} 0%, {NAVY} 60%, #24485C 100%);color:#fff;padding:20px 32px 16px;" class="sec">
+    <div bgcolor="{TEAL}" style="background-color:{TEAL};color:#fff;padding:20px 32px 16px;" class="sec">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
         <td class="hdr-main" style="vertical-align:top;">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:{TEAL_LT};font-family:Arial,sans-serif;margin-bottom:6px;">CSIS Australia Chair</div>
@@ -624,7 +624,7 @@ def render(digest: dict) -> str:
         </div>"""
 
     sections.append(f"""
-    <div style="padding:20px 32px;background:{NAVY};text-align:center;" class="sec footer">
+    <div style="padding:20px 32px;background:{TEAL};text-align:center;" class="sec footer">
       {otd_footer}
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.45);font-family:Arial,sans-serif;line-height:2;">
         CSIS Australia Chair &nbsp;&middot;&nbsp; Australia Chair Daily Brief &nbsp;&middot;&nbsp; Generated {gen_time}

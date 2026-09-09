@@ -17,8 +17,8 @@ Google News routing is not a fallback, it is the rule for any publisher that pay
 
 | Source | Region | Fetched via | Feed or query |
 | --- | --- | --- | --- |
-| The Australian **\*** | AU | Google News (AU) | `site:theaustralian.com.au` |
-| AFR **\*** | AU | Google News (AU) | `site:afr.com` |
+| The Australian **\*** | AU | direct RSS | `www.theaustralian.com.au` |
+| AFR **\*** | AU | direct RSS | `www.afr.com` |
 | SMH **\*** | AU | direct RSS | `www.smh.com.au` |
 | SMH Federal Politics **\*** | AU | direct RSS | `www.smh.com.au` |
 | SMH World **\*** | AU | direct RSS | `www.smh.com.au` |
@@ -35,37 +35,37 @@ Google News routing is not a fallback, it is the rule for any publisher that pay
 | news.com.au | AU | direct RSS | `www.news.com.au` |
 | The Conversation AU | AU | direct RSS | `theconversation.com` |
 | Crikey | AU | direct RSS | `www.crikey.com.au` |
-| Sky News Australia | AU | Google News (AU) | `site:skynews.com.au politics OR defence OR China` |
+| Sky News Australia | AU | direct RSS | `www.skynews.com.au` |
 | AAP | AU | Google News (AU) | `site:aap.com.au` |
 | RNZ National | NZ | direct RSS | `www.rnz.co.nz` |
 | RNZ Political | NZ | direct RSS | `www.rnz.co.nz` |
 | RNZ World | NZ | direct RSS | `www.rnz.co.nz` |
 | Newsroom NZ | NZ | direct RSS | `www.newsroom.co.nz` |
-| NZ Herald | NZ | Google News (AU) | `site:nzherald.co.nz politics OR defence OR foreign` |
-| Stuff | NZ | Google News (AU) | `site:stuff.co.nz politics OR defence OR foreign` |
+| NZ Herald | NZ | direct RSS | `www.nzherald.co.nz` |
+| Stuff | NZ | direct RSS | `www.stuff.co.nz` |
 | The Post (Wellington) | NZ | Google News (AU) | `site:thepost.co.nz` |
-| 1News | NZ | Google News (AU) | `site:1news.co.nz politics OR pacific` |
+| 1News | NZ | direct RSS | `www.1news.co.nz` |
 | RNZ Pacific **\*** | Pacific | direct RSS | `www.rnz.co.nz` |
 | Islands Business **\*** | Pacific | direct RSS | `islandsbusiness.com` |
-| Pacific Island Times **\*** | Pacific | Google News (AU) | `site:pacificislandtimes.com` |
-| PACNEWS | Pacific | Google News (AU) | `site:pina.com.fj OR "PACNEWS"` |
-| Benar News Pacific | Pacific | Google News (AU) | `site:benarnews.org Pacific` |
+| Pacific Island Times **\*** | Pacific | direct RSS | `www.pacificislandtimes.com` |
+| PACNEWS | Pacific | direct RSS | `www.pina.com.fj` |
+| Benar News Pacific | Pacific | direct RSS | `www.benarnews.org` |
 | Fiji Times | Pacific | direct RSS | `www.fijitimes.com.fj` |
-| Samoa Observer | Pacific | Google News (AU) | `site:samoaobserver.ws` |
+| Samoa Observer | Pacific | direct RSS | `www.samoaobserver.ws` |
 | PNG Post-Courier | Pacific | direct RSS | `www.postcourier.com.pg` |
-| The National (PNG) | Pacific | Google News (AU) | `site:thenational.com.pg` |
-| Solomon Star | Pacific | Google News (AU) | `site:solomonstarnews.com` |
-| Vanuatu Daily Post | Pacific | Google News (AU) | `site:dailypost.vu` |
-| Cook Islands News | Pacific | Google News (AU) | `site:cookislandsnews.com` |
-| Kaniva Tonga | Pacific | Google News (AU) | `site:kanivatonga.nz` |
-| Marianas Variety | Pacific | Google News (AU) | `site:mvariety.com` |
+| The National (PNG) | Pacific | direct RSS | `www.thenational.com.pg` |
+| Solomon Star | Pacific | direct RSS | `www.solomonstarnews.com` |
+| Vanuatu Daily Post | Pacific | direct RSS | `www.dailypost.vu` |
+| Cook Islands News | Pacific | direct RSS | `www.cookislandsnews.com` |
+| Kaniva Tonga | Pacific | direct RSS | `kanivatonga.nz` |
+| Marianas Variety | Pacific | direct RSS | `www.mvariety.com` |
 | ABC Pacific **\*** | Pacific | Google News (AU) | `site:abc.net.au "Pacific Beat" OR "Pacific Islands" OR PNG OR Vanuatu` |
-| Loop Pacific | Pacific | Google News (AU) | `site:loopnews.com` |
-| FBC News (Fiji) | Pacific | Google News (AU) | `site:fbcnews.com.fj` |
-| Fiji Sun | Pacific | Google News (AU) | `site:fijisun.com.fj` |
-| Fijivillage | Pacific | Google News (AU) | `site:fijivillage.com` |
+| Loop Pacific | Pacific | direct RSS | `www.loopnews.com` |
+| FBC News (Fiji) | Pacific | direct RSS | `www.fbcnews.com.fj` |
+| Fiji Sun | Pacific | direct RSS | `fijisun.com.fj` |
+| Fijivillage | Pacific | direct RSS | `www.fijivillage.com` |
 | Pacific Islands Report | Pacific | Google News (AU) | `site:pireport.org` |
-| Islands Business (wire) **\*** | Pacific | Google News (AU) | `site:islandsbusiness.com` |
+| Islands Business (wire) **\*** | Pacific | direct RSS | `islandsbusiness.com` |
 | Pacific Daily News | Pacific | Google News (US) | `site:guampdn.com` |
 | Saipan Tribune | Pacific | Google News (US) | `site:saipantribune.com` |
 | RNZ Pacific (wire) **\*** | Pacific | Google News (AU) | `site:rnz.co.nz Pacific Islands OR Fiji OR PNG` |

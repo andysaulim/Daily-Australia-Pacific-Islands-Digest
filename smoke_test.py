@@ -9,6 +9,7 @@ caps, URL repair, and the renderer.
 Writes smoke_output.html so a layout change can be eyeballed without spending an
 API call. Run this before every commit that touches the validator or renderer.
 """
+import re
 import datetime
 import inspect
 import json
@@ -313,10 +314,23 @@ print("\n=== 11c. Reads on a phone ===")
 # hard width would strand a forwarded copy at 680px on a 375px phone, where the
 # media query that used to flex it no longer exists, so the inline ceiling has
 # to be relative.
-check("wrapper flexes below 680 on a narrow screen",
-      "max-width:100%" in html and "max-width:680px" not in html)
+# The INLINE ceiling has to be relative — that is the one that survives a
+# forward with the stylesheet stripped. The stylesheet may still cap the frame
+# at 680 in the tablet band, and does: testing for the absence of the string
+# anywhere was testing the wrong thing, since it cannot tell an inline value
+# from a media query.
+_inline_frame = re.search(r'class="wrapper"[^>]*style="([^"]*)"', html).group(1)
+check("the inline frame ceiling is relative",
+      "max-width:100%" in _inline_frame and "max-width:680px" not in _inline_frame,
+      _inline_frame[:70])
 check("mobile query still flexes the wrapper while the stylesheet lives",
-      ".wrapper { width:100% !important; }" in html)
+      re.search(r"max-width: ?620px[^@]*?\.wrapper \{ width:100% !important;", html, re.S)
+      is not None)
+# And the tablet band caps it, so the brief does not read wider than the other
+# three in a desktop preview pane.
+check("the tablet band caps the frame at 680",
+      re.search(r"min-width: ?621px[^@]*?\.wrapper \{[^}]*max-width:680px !important",
+                html, re.S) is not None)
 
 # The strip was a row of white-space:nowrap table cells — five or six
 # indicators of unbreakable content, well past 375px, in a row that cannot

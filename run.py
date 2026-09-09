@@ -22,6 +22,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from digest import _count_digest_words
 
+# The band the prompt asks for is 2,000-3,000 words. This is the ceiling.
+WORD_CEILING = 3000
+
 # ─────────────────────────────────────────────────────────────────────────────
 # SECTION CAPS
 # ─────────────────────────────────────────────────────────────────────────────
@@ -974,6 +977,16 @@ def main():
         print("\n  --no-track: skipping tracker and archive write-back")
     else:
         print("\n  Skipping tracker write-back due to critical validation failures")
+
+    # ── Step 4b: Length ceiling ──────────────────────────────────────────
+    # Enforced after the model has written, not requested of it. A target in
+    # the prompt competes with every other instruction there and loses on a
+    # heavy news day, which is how an issue ships at half again its length.
+    # Whole items are dropped from the tail of the weaker sections until the
+    # brief fits; nothing is rewritten, so what survives keeps its sourcing.
+    import length_budget
+    for _line in length_budget.apply(digest_data, _count_digest_words, WORD_CEILING):
+        print(f"  {_line}")
 
     # ── Step 5: Render ───────────────────────────────────────────────────
     from render import render

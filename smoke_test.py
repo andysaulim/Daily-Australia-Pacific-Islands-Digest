@@ -803,12 +803,32 @@ check("pre-validation floor raised to 1,600",
           {"top_stories": [1, 2], "overnight_items": [1, 2, 3],
            "morning_memo": [1, 2, 3], "re_line": "x"})
       == ["word count 4 is below the 1600-word minimum"])
-check("the prompt targets the 2,000-2,500 sent length",
-      "between 2,000 and 2,500 words" in _dsrc and "2,300-2,800" in _dsrc)
+check("the prompt targets the 2,000-3,000 sent length",
+      "between 2,000 and 3,000 words" in _dsrc and "2,300-3,000" in _dsrc)
 check("the prompt keeps the 1,600 hard minimum",
       "HARD MINIMUM 1,600" in _dsrc)
 check("the prompt names an upper bound too",
-      "Do NOT exceed 2,800" in _dsrc)
+      "Do NOT exceed 3,000" in _dsrc)
+# A target in the prompt is a preference, not a ceiling. length_budget is the
+# ceiling, and run.py must actually call it or the band is unenforced.
+import length_budget as _lb
+_rsrc_len = Path("run.py").read_text(encoding="utf-8")
+check("run.py enforces the ceiling", "length_budget.apply(" in _rsrc_len
+      and "WORD_CEILING" in _rsrc_len)
+check("the ceiling matches the prompt's upper bound", run_mod.WORD_CEILING == 3000)
+_over = {"top_stories": [{"headline": "h", "body_text": " ".join(["w"] * 90)} for _ in range(4)],
+         "morning_memo": ["a", "b", "c"],
+         "also_today": [{"headline": "h", "body_text": " ".join(["w"] * 90)} for _ in range(8)],
+         "overnight_items": [{"headline": "h", "body_text": " ".join(["w"] * 90)} for _ in range(9)],
+         "pacific_wire": [{"headline": "h", "body_text": " ".join(["w"] * 90)} for _ in range(9)]}
+# 1,200 rather than something smaller: the per-section floors mean the
+# trimmer cannot go below roughly 1,080 words on this fixture, and it should
+# not — a floor exists so a section is not emptied to hit a number.
+_lb.apply(_over, digest_mod._count_digest_words, 1200)
+check("the trimmer brings an over-long digest under the ceiling",
+      digest_mod._count_digest_words(_over) <= 1200,
+      str(digest_mod._count_digest_words(_over)))
+check("the trimmer never touches top stories", len(_over["top_stories"]) == 4)
 check("the prompt sends a short draft to the Pacific first",
       "add items to pacific_wire" in _dsrc)
 _rsrc_run = inspect.getsource(run_mod)

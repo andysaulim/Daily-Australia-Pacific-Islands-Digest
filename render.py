@@ -345,12 +345,18 @@ def render(digest: dict) -> str:
     # say what they do. Notice and links share one row rather than taking a
     # band each, which is ~90px of chrome above the nameplate.
     if web_url:
-        _base = web_url[:-len("latest.html")] if web_url.endswith("latest.html") else ""
-        _a = ('display:inline-block;padding:4px 12px;margin:0 2px;'
+        # Derive the site root from the URL's last path segment rather than a
+        # literal "latest.html", so a run that publishes index.html or a dated
+        # page still gets its Past issues link.
+        _base = web_url.rsplit("/", 1)[0] + "/" if "/" in web_url else ""
+        # The house pill: solid white, dark type. This edition kept the old
+        # translucent fill, so its three links read as outlines next to the
+        # filled buttons in the other briefs.
+        _a = ('display:inline-block;padding:6px 14px;margin:0 3px;'
               'font-family:Arial,sans-serif;font-size:11px;font-weight:700;'
-              'letter-spacing:0.5px;color:rgba(255,255,255,0.92);'
-              'background:rgba(255,255,255,0.10);'
-              'border:1px solid rgba(255,255,255,0.22);border-radius:3px;'
+              'letter-spacing:0.5px;color:#14181F;'
+              'background:#FFFFFF;'
+              'border-radius:14px;'
               'text-decoration:none;white-space:nowrap;')
         _links = [f'<a href="{_esc(web_url)}" style="{_a}">Read online</a>']
         # The dated PDF when the run published one, so the link names the issue

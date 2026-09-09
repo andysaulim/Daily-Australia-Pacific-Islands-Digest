@@ -434,6 +434,8 @@ Return a single JSON object with these keys.
 - on_this_day: 0-1 items, ONLY from the calendar's confirmed anniversaries. Each: date, event, relevance. Empty array if none.
 - story_count: integer, total items across all sections.
 
+TRANSLATION: some Pacific reporting is not in English — Tahiti Infos publishes in French, and Wallis-et-Futuna and New Caledonia coverage often follows it. When you use a non-English item, write the headline and body in English and give the outlet's name as published. Do not quote a French sentence and leave it untranslated, and do not drop the item because it is not in English: French-language reporting is frequently the only source on French Polynesia and New Caledonia, which are squarely inside this brief's mandate.
+
 TARGET LENGTH: the SENT brief must land between 2,000 and 3,000 words, so aim for 2,300-3,000 in your draft. Anything over the 3,000 ceiling is trimmed from the tail of the weaker sections after you return, so a draft that runs long loses items you chose rather than words you wrote. Post-processing strips duplicate URLs and over-represented sources after you return, which typically removes 200-400 words. HARD MINIMUM 1,600. Do NOT exceed 3,000: past that you are padding, and the reader has a fixed amount of morning. This brief covers Australia, New Zealand and seventeen Pacific states across twelve topics, and 1,500 words cannot carry that. Reach the target by covering MORE stories, not by inflating individual bodies. If your draft runs short, add items to pacific_wire, overnight_items or also_today, in that order: the Pacific is where the brief is thinnest and the mandate widest.
 
 FINAL CHECKS before you return:

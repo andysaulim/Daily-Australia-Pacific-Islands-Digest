@@ -129,6 +129,33 @@ _COMPANY_ENTITIES = {
 # URL CHECKING
 # ─────────────────────────────────────────────────────────────────────────────
 
+
+# Gmail stops rendering a message body past roughly 102 KB and shows
+# "[Message clipped]" with a link. The brief is long by design, so this is a
+# live risk rather than a theoretical one: a clipped brief hides everything
+# below the fold, and the reader has no way to tell what is missing.
+GMAIL_CLIP_BYTES = 102_400
+EMAIL_BYTES_WARN = 78_000
+EMAIL_BYTES_CRITICAL = 96_000
+
+
+def check_email_size(html: str) -> list[str]:
+    """Warn, then block, before Gmail would clip the body.
+
+    Measures encoded bytes rather than string length: Korean, Japanese and
+    Chinese text costs three bytes a character, so a character count would
+    understate a brief in exactly the editions most likely to be long.
+    """
+    n = len(html.encode("utf-8"))
+    pct = 100 * n / GMAIL_CLIP_BYTES
+    if n >= EMAIL_BYTES_CRITICAL:
+        return [f"CRITICAL EMAIL SIZE: {n:,} bytes ({pct:.0f}% of Gmail's "
+                f"{GMAIL_CLIP_BYTES:,}-byte clipping limit); the brief would be "
+                f"truncated mid-item."]
+    if n >= EMAIL_BYTES_WARN:
+        return [f"EMAIL SIZE: {n:,} bytes ({pct:.0f}% of Gmail's clipping limit)"]
+    return []
+
 def _check_url(url: str, timeout: float = 5.0) -> tuple[str, bool, str]:
     """HEAD-check a URL. Only 404 and 410 count as dead: 403, 405, 429, and 451
     are normal for paywalled publishers and bot-protected servers, which is most
@@ -1008,6 +1035,8 @@ def main():
     digest_data["market_indicators"] = payload.get("market_indicators") or {}
 
     html = render(digest_data)
+    for _line in check_email_size(html):
+        print(f"   {'⚠' if 'CRITICAL' not in _line else '✖'}  {_line}")
     date_slug = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
 
     Path(f"digest_{date_slug}.html").write_text(html, encoding="utf-8")

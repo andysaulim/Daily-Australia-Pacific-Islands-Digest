@@ -303,7 +303,7 @@ def _item_block(cat: str, src: str, headline: str, body: str, url: str,
     meta = " &middot; ".join(p for p in (cat, src) if p)
     return f"""
             <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid {bar_color};">
-              <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">{meta}</div>
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">{meta}</div>
               <div style="font-size:13px;font-weight:600;color:{NAVY};margin:2px 0 3px;">
                 {_link_or_text(headline, url)}
               </div>
@@ -358,14 +358,14 @@ def render(digest: dict) -> str:
               'background:#FFFFFF;'
               'border-radius:14px;'
               'text-decoration:none;white-space:nowrap;')
-        _links = [f'<a href="{_esc(web_url)}" style="{_a}">Read online</a>']
+        _links = [f'<a class="pill" href="{_esc(web_url)}" style="{_a}">Read online</a>']
         # The dated PDF when the run published one, so the link names the issue
         # a reader is holding rather than whatever "latest" has since become.
         _pdf = digest.get("pdf_url") or ""
         if _pdf:
-            _links.append(f'<a href="{_esc(_pdf)}" style="{_a}">Download PDF</a>')
+            _links.append(f'<a class="pill" href="{_esc(_pdf)}" style="{_a}">Download PDF</a>')
         if _base:
-            _links.append(f'<a href="{_esc(_base + "archive.html")}" style="{_a}">Past issues</a>')
+            _links.append(f'<a class="pill" href="{_esc(_base + "archive.html")}" style="{_a}">Past issues</a>')
         sections.append(f"""
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#2E3644;" class="util-row no-print">
           <tr>
@@ -411,10 +411,6 @@ def render(digest: dict) -> str:
     </div>
     """)
 
-    # Placeholder for the jump row, resolved at the end once every section is
-    # known and its anchors can be checked.
-    sections.append("%%NAV%%")
-
     # ── 2. Market strip ──────────────────────────────────────────────────
     # Renders whatever markets.py resolved, in its declared order, and nothing
     # when it resolved nothing. Green and red here are the one place in the
@@ -458,13 +454,22 @@ def render(digest: dict) -> str:
                 f'color:#fff;border-bottom:1px solid rgba(255,255,255,0.10);">'
                 f'<tr>{tiles}</tr></table>')
 
+    # Placeholder for the jump row, resolved at the end once every section is
+    # known and its anchors can be checked. It sits under the data strip, as
+    # in the other three: nameplate, then the day's figures, then the way into
+    # the brief. Here it came before the strip, so the menu interrupted the
+    # masthead instead of closing it.
+    sections.append("%%NAV%%")
+
     # ── 3. Today at a Glance ─────────────────────────────────────────────
     memo_items = digest.get("morning_memo") or []
     if memo_items:
         memo_html = ""
         for i, mi in enumerate(memo_items[:3]):
-            text = _esc(mi if isinstance(mi, str) else
-                        (mi.get("text", "") if isinstance(mi, dict) else str(mi or "")))
+            # The memo is the first thing read and the place the prompt most
+            # wants a name bolded, so it converts emphasis like any body copy.
+            text = _emphasis(_esc(mi if isinstance(mi, str) else
+                        (mi.get("text", "") if isinstance(mi, dict) else str(mi or ""))))
             memo_html += f"""
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
               <tr>
@@ -484,8 +489,8 @@ def render(digest: dict) -> str:
         <div {_SEC}>
           <a name="memo" id="memo"></a>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="glance-panel" style="background:#E9F2F4;border-left:3px solid {TEAL};">
-            <tr><td style="padding:16px 20px 8px;">
-              {_sec_label("Today at a Glance")}
+            <tr><td style="padding:0;">{_sec_label("Today at a Glance")}</td></tr>
+            <tr><td style="padding:0 20px 8px;">
               {memo_html}
             </td></tr>
           </table>
@@ -498,7 +503,7 @@ def render(digest: dict) -> str:
         for story in top_stories:
             cat = _esc(_str(story.get("category_tag", story.get("category", ""))))
             headline = _esc(story.get("headline", ""))
-            body = _esc(story.get("body", ""))
+            body = _emphasis(_esc(story.get("body", "")))
             src_line = _esc(_clean_src(_str(story.get("src_line", story.get("source", "")))))
             url = story.get("url", "")
             cat_badge = (f'<span style="display:inline-block;font-size:10px;'
@@ -511,7 +516,7 @@ def render(digest: dict) -> str:
                 {_link_or_text(headline, url, style=f"color:{NAVY_DEEP};text-decoration:none;")}
               </h3>
               <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;">{body}</p>
-              <div style="font-size:10px;color:#AAA;margin-top:6px;">{src_line}</div>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">{src_line}</div>
             </div>"""
         sections.append(f"""
         <div {_SEC}>
@@ -534,7 +539,7 @@ def render(digest: dict) -> str:
         for item in overnight:
             cat = _esc(_str(item.get("category", "")))
             h = _esc(item.get("headline", ""))
-            b = _esc(item.get("body_text", ""))
+            b = _emphasis(_esc(item.get("body_text", "")))
             src = _esc(_clean_src(_str(item.get("source", ""))))
             url = item.get("url", "")
             badge = _signal_badge(item.get("signal_type", ""))
@@ -599,7 +604,7 @@ def render(digest: dict) -> str:
                 _esc(label),
                 _esc(_clean_src(_str(item.get("source", "")))),
                 _esc(item.get("headline", "")),
-                _esc(item.get("body_text", "")),
+                _emphasis(_esc(item.get("body_text", ""))),
                 item.get("url", ""),
                 bar_color=NAVY_DEEP,
                 extra_html=(f'<div style="margin-top:5px;">{badge}</div>' if badge else ""),
@@ -625,7 +630,7 @@ def render(digest: dict) -> str:
                     _esc(_str(item.get("country", "Regional"))),
                     _esc(_clean_src(_str(item.get("source", "")))),
                     _esc(item.get("headline", "")),
-                    _esc(item.get("body_text", "")),
+                    _emphasis(_esc(item.get("body_text", ""))),
                     item.get("url", ""),
                     bar_color=TEAL,
                     extra_html=(f'<div style="margin-top:5px;">{badge}</div>' if badge else ""),
@@ -651,7 +656,7 @@ def render(digest: dict) -> str:
                     _esc(_str(item.get("category", ""))),
                     _esc(_clean_src(_str(item.get("source", "")))),
                     _esc(item.get("headline", "")),
-                    _esc(item.get("body_text", "")),
+                    _emphasis(_esc(item.get("body_text", ""))),
                     item.get("url", ""),
                     bar_color="#1B6A4A",
                     extra_html=(f'<div style="margin-top:5px;">{badge}</div>' if badge else ""),
@@ -682,7 +687,7 @@ def render(digest: dict) -> str:
                 {_link_or_text(_esc(item.get("headline", "")), item.get("url", ""),
                                style=f"color:#fff;border-bottom:1px solid {TEAL_LT};padding-bottom:1px;text-decoration:none;")}
               </div>
-              <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);">{_esc(item.get("body_text", ""))}</div>
+              <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);">{_emphasis(_esc(item.get("body_text", "")))}</div>
             </div>"""
         sections.append(f"""
         <div bgcolor="{NAVY_DEEP}" style="background-color:{NAVY_DEEP};padding:20px 32px;" class="sec china-dark">
@@ -697,7 +702,7 @@ def render(digest: dict) -> str:
         html = "".join(
             _item_block(_esc(_str(i.get("category", ""))),
                         _esc(_clean_src(_str(i.get("source", "")))),
-                        _esc(i.get("headline", "")), _esc(i.get("body_text", "")),
+                        _esc(i.get("headline", "")), _emphasis(_esc(i.get("body_text", ""))),
                         i.get("url", ""), bar_color=_cat_color(_str(i.get("category", "")), NAVY))
             for i in canberra)
         sections.append(f"""
@@ -712,7 +717,7 @@ def render(digest: dict) -> str:
         html = "".join(
             _item_block(_esc(_str(i.get("category", ""))),
                         _esc(_clean_src(_str(i.get("source", "")))),
-                        _esc(i.get("headline", "")), _esc(i.get("body_text", "")),
+                        _esc(i.get("headline", "")), _emphasis(_esc(i.get("body_text", ""))),
                         i.get("url", ""), bar_color="#B8860B")
             for i in biz)
         sections.append(f"""
@@ -735,7 +740,7 @@ def render(digest: dict) -> str:
                 _esc(_str(item.get("document_type", "Document"))),
                 _esc(_clean_src(_str(item.get("source", "")))),
                 _esc(item.get("headline", "")),
-                _esc(item.get("body_text", "")),
+                _emphasis(_esc(item.get("body_text", ""))),
                 item.get("url", ""),
                 bar_color="#5D6D7E",
                 extra_html=quote,
@@ -808,7 +813,7 @@ def render(digest: dict) -> str:
                              headline=_esc(i.get("headline", "")),
                              url=i.get("url", ""),
                              src=_esc(_clean_src(_str(i.get("source", "")))),
-                             body=_esc(i.get("body_text", "")))
+                             body=_emphasis(_esc(i.get("body_text", ""))))
                 for i in _items)
             html += ((_subhead(_esc(_cat)) if _multi else "")
                      + rows)
@@ -831,7 +836,7 @@ def render(digest: dict) -> str:
                           f"margin-top:3px;'><strong>Argument:</strong> {arg}</div>")
             html += _item_block(
                 authors, _esc(_clean_src(_str(item.get("source", "")))),
-                _esc(item.get("headline", "")), _esc(item.get("summary", "")),
+                _esc(item.get("headline", "")), _emphasis(_esc(item.get("summary", ""))),
                 item.get("url", ""), bar_color="#8E44AD", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>
@@ -850,7 +855,7 @@ def render(digest: dict) -> str:
             extra = ""
             html += _item_block(
                 meta, _esc(_clean_src(_str(item.get("source", "")))),
-                _esc(item.get("headline", "")), _esc(item.get("summary", "")),
+                _esc(item.get("headline", "")), _emphasis(_esc(item.get("summary", ""))),
                 item.get("url", ""), bar_color="#16A085", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>
@@ -876,9 +881,9 @@ def render(digest: dict) -> str:
     if web_url:
         _fa = 'color:rgba(255,255,255,0.95);text-decoration:none;'
         _fbase = web_url[:-len("latest.html")] if web_url.endswith("latest.html") else ""
-        _parts = [f'<a href="{_esc(web_url)}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:14px;text-decoration:none;white-space:nowrap;">Read online</a>']
+        _parts = [f'<a class="pill" href="{_esc(web_url)}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:14px;text-decoration:none;white-space:nowrap;">Read online</a>']
         if _fbase:
-            _parts.append(f'<a href="{_esc(_fbase + "archive.html")}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:14px;text-decoration:none;white-space:nowrap;">Past issues</a>')
+            _parts.append(f'<a class="pill" href="{_esc(_fbase + "archive.html")}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:14px;text-decoration:none;white-space:nowrap;">Past issues</a>')
         _foot_links = ('<div style="margin-top:11px;font-family:Arial,sans-serif;'
                        'font-size:11px;letter-spacing:0.5px;">'
                        + '<span style="color:rgba(255,255,255,0.45);">&nbsp;&middot;&nbsp;</span>'.join(_parts)
@@ -1024,7 +1029,10 @@ def _shell(body: str, date_str: str) -> str:
       .wrapper {{ background:#1a1a1a !important; }}
       .wrapper .sec {{ background:#222 !important; border-bottom-color:#333 !important; }}
       .wrapper h1, .wrapper h2, .wrapper h3 {{ color:#E0E0E0 !important; }}
-      .wrapper p, .wrapper div, .wrapper td, .wrapper span {{ color:#CCC !important; }}
+      /* Removed: this forced EVERY text node to #CCC, which is why dark mode
+         here was monochrome: accents flattened, and white type on a teal
+         ground turned grey at 3.15:1. The per-colour mappings below do the
+         job properly, mapping each light value to a chosen dark counterpart. */
       .wrapper a {{ color:{TEAL_LT} !important; }}
       .wrapper .footer {{ background:#0F1A2E !important; }}
       /* The terminal strip is white by design in light mode. Left
@@ -1033,6 +1041,9 @@ def _shell(body: str, date_str: str) -> str:
          guard misses it because #FFFFFF is on the exempt list, being
          legitimate as type on an accent fill. */
       .wrapper .footer-end {{ background:#1a1a1a !important; }}
+      /* Keep the filled buttons filled. The generic white-background
+         rule darkens them while their type stays dark, which measured
+         1.23:1 - a button you cannot read. */
       .wrapper .footer-end td {{ color:#9AA3AE !important; }}
       .wrapper .story-card {{ background:#2a2a2a !important; border-color:#333 !important; }}
       .wrapper .china-dark {{ background:#101E2A !important; }}
@@ -1070,15 +1081,25 @@ def _shell(body: str, date_str: str) -> str:
       .wrapper [style*="background:#FFF"] {{ background-color:#262A30 !important; }}
       .wrapper [style*="background:#ffffff"] {{ background-color:#262A30 !important; }}
       .wrapper [style*="background:#FFFFFF"] {{ background-color:#262A30 !important; }}
-    }}
+          /* The blanket "everything is #CCC" rule turns the date block's white
+         type grey on its teal ground, and turns the pill's dark type teal.
+         Both are elements whose colours are already correct in either
+         scheme, so they opt out. */
+      .wrapper .cal-date, .wrapper .cal-date * {{ color:#FFFFFF !important; }}
+      .wrapper .pill {{ background:#E8E6E1 !important; color:#14181F !important; }}
+}}
   </style>
   <!--[if mso]>
   <style type="text/css">
     table {{ border-collapse:collapse; }}
   </style>
-  <![endif]-->
+       /* Last in the block: equal specificity, so order decides. The pill is
+         dark type on a white fill, and the generic white-background rule
+         above darkens the fill while the type stays dark - 1.23:1. */
+      .wrapper .pill {{ background:#E8E6E1 !important; color:#14181F !important; }}
+ <![endif]-->
 </head>
-<body style="margin:0;padding:0;background:#F2F3F5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+<body style="margin:0;padding:0;background:#F2F3F5;font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
   <!-- The frame is a TABLE whose width is an HTML ATTRIBUTE, not a div with a
        CSS max-width. Gmail and most clients drop every stylesheet block when a
        recipient forwards or replies, and many ignore max-width on a div, so the

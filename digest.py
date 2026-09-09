@@ -129,6 +129,11 @@ HOUSE STYLE, BINDING ON EVERY SENTENCE:
 - Spell Australian and New Zealand institutions the way they spell themselves: Department of Defence, Ministry of Foreign Affairs and Trade, Labor (the party) but labour (the noun).
 - No emojis anywhere, in any field.
 
+EMPHASIS — the only markup you may use, and only inside body text, never in a headline, src_line, or any other field:
+- A person's name in **double asterisks** the FIRST time it appears in an item: **Anthony Albanese**, **Richard Marles**, **Penny Wong**. Not on later mentions in the same item, not for institutions, countries or ministries. This is what lets a reader scan the brief by actor.
+- A quantity in *single asterisks* when the figure is the point of the sentence: *more than 30 percent*, *$2.3 billion*, *the third such passage this month*. At most one per item; if everything is emphasised, nothing is.
+Do not use asterisks for anything else, and never nest them. Anything that is not one of these two exact shapes will be printed literally, asterisks and all, in front of the reader.
+
 BREVITY: top_stories body 2-3 sentences (60-80 words). overnight_items 2-3 sentences (50-70 words). All other item sections 1-2 sentences (40-60 words). Academic summaries may run to 3 sentences. Cut filler.
 
 DEDUPLICATION, ZERO TOLERANCE, WITHIN THE DAY:

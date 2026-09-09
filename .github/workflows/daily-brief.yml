@@ -138,6 +138,16 @@ jobs:
         continue-on-error: true
         run: python -m playwright install --with-deps chromium
 
+      # The visual check: contrast, typeface count and horizontal overflow,
+      # measured in a real browser. None of it is visible by reading the
+      # HTML, which is why it kept being found by eye instead. Needs the
+      # browser installed below, so it runs after that step.
+      - name: Visual checks
+        if: steps.guard.outputs.should_run != 'false'
+        run: |
+          python3 preview.py
+          BRIEF_HTML=preview.html python3 test_render_visual.py
+
       - name: Generate and send the brief
         if: steps.guard.outputs.should_run == 'true'
         id: send

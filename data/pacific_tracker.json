@@ -65,11 +65,11 @@
       "event_count": 1
     },
     "Palau": {
-      "last_event": "Affirmed, noted, endorsed: Pacific Islands Forum leaders in Koror",
+      "last_event": "China's Pacific envoy Qian Bo attended the 55th Forum Leaders Meeting",
       "last_event_date": "2026-09-09",
       "last_activity_type": "other",
-      "url": "https://devpolicy.org/affirmed-noted-endorsed-pacific-islands-forum-leaders-in-koror-2026-09-09/",
-      "event_count": 18
+      "url": "https://www.einpresswire.com/article/940358612/special-envoy-for-pacific-island-countries-affairs-of-the-chinese-government-qian-bo-attends-the-55th-pacific-islands-forum-leaders-meeting",
+      "event_count": 19
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-09",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "China's Pacific envoy Qian Bo attended the 55th Forum Leaders Meeting",
+      "url": "https://www.einpresswire.com/article/940358612/special-envoy-for-pacific-island-countries-affairs-of-the-chinese-government-qian-bo-attends-the-55th-pacific-islands-forum-leaders-meeting",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-09",
       "country": "Palau",

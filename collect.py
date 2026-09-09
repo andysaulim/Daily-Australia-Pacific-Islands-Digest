@@ -52,6 +52,25 @@ def _gnews_us(query: str) -> str:
     return f"https://news.google.com/rss/search?q={query}&hl=en-US&gl=US&ceid=US:en"
 
 
+# A feed is a list of candidate URLs, not one URL: the publisher's own RSS
+# first, a Google News search behind it. They are tried in order and the first
+# to return items wins.
+#
+# The fallback is what makes this safe to write for a URL nobody could verify.
+# If the native path is wrong, or the outlet moves it, that candidate returns
+# nothing and the search still answers — which is exactly what the feed did
+# before. It also means one change upstream cannot take a source out silently:
+# 77 of the feeds here were Google-News-only, and a search that stops matching
+# returns nothing indefinitely with no error to notice.
+_FALLBACK: dict[str, str] = {}
+
+
+def _native(source: str, native_url: str, gnews_query: str) -> str:
+    """Register a Google News fallback for `source` and return its native RSS."""
+    _FALLBACK[source] = _gnews(gnews_query)
+    return native_url
+
+
 # Shared query fragment: "this outlet, but only on our region"
 _REGION_Q = (
     "Australia+OR+AUKUS+OR+%22New+Zealand%22+OR+%22Pacific+Islands%22"
@@ -63,10 +82,12 @@ TIER1_FEEDS = {
     # The Australian and AFR are hard-paywalled; direct RSS returns 403.
     "The Australian":         _gnews("site:theaustralian.com.au"),
     "AFR":                    _gnews("site:afr.com"),
-    "SMH":                    "https://www.smh.com.au/rss/feed.xml",
+    "SMH": _native("SMH", "https://www.smh.com.au/rss/feed.xml",
+                              f"site:smh.com.au+{_REGION_Q}"),
     "SMH Federal Politics":   "https://www.smh.com.au/rss/politics/federal.xml",
     "SMH World":              "https://www.smh.com.au/rss/world.xml",
-    "ABC News":               "https://www.abc.net.au/news/feed/51120/rss.xml",
+    "ABC News": _native("ABC News", "https://www.abc.net.au/news/feed/51120/rss.xml",
+                              f"site:abc.net.au+{_REGION_Q}"),
     # Feed id 56166 has returned a hard 500 from the ABC on every live run.
     # Rerouted through Google News rather than deleted: the ABC political
     # unit is one of the outlets the Chair actually reads, and a publisher
@@ -90,17 +111,23 @@ TIER1_FEEDS = {
         'site:politico.com+%22Canberra+Playbook%22'),
 
     # ── Australian national ──────────────────────────────────────────────
-    "The Age":                "https://www.theage.com.au/rss/feed.xml",
-    "Guardian Australia":     "https://www.theguardian.com/australia-news/rss",
-    "news.com.au":            "https://www.news.com.au/content-feeds/latest-news-national/",
+    "The Age": _native("The Age", "https://www.theage.com.au/rss/feed.xml",
+                              f"site:theage.com.au+{_REGION_Q}"),
+    "Guardian Australia": _native("Guardian Australia", "https://www.theguardian.com/australia-news/rss",
+                              f"site:theguardian.com/australia-news+{_REGION_Q}"),
+    "news.com.au": _native("news.com.au", "https://www.news.com.au/content-feeds/latest-news-national/",
+                              f"site:news.com.au+{_REGION_Q}"),
     "The Conversation AU":    "https://theconversation.com/au/politics/articles.atom",
-    "Crikey":                 "https://www.crikey.com.au/feed/",
+    "Crikey": _native("Crikey", "https://www.crikey.com.au/feed/",
+                              f"site:crikey.com.au+{_REGION_Q}"),
     "Sky News Australia":     _gnews("site:skynews.com.au+politics+OR+defence+OR+China"),
     "AAP":                    _gnews("site:aap.com.au"),
 
     # ── New Zealand ──────────────────────────────────────────────────────
-    "RNZ National":           "https://www.rnz.co.nz/rss/national.xml",
-    "RNZ Political":          "https://www.rnz.co.nz/rss/political.xml",
+    "RNZ National": _native("RNZ National", "https://www.rnz.co.nz/rss/national.xml",
+                              f"site:rnz.co.nz+{_REGION_Q}"),
+    "RNZ Political": _native("RNZ Political", "https://www.rnz.co.nz/rss/political.xml",
+                              f"site:rnz.co.nz+politics+{_REGION_Q}"),
     "RNZ World":              "https://www.rnz.co.nz/rss/world.xml",
     "Newsroom NZ":            "https://www.newsroom.co.nz/feed",
     "NZ Herald":              _gnews("site:nzherald.co.nz+politics+OR+defence+OR+foreign"),
@@ -623,6 +650,11 @@ def _dedup(articles: list) -> list:
 # PARALLEL FEED FETCHER
 # ─────────────────────────────────────────────────────────────────────────────
 
+# Which candidate answered for each feed, so a run can report how much of the
+# brief still depends on Google News.
+_source_used: dict[str, str] = {}
+
+
 def _fetch_feeds_parallel(feed_dict: dict, is_tiered: bool = False) -> dict:
     """Fetch all feeds in parallel. Returns {source: (entries, extra_info)}.
     Records per-source health in the module-level _source_health dict."""
@@ -635,6 +667,19 @@ def _fetch_feeds_parallel(feed_dict: dict, is_tiered: bool = False) -> dict:
             url = url_or_tuple
             tier_val = None
         entries = _parse_feed(url)
+        # Nothing from the native feed: fall back to the registered search
+        # rather than dropping the source for the day.
+        if not entries:
+            alt = _FALLBACK.get(source)
+            if alt and alt != url:
+                entries = _parse_feed(alt)
+                if entries:
+                    print(f"    ~  {source}: native feed empty, used Google News")
+                    _source_used[source] = "google-news"
+            elif not alt:
+                _source_used[source] = "none"
+        elif source in _FALLBACK:
+            _source_used[source] = "native"
         return source, entries, tier_val
 
     items = list(feed_dict.items())

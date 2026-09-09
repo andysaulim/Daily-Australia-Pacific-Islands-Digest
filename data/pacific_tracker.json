@@ -20,7 +20,7 @@
       "last_event_date": "2026-09-08",
       "last_activity_type": "recognition switch",
       "url": "https://www.abc.net.au/news/2026-09-08/solomon-islands-australia-china-pacific-contest/107127740",
-      "event_count": 5
+      "event_count": 6
     },
     "Vanuatu": {
       "last_event": "Forum's China rebuke buried in communique as Micronesian rift persists",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-08",
+      "country": "Solomon Islands",
+      "activity": "recognition switch",
+      "headline": "ABC questions value for money in Australia's Solomon Islands spending",
+      "url": "https://www.abc.net.au/news/2026-09-08/solomon-islands-australia-china-pacific-contest/107127740",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-08",
       "country": "Solomon Islands",

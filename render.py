@@ -376,26 +376,32 @@ def render(digest: dict) -> str:
                     f"<strong style='color:#FFFFFF;font-size:11px;letter-spacing:1px;'>RE:</strong>"
                     f"&nbsp; {re_line}</div>")
 
+    # The house masthead, identical in all four briefs. Only the band colour,
+    # the chair name and the title differ. Left column: chair, title, date.
+    # Right column, bottom-aligned: the issue meta. Then a rule and the RE
+    # line across the full width.
+    #
+    # It is written out rather than shared because these are four repositories
+    # with no common package — so it is copied verbatim, and any change has to
+    # be made in all four.
     sections.append(f"""
     <a name="top" id="top"></a>
-    <div bgcolor="{TEAL}" style="background-color:{TEAL};color:#fff;padding:20px 32px 16px;" class="sec">
+    <div bgcolor="{TEAL}" style="background-color:{TEAL};color:#fff;padding:16px 32px 16px;border-bottom:1px solid rgba(255,255,255,0.18);" class="sec mast-band">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td class="hdr-main" style="vertical-align:top;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:rgba(255,255,255,0.88);font-family:Arial,sans-serif;margin-bottom:6px;">CSIS Australia Chair</div>
-          <h1 style="margin:0;font-size:26px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#fff;letter-spacing:0.3px;">
+        <td class="mast-main" style="vertical-align:top;">
+          <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.78);margin-bottom:7px;">CSIS Australia Chair</div>
+          <h1 style="margin:0 0 4px 0;font-size:26px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#fff;letter-spacing:0.5px;">
             Australia Daily Brief
           </h1>
-          <div style="margin-top:4px;font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif;">Australia &nbsp;&middot;&nbsp; New Zealand &nbsp;&middot;&nbsp; the Pacific Islands</div>
-          <div style="margin-top:8px;font-size:16px;color:rgba(255,255,255,0.9);font-family:Georgia,serif;">{_esc(date_str)}</div>
+          <div style="margin-top:2px;font-size:16px;font-weight:400;color:rgba(255,255,255,0.85);font-family:Georgia,serif;">{_esc(date_str)}</div>
         </td>
-        <td class="hdr-meta" width="130" style="width:130px;vertical-align:top;text-align:right;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.5);margin-bottom:4px;">{gen_time}</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.72);letter-spacing:0.5px;">{word_count:,} words &middot; {read_min} min read</div>
+        <td class="mast-meta" style="vertical-align:bottom;text-align:right;">
+          <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:0.5px;color:rgba(255,255,255,0.72);white-space:nowrap;">{word_count:,} words &middot; {read_min} min read</div>
         </td>
       </tr></table>
       {re_block}
     </div>
-    <div style="height:3px;background-color:{TEAL};background:linear-gradient(90deg, {TEAL} 0%, {NAVY} 100%);"></div>""")
+    """)
 
     # Placeholder for the jump row, resolved at the end once every section is
     # known and its anchors can be checked.
@@ -963,9 +969,9 @@ def _shell(body: str, date_str: str) -> str:
 
       .wrapper {{ width:100% !important; }}
       .sec, .footer {{ padding:16px 14px !important; }}
-      .hdr-main, .hdr-meta {{ display:block !important; width:100% !important;
+      .mast-main, .mast-meta {{ display:block !important; width:100% !important;
                               text-align:left !important; }}
-      .hdr-meta {{ padding-top:10px !important; }}
+      .mast-meta {{ text-align:left !important; padding-top:10px !important; }}
       .mkt {{ font-size:11px !important; padding-right:12px !important; }}
       .cal-table td[width="110"] {{ width:80px !important; padding:8px 8px 8px 0 !important; }}
       .cal-date {{ font-size:11px !important; }}

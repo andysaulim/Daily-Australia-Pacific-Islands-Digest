@@ -342,11 +342,12 @@ check("no nowrap table cell survives in the strip",
 # The masthead is a two-column table. On a phone the right column has to stack,
 # and on a forwarded phone copy, where no stylesheet stacks it, it has to be
 # bounded by an attribute instead.
-check("masthead meta column is stackable", 'class="hdr-meta"' in html)
-check("masthead meta column is bounded without a stylesheet",
-      'class="hdr-meta" width="130"' in html)
+# The masthead is now the house one, identical in all four briefs, so the
+# class names are the shared ones rather than this edition's own.
+check("masthead meta column is stackable", 'class="mast-meta"' in html)
+check("masthead main column is present", 'class="mast-main"' in html)
 check("mobile query stacks the masthead",
-      ".hdr-main, .hdr-meta" in html and "display:block !important" in html)
+      ".mast-main, .mast-meta" in html and "display:block !important" in html)
 
 print("\n=== 12. Pipeline health monitor ===")
 import pipeline_health

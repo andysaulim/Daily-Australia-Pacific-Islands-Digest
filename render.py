@@ -1014,6 +1014,13 @@ def _shell(body: str, date_str: str) -> str:
       .wrapper p, .wrapper div, .wrapper td, .wrapper span {{ color:#CCC !important; }}
       .wrapper a {{ color:{TEAL_LT} !important; }}
       .wrapper .footer {{ background:#0F1A2E !important; }}
+      /* The terminal strip is white by design in light mode. Left
+         unmapped it stays white in dark mode, which is a bright band
+         across the bottom of an otherwise dark brief. The coverage
+         guard misses it because #FFFFFF is on the exempt list, being
+         legitimate as type on an accent fill. */
+      .wrapper .footer-end {{ background:#1a1a1a !important; }}
+      .wrapper .footer-end td {{ color:#9AA3AE !important; }}
       .wrapper .story-card {{ background:#2a2a2a !important; border-color:#333 !important; }}
       .wrapper .china-dark {{ background:#101E2A !important; }}
     /* Filled from a measured audit of the rendered brief: these

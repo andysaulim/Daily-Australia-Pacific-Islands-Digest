@@ -47,13 +47,38 @@ JS = """() => {
   }
   return out; }"""
 
+# The browser sits in a different place on each host. This container
+# pre-installs it at a fixed path; a GitHub runner puts it under
+# ~/.cache/ms-playwright, where Playwright's own resolution finds it. Passing
+# the container path on a runner raises, and this check has never once run in
+# CI because of it.
+_PINNED = "/opt/pw-browsers/chromium"
+
+
+def _launch(p):
+    if os.path.exists(_PINNED):
+        return p.chromium.launch(executable_path=_PINNED)
+    return p.chromium.launch()
+
+
+# No browser at all is not a finding, it is a missing tool. The install step
+# ahead of this one is continue-on-error for exactly that reason, so failing
+# here would hold a brief over a runner hiccup rather than over the brief.
+try:
+    with sync_playwright() as _p:
+        _launch(_p).close()
+except Exception as e:
+    print("SKIP: no usable Chromium, visual checks not run --", str(e).splitlines()[0][:120])
+    sys.exit(0)
+
+
 FLOOR = 4.5
 # Widths that matter: the narrowest phone still in use, the common iPhone and
 # Android sizes, the tablet breakpoints, and desktop.
 WIDTHS = (320, 360, 375, 390, 414, 480, 540, 620, 700, 768, 900)
 fail = False
 with sync_playwright() as p:
-    b = p.chromium.launch(executable_path='/opt/pw-browsers/chromium')
+    b = _launch(p)
     for scheme in ('light', 'dark'):
         pg = b.new_page(viewport={'width': 760, 'height': 1400}, color_scheme=scheme)
         pg.goto(SRC); pg.wait_for_timeout(250)
@@ -97,7 +122,7 @@ OVERFLOW_JS = """(vw) => {
   return {sw: document.documentElement.scrollWidth, ov, tiny: [...new Set(tiny)]};
 }"""
 with sync_playwright() as p:
-    b = p.chromium.launch(executable_path='/opt/pw-browsers/chromium')
+    b = _launch(p)
     print("\nresponsive sweep")
     for vw in WIDTHS:
         pg = b.new_page(viewport={'width': vw, 'height': 900})

@@ -558,9 +558,11 @@ _rsrc = inspect.getsource(render_mod)
 check("Canberra label is self-explanatory",
       '_sec_label("Canberra Politics")' in _rsrc
       and '_sec_label("Canberra")' not in _rsrc)
-check("The Wire renamed to Also Today",
-      '_sec_label("Also Today")' in _rsrc
-      and '_sec_label("The Wire")' not in _rsrc)
+# Renamed back. "Also Today" was this edition's own name for the section; the
+# four briefs now share one house style, and in the other three it is The Wire.
+check("the wire section carries the house name",
+      '_sec_label("The Wire")' in _rsrc
+      and '_sec_label("Also Today")' not in _rsrc)
 
 print("\n=== 14d. Week in Review ===")
 import weekly

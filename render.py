@@ -122,6 +122,48 @@ _CAT_COLORS = {
 }
 
 
+MUTE = "#6B7280"
+
+
+def _subhead(text: str) -> str:
+    """A group label inside a section.
+
+    Also Today ran every category together, so it read as one
+    undifferentiated stream. One heading per subject beats a category
+    repeated in grey on every row.
+    """
+    return (f'<div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;'
+            f'text-transform:uppercase;letter-spacing:1.5px;color:#55607A;'
+            f'margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">'
+            f'{text}</div>')
+
+
+def _compact_row(cat: str, headline: str, url: str, src: str, body: str = "") -> str:
+    """One scannable line: category, headline, source.
+
+    Used where a section carries breadth rather than depth. The headline sits
+    on its own line with the note and source under it — run together they
+    wrapped into a single grey paragraph and the eye could not find where the
+    headline stopped.
+    """
+    under = " &middot; ".join(x for x in (body, src) if x)
+    line = (f'<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #EEF0F3;">'
+            f'<div style="font-family:Georgia,serif;font-size:14px;font-weight:600;'
+            f'line-height:1.4;color:{INK};">{_link_or_text(headline, url)}</div>'
+            + (f'<div style="font-family:Arial,sans-serif;font-size:11px;line-height:1.5;'
+               f'color:{MUTE};margin-top:2px;">{under}</div>' if under else "")
+            + '</td>')
+    if not cat:
+        # Under a group heading the category is already stated, so the column
+        # would be an empty indent on every row.
+        return f'<tr>{line}</tr>'
+    return (f'<tr>'
+            f'<td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;'
+            f'font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;'
+            f'text-transform:uppercase;color:{TEAL};border-bottom:1px solid #EEF0F3;">{cat}</td>'
+            f'{line}</tr>')
+
+
 def _cat_color(cat: str, default: str = NAVY) -> str:
     return _CAT_COLORS.get(_str(cat).strip(), default)
 
@@ -264,6 +306,10 @@ def render(digest: dict) -> str:
     </div>
     <div style="height:3px;background-color:{TEAL};background:linear-gradient(90deg, {TEAL} 0%, {NAVY} 100%);"></div>""")
 
+    # Placeholder for the jump row, resolved at the end once every section is
+    # known and its anchors can be checked.
+    sections.append("%%NAV%%")
+
     # ── 2. Market strip ──────────────────────────────────────────────────
     # Renders whatever markets.py resolved, in its declared order, and nothing
     # when it resolved nothing. Green and red here are the one place in the
@@ -351,21 +397,40 @@ def render(digest: dict) -> str:
     # ── 5. Overnight Flash ───────────────────────────────────────────────
     overnight = _real_items(digest, "overnight_items")
     if overnight:
+        # A scan list, not a second Top Stories. One rule down the left, one
+        # line per item, so the eye runs vertically instead of stopping at a
+        # card border every three lines. The cards above carry the weight;
+        # this section carries the breadth.
+        #
+        # It also drops the alert frame. Every issue has an overnight section,
+        # so a red top rule on all of them said nothing about any of them; a
+        # genuine signal still gets its badge on the row.
         html = ""
         for item in overnight:
-            cat = _str(item.get("category", ""))
+            cat = _esc(_str(item.get("category", "")))
+            h = _esc(item.get("headline", ""))
+            b = _esc(item.get("body_text", ""))
+            src = _esc(_clean_src(_str(item.get("source", ""))))
+            url = item.get("url", "")
             badge = _signal_badge(item.get("signal_type", ""))
-            html += _item_block(
-                _esc(cat),
-                _esc(_clean_src(_str(item.get("source", "")))),
-                _esc(item.get("headline", "")),
-                _esc(item.get("body_text", "")),
-                item.get("url", ""),
-                bar_color=_cat_color(cat, ALERT),
-                extra_html=(f'<div style="margin-top:5px;">{badge}</div>' if badge else ""),
-            )
+            tail = (f'<span style="color:{MUTE};"> &mdash; {b}</span>' if b else "")
+            html += (f'<tr>'
+                     f'<td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;'
+                     f'font-family:Arial,sans-serif;font-size:10px;font-weight:700;'
+                     f'letter-spacing:0.5px;text-transform:uppercase;color:{TEAL};'
+                     f'border-bottom:1px solid #EEF0F3;">{cat}</td>'
+                     f'<td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;'
+                     f'font-size:13px;line-height:1.45;color:{INK};'
+                     f'border-bottom:1px solid #EEF0F3;">'
+                     f'{_link_or_text(h, url)}{tail}'
+                     f'<span style="font-family:Arial,sans-serif;font-size:11px;color:{MUTE};">'
+                     f' &middot; {src}</span>'
+                     + (f'<div style="margin-top:4px;">{badge}</div>' if badge else "")
+                     + f'</td></tr>')
+        html = (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
+                f'class="flash-table" style="border-top:2px solid {TEAL};">{html}</table>')
         sections.append(f"""
-        <div {_SEC_ALERT}>
+        <div {_SEC}>
           <a name="overnight"></a>{_sec_label("Overnight")}
           {html}
         </div>""")
@@ -560,14 +625,29 @@ def render(digest: dict) -> str:
     # ── 14. Also Today (the wire) ────────────────────────────────────────
     wire = _real_items(digest, "also_today")
     if wire:
-        html = "".join(
-            _item_block("", _esc(_clean_src(_str(i.get("source", "")))),
-                        _esc(i.get("headline", "")), _esc(i.get("body_text", "")),
-                        i.get("url", ""), bar_color="#B0B7BF")
-            for i in wire)
+        # Grouped by subject. Ungrouped it was a run of identical grey bars
+        # with nothing to tell them apart, so a reader looking for the Pacific
+        # item had to read all of them.
+        _groups = {}
+        for i in wire:
+            key = _str(i.get("category", "")).strip() or "Other"
+            _groups.setdefault(key.title(), []).append(i)
+        html = ""
+        _multi = len(_groups) > 1
+        for _cat, _items in _groups.items():
+            rows = "".join(
+                _compact_row(cat="" if _multi else _esc(_cat),
+                             headline=_esc(i.get("headline", "")),
+                             url=i.get("url", ""),
+                             src=_esc(_clean_src(_str(i.get("source", "")))),
+                             body=_esc(i.get("body_text", "")))
+                for i in _items)
+            html += ((_subhead(_esc(_cat)) if _multi else "")
+                     + f'<table width="100%" cellpadding="0" cellspacing="0" '
+                       f'border="0" class="flash-table">{rows}</table>')
         sections.append(f"""
         <div {_SEC}>
-          <a name="wire"></a>{_sec_label("Also Today")}
+          <a name="wire"></a>{_sec_label("The Wire")}
           {html}
         </div>""")
 
@@ -663,7 +743,34 @@ def render(digest: dict) -> str:
       </td></tr>
     </table>""")
 
+    # ── Jump row ──────────────────────────────────────────────────────────
+    # The brief is too long to scan end to end and the only link in it was
+    # "back to top". Label and anchor are paired here and each pair is kept
+    # only when the section actually emitted its anchor, so a quiet day that
+    # drops sections simply gets fewer links rather than dead ones.
+    _NAV = [("Top Stories", "top-stories"), ("Overnight", "overnight"),
+            ("AUKUS", "aukus"), ("Pacific", "pacific"),
+            ("New Zealand", "nz"), ("China-Pacific", "china-pacific"),
+            ("Canberra", "canberra"), ("Markets", "business"),
+            ("Documents", "documents"), ("Upcoming", "calendar"),
+            ("The Wire", "wire"), ("Analysis", "opeds")]
     body = "\n".join(sections)
+    _links = [f'<a href="#{_a}" style="color:{TEAL};text-decoration:underline;'
+              f'text-underline-offset:2px;white-space:nowrap;">{_l}</a>'
+              for _l, _a in _NAV if f'a name="{_a}"' in body]
+    _nav_html = ""
+    if len(_links) >= 4:
+        # Named and underlined. Unlabelled and unadorned it reads as a
+        # subtitle rather than a menu, and goes unused.
+        _nav_html = ('<div class="nav-row sec" style="background:#F7F8FA;'
+                     'border-bottom:1px solid #E4E7EB;padding:9px 32px;'
+                     'text-align:center;font-family:Arial,sans-serif;'
+                     'font-size:11px;line-height:1.9;color:#6B7280;">'
+                     '<span style="font-size:10px;font-weight:700;'
+                     'text-transform:uppercase;letter-spacing:1.5px;'
+                     'color:#6B7280;">In this issue &nbsp;</span>'
+                     + ' &nbsp;&middot;&nbsp; '.join(_links) + '</div>')
+    body = body.replace("%%NAV%%", _nav_html)
     return _shell(body, date_str)
 
 

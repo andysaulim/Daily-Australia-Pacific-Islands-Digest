@@ -236,7 +236,7 @@ def render(digest: dict) -> str:
         re_block = (f"<div style='margin-top:12px;padding-top:12px;"
                     f"border-top:1px solid rgba(46,156,176,0.35);font-size:13px;"
                     f"color:rgba(255,255,255,0.85);font-family:Georgia,serif;line-height:1.5;'>"
-                    f"<strong style='color:{TEAL_LT};font-size:11px;letter-spacing:1px;'>RE:</strong>"
+                    f"<strong style='color:#FFFFFF;font-size:11px;letter-spacing:1px;'>RE:</strong>"
                     f"&nbsp; {re_line}</div>")
 
     sections.append(f"""
@@ -244,7 +244,7 @@ def render(digest: dict) -> str:
     <div bgcolor="{TEAL}" style="background-color:{TEAL};color:#fff;padding:20px 32px 16px;" class="sec">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
         <td class="hdr-main" style="vertical-align:top;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:{TEAL_LT};font-family:Arial,sans-serif;margin-bottom:6px;">CSIS Australia Chair</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:rgba(255,255,255,0.88);font-family:Arial,sans-serif;margin-bottom:6px;">CSIS Australia Chair</div>
           <h1 style="margin:0;font-size:26px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#fff;letter-spacing:0.3px;">
             Australia Chair Daily Brief
           </h1>

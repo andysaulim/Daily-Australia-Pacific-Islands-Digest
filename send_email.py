@@ -74,7 +74,10 @@ def _html_to_plain_text(html: str) -> str:
     text = re.sub(r"</p>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"</div>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"</tr>", "\n", text, flags=re.IGNORECASE)
-    text = re.sub(r"<td[^>]*>", " | ", text, flags=re.IGNORECASE)
+    # Cells are separated by a space, not a pipe. This brief is built from
+    # nested layout tables, so a pipe per cell produced pages of stray
+    # "  |" lines with nothing beside them.
+    text = re.sub(r"<td[^>]*>", " ", text, flags=re.IGNORECASE)
     text = re.sub(r"<hr[^>]*/?>", "\n" + "-" * 50 + "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"<[^>]+>", "", text)
 

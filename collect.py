@@ -519,6 +519,23 @@ def _is_sport(entry) -> bool:
     return bool(_SPORT_FILTER.search(_entry_text(entry)))
 
 
+# Feeds that are on-topic by construction, and so must not be put through
+# _is_region_related. That filter exists to strip world news out of general
+# wires, which publish about everything. Applied to a primary document it does
+# the opposite of its job: a DFAT release titled "Joint statement with the
+# Republic of Korea", or a Beehive speech title, carries none of the region
+# tokens the pattern looks for and was dropped before the model saw it.
+#
+# Tier 4 is the primary-document tier — communiques, ministerial transcripts,
+# forum outcomes — so it was the worst affected. Every feed named here is
+# already regional by virtue of being that government's own channel.
+REGION_NATIVE_FEEDS = {
+    "PM&C / Prime Minister", "DFAT", "AU Defence", "AU Defence Minister",
+    "AU Parliament", "Beehive (NZ Govt)", "NZ MFAT", "NZDF",
+    "US Embassy Canberra",
+}
+
+
 def _is_region_related(entry) -> bool:
     return bool(AUSPAC_KEYWORDS.search(_entry_text(entry)))
 
@@ -650,7 +667,8 @@ def _collect_tier1() -> list:
         for entry in entries:
             if not _is_recent(entry, hours=24):
                 continue
-            if not _is_region_related(entry):
+            # A primary source needs no relevance test; see REGION_NATIVE_FEEDS.
+            if source not in REGION_NATIVE_FEEDS and not _is_region_related(entry):
                 continue
             if _is_sport(entry):
                 continue
@@ -668,7 +686,8 @@ def _collect_tier2() -> list:
         for entry in entries:
             if not _is_recent(entry, hours=36):
                 continue
-            if not _is_region_related(entry):
+            # A primary source needs no relevance test; see REGION_NATIVE_FEEDS.
+            if source not in REGION_NATIVE_FEEDS and not _is_region_related(entry):
                 continue
             if _is_sport(entry):
                 continue
@@ -683,7 +702,8 @@ def _collect_tier3() -> list:
         for entry in entries:
             if not _is_recent(entry, hours=72):
                 continue
-            if not _is_region_related(entry):
+            # A primary source needs no relevance test; see REGION_NATIVE_FEEDS.
+            if source not in REGION_NATIVE_FEEDS and not _is_region_related(entry):
                 continue
             # Must look like scholarship, not a news story name-checking a journal
             text = _entry_text(entry).lower()
@@ -704,7 +724,8 @@ def _collect_tier4() -> list:
         for entry in entries:
             if not _is_recent(entry, hours=48):
                 continue
-            if not _is_region_related(entry):
+            # A primary source needs no relevance test; see REGION_NATIVE_FEEDS.
+            if source not in REGION_NATIVE_FEEDS and not _is_region_related(entry):
                 continue
             articles.append(_entry_to_article(entry, source, extra={"primary_document": True}))
     return _dedup(articles)

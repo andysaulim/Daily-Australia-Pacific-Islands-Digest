@@ -172,7 +172,7 @@ def _item_block(cat: str, src: str, headline: str, body: str, url: str,
               <div style="font-size:13px;font-weight:600;color:{NAVY};margin:2px 0 3px;">
                 {_link_or_text(headline, url)}
               </div>
-              <div style="font-size:12px;line-height:1.5;color:#555;">{body}</div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">{body}</div>
               {extra_html}
             </div>"""
 
@@ -231,7 +231,7 @@ def render(digest: dict) -> str:
 
     sections.append(f"""
     <a name="top"></a>
-    <div bgcolor="{NAVY_DEEP}" style="background-color:{NAVY_DEEP};background:linear-gradient(135deg, {NAVY_DEEP} 0%, {NAVY} 60%, #24485C 100%);color:#fff;padding:20px 32px 16px;" class="sec">
+    <div bgcolor="{TEAL}" style="background-color:{TEAL};color:#fff;padding:20px 32px 16px;" class="sec">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
         <td class="hdr-main" style="vertical-align:top;">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:{TEAL_LT};font-family:Arial,sans-serif;margin-bottom:6px;">CSIS Australia Chair</div>
@@ -273,7 +273,7 @@ def render(digest: dict) -> str:
             cells += f"""
             <span class="mkt" style="display:inline-block;white-space:nowrap;padding:2px 16px 2px 0;">
               <span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8A8A8A;">{_esc(m.get("label", ""))}</span>
-              <span style="font-size:12px;font-weight:600;color:{NAVY};margin-left:6px;">{_esc(m["value"])}</span>
+              <span style="font-size:13px;font-weight:600;color:{NAVY};margin-left:6px;">{_esc(m["value"])}</span>
               <span style="font-size:11px;color:{colour};margin-left:4px;">{sign}{pct:.2f}%</span>
             </span>"""
         if cells:
@@ -292,7 +292,7 @@ def render(digest: dict) -> str:
             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
               <tr>
                 <td width="28" style="vertical-align:top;padding-top:2px;">
-                  <div style="width:24px;height:24px;border-radius:50%;background:{NAVY_DEEP};color:{TEAL_LT};text-align:center;line-height:24px;font-size:12px;font-weight:700;font-family:Georgia,serif;">{i + 1}</div>
+                  <div style="width:24px;height:24px;border-radius:50%;background:{NAVY_DEEP};color:{TEAL_LT};text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">{i + 1}</div>
                 </td>
                 <td style="padding-left:10px;vertical-align:top;">
                   <div style="font-size:14px;line-height:1.6;color:{INK};font-family:Georgia,serif;">{text}</div>
@@ -318,12 +318,12 @@ def render(digest: dict) -> str:
             pattern = _esc(story.get("pattern_note", ""))
             src_line = _esc(_clean_src(_str(story.get("src_line", story.get("source", "")))))
             url = story.get("url", "")
-            cat_badge = (f'<span style="display:inline-block;font-size:9px;'
+            cat_badge = (f'<span style="display:inline-block;font-size:10px;'
                          f'text-transform:uppercase;letter-spacing:1px;color:{TEAL};'
                          f'font-weight:700;margin-bottom:6px;">{cat}</span>') if cat else ""
-            so_what_html = (f"<p style='margin:0 0 6px 0;font-size:12px;line-height:1.5;"
+            so_what_html = (f"<p style='margin:0 0 6px 0;font-size:13px;line-height:1.5;"
                             f"color:{TEAL};'><strong>So what:</strong> {so_what}</p>") if so_what else ""
-            pattern_html = ("<p style='margin:0 0 6px 0;font-size:12px;line-height:1.5;"
+            pattern_html = ("<p style='margin:0 0 6px 0;font-size:13px;line-height:1.5;"
                             f"color:#7B5BA6;'><strong>Pattern:</strong> {pattern}</p>") if pattern else ""
             html += f"""
             <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid {_cat_color(_str(story.get("category_tag", story.get("category", ""))), NAVY_DEEP)};box-shadow:0 1px 3px rgba(0,0,0,0.06);">
@@ -448,7 +448,7 @@ def render(digest: dict) -> str:
             country = _esc(_str(item.get("country", "Regional")))
             activity = _esc(_str(item.get("activity_type", "")))
             src = _esc(_clean_src(_str(item.get("source", ""))))
-            reaction = ('<span style="display:inline-block;font-size:9px;padding:1px 6px;'
+            reaction = ('<span style="display:inline-block;font-size:10px;padding:1px 6px;'
                         'border:1px solid rgba(255,255,255,0.35);border-radius:2px;'
                         'color:rgba(255,255,255,0.6);margin-left:6px;">STATE MEDIA</span>'
                         if item.get("is_reaction_source") else "")
@@ -460,7 +460,7 @@ def render(digest: dict) -> str:
                 {_link_or_text(_esc(item.get("headline", "")), item.get("url", ""),
                                style=f"color:#fff;border-bottom:1px solid {TEAL_LT};padding-bottom:1px;text-decoration:none;")}
               </div>
-              <div style="font-size:12px;line-height:1.5;color:rgba(255,255,255,0.75);">{_esc(item.get("body_text", ""))}</div>
+              <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);">{_esc(item.get("body_text", ""))}</div>
             </div>"""
         sections.append(f"""
         <div bgcolor="{NAVY_DEEP}" style="background-color:{NAVY_DEEP};padding:20px 32px;" class="sec china-dark">
@@ -506,7 +506,7 @@ def render(digest: dict) -> str:
         for item in docs:
             key_line = _esc(item.get("key_line", ""))
             quote = (f"<div style='margin-top:6px;padding:8px 12px;background:#F5F8F9;"
-                     f"border-left:2px solid {TEAL};font-size:12px;line-height:1.5;"
+                     f"border-left:2px solid {TEAL};font-size:13px;line-height:1.5;"
                      f"color:#444;font-family:Georgia,serif;font-style:italic;'>"
                      f"&ldquo;{key_line}&rdquo;</div>") if key_line else ""
             html += _item_block(
@@ -542,7 +542,7 @@ def render(digest: dict) -> str:
                 </td>
                 <td style="vertical-align:top;padding:8px 0;border-top:1px solid #EEE;">
                   <div style="font-size:13px;font-weight:600;color:{NAVY};">{_esc(entry.get("event", ""))}</div>
-                  <div style="font-size:12px;line-height:1.5;color:#666;">{_esc(entry.get("why_it_matters", ""))}</div>
+                  <div style="font-size:13px;line-height:1.5;color:#666;">{_esc(entry.get("why_it_matters", ""))}</div>
                 </td>
               </tr>"""
         sections.append(f"""
@@ -575,10 +575,10 @@ def render(digest: dict) -> str:
             so_what = _esc(item.get("policy_so_what", ""))
             extra = ""
             if arg:
-                extra += (f"<div style='font-size:12px;line-height:1.5;color:#555;"
+                extra += (f"<div style='font-size:13px;line-height:1.5;color:#555;"
                           f"margin-top:3px;'><strong>Argument:</strong> {arg}</div>")
             if so_what:
-                extra += (f"<div style='font-size:12px;line-height:1.5;color:{TEAL};"
+                extra += (f"<div style='font-size:13px;line-height:1.5;color:{TEAL};"
                           f"margin-top:3px;'><strong>So what:</strong> {so_what}</div>")
             html += _item_block(
                 authors, _esc(_clean_src(_str(item.get("source", "")))),
@@ -599,7 +599,7 @@ def render(digest: dict) -> str:
             authors = _esc(_str(item.get("authors", "")))
             meta = " &middot; ".join(p for p in (authors, f"Tier {tier}" if tier else "") if p)
             so_what = _esc(item.get("policy_so_what", ""))
-            extra = (f"<div style='font-size:12px;line-height:1.5;color:{TEAL};"
+            extra = (f"<div style='font-size:13px;line-height:1.5;color:{TEAL};"
                      f"margin-top:3px;'><strong>So what:</strong> {so_what}</div>") if so_what else ""
             html += _item_block(
                 meta, _esc(_clean_src(_str(item.get("source", "")))),
@@ -618,15 +618,15 @@ def render(digest: dict) -> str:
         item = on_this_day[0]
         otd_footer = f"""
         <div style="text-align:left;margin-bottom:18px;padding:12px 16px;background:rgba(46,156,176,0.10);border-radius:3px;border-left:2px solid {TEAL_LT};">
-          <div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:{TEAL_LT};margin-bottom:6px;font-weight:600;">On This Day</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:Georgia,serif;"><strong>{_esc(item.get("date", ""))}:</strong> {_esc(item.get("event", ""))}</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:{TEAL_LT};margin-bottom:6px;font-weight:600;">On This Day</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:Georgia,serif;"><strong>{_esc(item.get("date", ""))}:</strong> {_esc(item.get("event", ""))}</div>
           <div style="font-size:11px;color:rgba(255,255,255,0.6);font-style:italic;margin-top:4px;line-height:1.4;">{_esc(item.get("relevance", ""))}</div>
         </div>"""
 
     sections.append(f"""
-    <div style="padding:20px 32px;background:{NAVY};text-align:center;" class="sec footer">
+    <div style="padding:20px 32px;background:{TEAL};text-align:center;" class="sec footer">
       {otd_footer}
-      <div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.45);font-family:Arial,sans-serif;line-height:2;">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.45);font-family:Arial,sans-serif;line-height:2;">
         CSIS Australia Chair &nbsp;&middot;&nbsp; Australia Chair Daily Brief &nbsp;&middot;&nbsp; Generated {gen_time}
       </div>
       <a href="#top" style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:none;letter-spacing:1px;">&#8593; Back to top</a>
@@ -663,15 +663,15 @@ def _shell(body: str, date_str: str) -> str:
       .cal-table td[width="110"] {{ width:80px !important; padding:8px 8px 8px 0 !important; }}
       .cal-date {{ font-size:11px !important; }}
       .china-dark > div {{ padding:16px 14px !important; }}
-      h1 {{ font-size:19px !important; }}
-      h2 {{ font-size:12px !important; }}
+      h1 {{ font-size:16px !important; }}
+      h2 {{ font-size:13px !important; }}
       h3 {{ font-size:14px !important; }}
       .story-card {{ padding:12px 10px !important; }}
       p, div {{ word-wrap:break-word !important; overflow-wrap:break-word !important; }}
       img {{ max-width:100% !important; height:auto !important; }}
       body, td, div, p, span {{ font-size:14px !important; -webkit-text-size-adjust:100%; }}
-      div[style*="font-size:9px"], div[style*="font-size:10px"],
-      span[style*="font-size:9px"], span[style*="font-size:10px"] {{ font-size:11px !important; }}
+      div[style*="font-size:10px"], div[style*="font-size:10px"],
+      span[style*="font-size:10px"], span[style*="font-size:10px"] {{ font-size:11px !important; }}
       a {{ min-height:44px; min-width:44px; display:inline-block; line-height:44px; }}
       p a, div a, td a {{ min-height:auto; min-width:auto; display:inline; padding:6px 0; line-height:inherit; }}
     }}
@@ -679,7 +679,7 @@ def _shell(body: str, date_str: str) -> str:
     @media only screen and (min-width: 621px) and (max-width: 768px) {{
       .wrapper {{ width:100% !important; }}
       .sec, .footer {{ padding:14px 20px !important; }}
-      h1 {{ font-size:21px !important; }}
+      h1 {{ font-size:22px !important; }}
     }}
 
     @media print {{

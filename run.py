@@ -1004,10 +1004,15 @@ def main():
 
     # Archive manifest
     manifest_path = archive_dir / "archive.json"
-    try:
-        entries = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
-        entries = []
+    # public/ is gitignored and the runner starts clean, so this file does not
+    # exist locally when a run begins. Reading it, finding nothing, appending
+    # today and writing it back published a one-entry manifest over the
+    # accumulated one — the archive page then listed a single issue however
+    # many had been sent. Read the published copy first, and do not write at
+    # all when that read fails.
+    from shared.published import load as _load_published
+    entries, _archive_ok = _load_published(
+        manifest_path, os.environ.get("WEB_URL", ""), fallback=[])
     entries = [e for e in entries if e.get("date") != date_slug]
     entries.append({
         "date": date_slug,
@@ -1018,8 +1023,9 @@ def main():
         "word_count": _count_digest_words(digest_data),
         "url": f"digest_{date_slug}.html",
     })
-    manifest_path.write_text(json.dumps(entries, ensure_ascii=False, indent=2),
-                             encoding="utf-8")
+    from shared.published import write_if_safe as _write_if_safe
+    entries.sort(key=lambda e: str(e.get("date") or ""))
+    _write_if_safe(manifest_path, entries, _archive_ok)
     (archive_dir / "index.html").write_text(_build_index_html(), encoding="utf-8")
 
     # PDF, best-effort. Generated from the archived HTML rather than

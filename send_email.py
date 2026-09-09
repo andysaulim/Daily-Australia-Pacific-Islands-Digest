@@ -17,7 +17,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-BRIEF_NAME = "Australia Chair Daily Brief"
+BRIEF_NAME = "Australia Daily Brief"
 SENDER_LABEL = "CSIS Australia Chair"
 
 
@@ -137,14 +137,18 @@ def send(html: str, re_line: Optional[str] = None, subject: Optional[str] = None
         recipients = [r.strip() for r in to_str.split(",") if r.strip()]
 
     if subject is None:
+        # House format: "Australia Daily Brief | Tuesday, September 8, 2026".
+        # A brief that arrives at the same hour every morning is found,
+        # filtered and searched by its name, so the name comes first and the
+        # date is spelled out rather than left as digits.
+        #
+        # It replaced the name, "MM/DD/YYYY", and the RE line cut at a hundred
+        # characters — which lands mid-item and often mid-word, because the RE
+        # line is a list of fragments rather than a sentence.
         from zoneinfo import ZoneInfo
-        date_str = datetime.now(ZoneInfo("America/New_York")).strftime("%m/%d/%Y")
-        if re_line:
-            max_re = 100
-            re_short = re_line[:max_re] + ("..." if len(re_line) > max_re else "")
-            subject = f"{BRIEF_NAME} - {date_str} - {re_short}"
-        else:
-            subject = f"{BRIEF_NAME} - {date_str}"
+        date_str = datetime.now(ZoneInfo("America/New_York")).strftime(
+            "%A, %B %-d, %Y")
+        subject = f"{BRIEF_NAME} | {date_str}"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject

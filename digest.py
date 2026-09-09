@@ -427,6 +427,7 @@ Return a single JSON object with these keys.
 - business_economy: 0-5 items. Trade, critical minerals, energy, investment screening, and economic coercion. Each: url, source, headline, body_text, category.
 - primary_documents: 0-4 items drawn from Tier 4. Each: url, source, document_type (communique, joint statement, ministerial transcript, readout, testimony), headline, body_text, key_line (the single most consequential sentence, quoted exactly from the source, or null), category.
 - calendar_watch: 4-5 entries. Upcoming events with dates or windows, drawn ONLY from today's articles or the VERIFIED DIPLOMATIC CALENDAR. Each: date (ISO if confirmed, else null), window (a phrase like "expected in August", or null), event, why_it_matters (1 sentence), confirmed (boolean).
+- key_stat: a single striking number, taken directly from TODAY's articles — never from a tracker, a database, or your own knowledge. It MUST appear in a story that is in this digest. Pick a different number every day; do not repeat the previous issue's. Prefer the most policy-relevant figure the day offers: a defence or aid dollar figure, a submarine or workforce number, a trade or critical-minerals volume, a poll margin, a Pacific development commitment. Object with: number (the figure as published, e.g. "$368B", "42%", "1,100"), label (what it measures, under 60 chars), context (one sentence on why it matters today), source (the outlet the figure came from). Return {{}} if today's articles contain no figure worth pulling out — an empty object is better than a number lifted from memory.
 - also_today: 0-8 items. The wire. Secondary news worth a line. Mandatory placement for same-day Lowy Interpreter, ASPI Strategist, and Devpolicy pieces. Each: url, source, headline, body_text, category.
 - opeds_today: 0-6 items from Tier 2. Each: url, source, headline (the EXACT published title, not a paraphrase), authors, prestige_tier, central_argument, summary, policy_so_what.
 - academic_today: 0-6 items from Tier 3. Each: url, source, headline, authors, journal_tier, summary (3 sentences), policy_so_what.
@@ -468,6 +469,12 @@ def _count_digest_words(digest: dict) -> int:
     for mi in (digest.get("morning_memo") or []):
         words += len(str(mi).split())
     words += len(str(digest.get("re_line", "")).split())
+    # The stat panel is prose the reader reads, so it counts toward the
+    # length the target and the trimmer are measured against.
+    _ks = digest.get("key_stat") or {}
+    if isinstance(_ks, dict):
+        for _f in ("number", "label", "context", "source"):
+            words += len(str(_ks.get(_f) or "").split())
     for section_key in _COUNTED_SECTIONS:
         for item in (digest.get(section_key) or []):
             if not isinstance(item, dict):

@@ -257,7 +257,7 @@ html = render_mod.render(base_digest())
 check("HTML produced", len(html) > 4000, f"{len(html)} bytes")
 check("no em-dash in rendered output", "—" not in html)
 check("teal accent present", "#17798C" in html)
-check("masthead present", "Australia Chair Daily Brief" in html)
+check("masthead present", "Australia Daily Brief" in html)
 check("Pacific Wire section rendered", "Pacific Wire" in html)
 check("New Zealand section rendered", ">New Zealand<" in html or "New Zealand" in html)
 check("no unresolved f-string braces", "{_" not in html and "{TEAL" not in html)
@@ -318,20 +318,26 @@ check("wrapper flexes below 680 on a narrow screen",
 check("mobile query still flexes the wrapper while the stylesheet lives",
       ".wrapper { width:100% !important; }" in html)
 
-# The market strip was a single row of white-space:nowrap table cells: five or
-# six indicators of unbreakable content, well past 375px, in a row that cannot
-# wrap. That is a horizontal scrollbar on the whole email, not just the strip.
+# The strip was a row of white-space:nowrap table cells — five or six
+# indicators of unbreakable content, well past 375px, in a row that cannot
+# wrap, which is a horizontal scrollbar on the whole email. It is now the
+# house strip: a fixed four tiles at percentage widths, which cannot overflow
+# because nothing in it is wider than its share of the table.
 _mhtml_wrap = render_mod.render({
     "re_line": "x", "morning_memo": ["a", "b", "c"],
     "market_indicators": {k: {"label": k.upper(), "value": "1,000",
                               "change_pct": 0.5, "as_of": "25 Aug"}
                           for k in ("asx200", "aud", "nzx50", "nzd", "brent")}})
-check("the market strip wraps instead of overflowing",
-      'class="mkt"' in _mhtml_wrap and "display:inline-block" in _mhtml_wrap)
+check("the strip is the house four-tile table", 'class="mkt-table"' in _mhtml_wrap)
+# Slice the strip at its own closing tag, not at a character count: the
+# tiles are wider than any guess and a short slice silently drops one.
+_strip = _mhtml_wrap.split('class="mkt-table"')[1].split("</table>")[0]
+check("nothing in the strip can overflow its cell",
+      "white-space:nowrap" not in _strip)
+check("five resolved indicators render as four tiles",
+      _strip.count('align="center"') == 4)
 check("no nowrap table cell survives in the strip",
       '<td style="padding:0 14px 0 0;white-space:nowrap;">' not in _mhtml_wrap)
-check("each indicator still holds its own figure on one line",
-      _mhtml_wrap.count("white-space:nowrap") >= 5)
 
 # The masthead is a two-column table. On a phone the right column has to stack,
 # and on a forwarded phone copy, where no stylesheet stacks it, it has to be
@@ -548,10 +554,46 @@ check("prompt injects the block",
 _mhtml = render_mod.render({"re_line": "x", "morning_memo": ["a", "b", "c"],
                             "market_indicators": _mk})
 check("strip renders the indicator", "ASX 200" in _mhtml and "8,123" in _mhtml)
-check("a fall renders red", render_mod.ALERT in _mhtml)
+# On the dark strip the alert red is unreadable, so a fall takes the
+# lightened variant the rest of the dark chrome uses.
+check("a fall renders red", "#FF8A8A" in _mhtml)
 check("strip absent when nothing resolved",
       "ASX 200" not in render_mod.render({"re_line": "x",
                                           "morning_memo": ["a", "b", "c"]}))
+
+print("\n=== 14b-stat. Stat of the Day ===")
+# This edition had no stat panel at all: nothing produced key_stat and no
+# section read it. The risk in adding one is the reverse of the usual — a
+# slot the model feels obliged to fill invites a number from memory, which
+# is what SOURCE-OR-SKIP exists to stop. So the panel must disappear
+# entirely on a day that has no figure, rather than render empty.
+_base_stat = {"re_line": "x", "morning_memo": ["a", "b", "c"],
+              "top_stories": [{"headline": "H", "body": "B", "source": "ABC",
+                               "url": "https://x/a"}]}
+_hs = render_mod.render(dict(_base_stat, key_stat={
+    "number": "$368B", "label": "AUKUS submarine programme cost to 2055",
+    "context": "Restated in Senate estimates.", "source": "AFR"}))
+check("the stat panel renders", 'a name="key-stat"' in _hs and "$368B" in _hs)
+check("the figure is set in the display face",
+      'font-size:26px;font-weight:700;color:' + render_mod.TEAL in _hs)
+check("absent key_stat renders no panel",
+      'a name="key-stat"' not in render_mod.render(_base_stat))
+check("an empty key_stat renders no panel",
+      'a name="key-stat"' not in render_mod.render(dict(_base_stat, key_stat={})))
+check("a stat with no number renders no panel",
+      'a name="key-stat"' not in render_mod.render(
+          dict(_base_stat, key_stat={"label": "L", "context": "C"})))
+# The prompt has to ask for it, or the renderer reads a key nothing writes.
+check("the prompt asks for key_stat", "- key_stat:" in inspect.getsource(digest_mod))
+check("the prompt forbids a remembered number",
+      "never from a tracker, a database, or your own knowledge"
+      in inspect.getsource(digest_mod))
+# Panel text is text the reader reads, so the length budget must see it.
+check("the panel counts toward the word count",
+      digest_mod._count_digest_words(dict(_base_stat, key_stat={
+          "number": "1", "label": "two three four", "context": "five six",
+          "source": "seven"}))
+      == digest_mod._count_digest_words(_base_stat) + 7)
 
 print("\n=== 14c. Section renames ===")
 _rsrc = inspect.getsource(render_mod)

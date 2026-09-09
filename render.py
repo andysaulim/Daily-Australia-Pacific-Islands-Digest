@@ -343,7 +343,7 @@ def render(digest: dict) -> str:
                     f"&nbsp; {re_line}</div>")
 
     sections.append(f"""
-    <a name="top"></a>
+    <a name="top" id="top"></a>
     <div bgcolor="{TEAL}" style="background-color:{TEAL};color:#fff;padding:20px 32px 16px;" class="sec">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
         <td class="hdr-main" style="vertical-align:top;">
@@ -434,7 +434,7 @@ def render(digest: dict) -> str:
         # them.
         sections.append(f"""
         <div {_SEC}>
-          <a name="memo"></a>
+          <a name="memo" id="memo"></a>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="glance-panel" style="background:#E9F2F4;border-left:3px solid {TEAL};">
             <tr><td style="padding:16px 20px 8px;">
               {_sec_label("Today at a Glance")}
@@ -467,7 +467,7 @@ def render(digest: dict) -> str:
             </div>"""
         sections.append(f"""
         <div {_SEC}>
-          <a name="top-stories"></a>{_sec_label("Top Stories")}
+          <a name="top-stories" id="top-stories"></a>{_sec_label("Top Stories")}
           {html}
         </div>""")
 
@@ -508,7 +508,7 @@ def render(digest: dict) -> str:
                 f'class="flash-table" style="border-top:2px solid {TEAL};">{html}</table>')
         sections.append(f"""
         <div {_SEC}>
-          <a name="overnight"></a>{_sec_label("Overnight")}
+          <a name="overnight" id="overnight"></a>{_sec_label("Overnight")}
           {html}
         </div>""")
 
@@ -527,7 +527,7 @@ def render(digest: dict) -> str:
         _ks_source = _esc(_clean_src(_str(key_stat.get("source", ""))))
         sections.append(f"""
         <div {_SEC}>
-          <a name="key-stat"></a>{_sec_label("Stat of the Day")}
+          <a name="key-stat" id="key-stat"></a>{_sec_label("Stat of the Day")}
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFF6F8;border-left:3px solid {TEAL};border-radius:3px;">
             <tr><td style="padding:14px 16px;">
               <div style="font-family:Georgia,serif;font-size:26px;font-weight:700;color:{TEAL};line-height:1;">{_esc(_ks_num)}</div>
@@ -558,7 +558,7 @@ def render(digest: dict) -> str:
             )
         sections.append(f"""
         <div {_SEC}>
-          <a name="aukus"></a>{_sec_label("AUKUS Watch")}
+          <a name="aukus" id="aukus"></a>{_sec_label("AUKUS Watch")}
           {html}
         </div>""")
 
@@ -584,7 +584,7 @@ def render(digest: dict) -> str:
                 )
         sections.append(f"""
         <div {_SEC}>
-          <a name="pacific"></a>{_sec_label("Pacific Wire", color=TEAL)}
+          <a name="pacific" id="pacific"></a>{_sec_label("Pacific Wire", color=TEAL)}
           {html}
         </div>""")
 
@@ -610,7 +610,7 @@ def render(digest: dict) -> str:
                 )
         sections.append(f"""
         <div {_SEC}>
-          <a name="nz"></a>{_sec_label("New Zealand", color=NZ_GREEN)}
+          <a name="nz" id="nz"></a>{_sec_label("New Zealand", color=NZ_GREEN)}
           {html}
         </div>""")
 
@@ -638,7 +638,7 @@ def render(digest: dict) -> str:
             </div>"""
         sections.append(f"""
         <div bgcolor="{NAVY_DEEP}" style="background-color:{NAVY_DEEP};padding:20px 32px;" class="sec china-dark">
-          <a name="china-pacific"></a>
+          <a name="china-pacific" id="china-pacific"></a>
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:{TEAL_LT};font-family:Arial,sans-serif;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid {TEAL_LT};">China in the Pacific</div>
           {html}
         </div>""")
@@ -654,7 +654,7 @@ def render(digest: dict) -> str:
             for i in canberra)
         sections.append(f"""
         <div {_SEC}>
-          <a name="canberra"></a>{_sec_label("Canberra Politics")}
+          <a name="canberra" id="canberra"></a>{_sec_label("Canberra Politics")}
           {html}
         </div>""")
 
@@ -669,7 +669,7 @@ def render(digest: dict) -> str:
             for i in biz)
         sections.append(f"""
         <div {_SEC}>
-          <a name="business"></a>{_sec_label("Business and Economy")}
+          <a name="business" id="business"></a>{_sec_label("Business and Economy")}
           {html}
         </div>""")
 
@@ -694,7 +694,7 @@ def render(digest: dict) -> str:
             )
         sections.append(f"""
         <div {_SEC}>
-          <a name="documents"></a>{_sec_label("Primary Documents")}
+          <a name="documents" id="documents"></a>{_sec_label("Primary Documents")}
           {html}
         </div>""")
 
@@ -738,7 +738,7 @@ def render(digest: dict) -> str:
               </tr>"""
         sections.append(f"""
         <div {_SEC}>
-          <a name="calendar"></a>{_sec_label("Upcoming")}
+          <a name="calendar" id="calendar"></a>{_sec_label("Upcoming")}
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="cal-table">{rows}</table>
         </div>""")
 
@@ -767,7 +767,7 @@ def render(digest: dict) -> str:
                        f'border="0" class="flash-table">{rows}</table>')
         sections.append(f"""
         <div {_SEC}>
-          <a name="wire"></a>{_sec_label("The Wire")}
+          <a name="wire" id="wire"></a>{_sec_label("The Wire")}
           {html}
         </div>""")
 
@@ -788,7 +788,7 @@ def render(digest: dict) -> str:
                 item.get("url", ""), bar_color="#8E44AD", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>
-          <a name="opeds"></a>{_sec_label("Analysis and Opinion")}
+          <a name="opeds" id="opeds"></a>{_sec_label("Analysis and Opinion")}
           {html}
         </div>""")
 
@@ -807,7 +807,7 @@ def render(digest: dict) -> str:
                 item.get("url", ""), bar_color="#16A085", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>
-          <a name="academic"></a>{_sec_label("From the Journals")}
+          <a name="academic" id="academic"></a>{_sec_label("From the Journals")}
           {html}
         </div>""")
 

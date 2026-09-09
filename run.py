@@ -794,6 +794,12 @@ fetch('archive.json').then(r => r.json()).then(entries => {
 
 def main():
     parser = argparse.ArgumentParser(description="Australia Chair Daily Brief pipeline")
+    # Without this there is no way to try the brief on one address: the
+    # only choices were not sending, or sending to the whole list.
+    parser.add_argument("--send-to", metavar="EMAIL", default="",
+                        help="Send this run to these addresses only, comma-separated. "
+                             "Implies --no-track, so a test leaves no trace in the "
+                             "published history.")
     parser.add_argument("--no-send", action="store_true",
                         help="Render to file only, do not send email")
     parser.add_argument("--from-cache", action="store_true",
@@ -1054,7 +1060,10 @@ def main():
         if not os.environ.get("DIGEST_TO"):
             print("\n  !  DIGEST_TO not set, the brief will only go to the sender")
         from send_email import send
-        send(html, re_line=digest_data.get("re_line"))
+        _test_to = [a.strip() for a in (args.send_to or "").split(",") if a.strip()]
+        if _test_to:
+            print(f"\n   TEST SEND to {', '.join(_test_to)} — not archived or tracked")
+        send(html, re_line=digest_data.get("re_line"), recipients=_test_to or None)
 
     # ── Step 7: Metrics ──────────────────────────────────────────────────
     try:

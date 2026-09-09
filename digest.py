@@ -60,7 +60,7 @@ SOURCE-OR-SKIP PRINCIPLE: for EVERY factual claim you write you must be able to 
 - ONLY use names, titles, figures, and claims that appear explicitly in the source articles. If an article says "the defence minister" without naming them, write "the defence minister". Do NOT fill in a name from training data. Ministries reshuffle, governments change, portfolios move.
 - PROPER NOUNS: COPY, DO NOT RECALL. Ship names, unit designations, company names, place names, party names, island and province names: use exactly the form in the source article.
 - If two sources conflict, note both. If a source is vague, stay vague.
-- HISTORICAL CLAIMS: pattern_note may reference a precedent ONLY if it appears in today's articles or in the trackers injected below. Otherwise set it to null. A wrong date is worse than no date.
+- HISTORICAL CLAIMS: a precedent may be cited ONLY if it appears in today's articles or in the trackers injected below. Otherwise set it to null. A wrong date is worse than no date.
 - DATES: calendar_watch and on_this_day may use dates from today's articles or from the VERIFIED DIPLOMATIC CALENDAR below. Nowhere else. For a standing fixture with no confirmed date, write the window ("expected in August"), never a specific day.
 - AUKUS STATUS: submarine milestones, boat counts, payment figures, and yard progress come from the AUKUS MILESTONE TRACKER below or from today's articles. Never from memory. A milestone the tracker marks UNVERIFIED SEED must not be stated as fact, omit it.
 - PACIFIC HISTORY: "first since", "last time", and agreement histories come from the CHINA IN THE PACIFIC TRACKER below or from today's articles. If the tracker is silent on a state, say nothing about its history.
@@ -116,8 +116,6 @@ Write like a senior Economist correspondent. Crisp, declarative, no throat-clear
 - Do NOT use: notably, importantly, significantly, crucially, interestingly, it is worth noting. If it were not notable you would not be running it.
 - Do NOT interpret. No "this suggests" or "this could mean". State the facts and the precedent; the expert reader draws the inference.
 - Active voice. "Canberra recalled its high commissioner", not "the high commissioner was recalled".
-- so_what: one sentence naming the specific decision, meeting, or deadline this affects, and only when that decision appears in today's articles or the calendar. No editorializing.
-- pattern_note: one sentence citing a dated precedent, only when the precedent is sourced. Otherwise null.
 - morning_memo: the factual connections across the day. State them as fact; the reader sees the implication.
 - The RE: line is a crisp factual one-liner readable on a phone in five seconds.
 
@@ -416,7 +414,7 @@ Return a single JSON object with these keys.
 - digest_date: "{date_str}"
 - re_line: the day's headline facts as 3 to 5 clipped fragments joined by " · " (space, middle dot, space), scannable on a phone in five seconds. Not a sentence. No "RE:" inside the string, no trailing full stop. This is also the email subject line, so put the most consequential fragment first. Example shape: "AUKUS Osborne milestone slips · Marles in Honiara · RBA holds · PIF communique lands · NZ frigate decision due"
 - morning_memo: EXACTLY 3 strings. The three things a desk officer would tell their boss in a lift. One sentence each, lead with the verb, sourced from today's articles. All three must be distinct, and at least one should come from outside Australia when the day's reporting allows it.
-- top_stories: 2-4 items, aim for 3. The biggest HARD NEWS of the day, original reporting from wires, correspondents, national dailies, or government sources. Not op-eds, not think tank commentary. Each item MUST cover a different topic; span domains where the day allows (one alliance or defence story, one politics story, one Pacific or regional story). Each: url, source, category_tag (from the closed list), headline, body (2-3 sentences, facts first, specific numbers, one beat of context, no interpretation), so_what (1 sentence or null), pattern_note (1 sentence with a sourced dated precedent, or null), src_line.
+- top_stories: 2-4 items, aim for 3. The biggest HARD NEWS of the day, original reporting from wires, correspondents, national dailies, or government sources. Not op-eds, not think tank commentary. Each item MUST cover a different topic; span domains where the day allows (one alliance or defence story, one politics story, one Pacific or regional story). Each: url, source, category_tag (from the closed list), headline, body (2-3 sentences, facts first, specific numbers, one beat of context, no interpretation), src_line.
   src_line FORMAT, follow exactly: `per <Outlet>: "<the article's exact published headline>"`. Copy the headline verbatim from the input data, do not paraphrase it. When a second outlet carried the same story and you drew on it, append ` · also <Outlet>`. When the byline is on the watch list, write `per <Outlet> (<Correspondent>): "<headline>"`.
 - overnight_items: 3-7 items. Source diversity is mandatory: no outlet more than 3 times. Topic diversity is mandatory. Each: url, source, category, headline (under 100 chars), body_text (2-3 sentences).
 - aukus_watch: 0-5 items. AUKUS Pillar 1 and Pillar 2 developments: submarine milestones, yard and workforce news, congressional and parliamentary action, export-control and licensing changes, Pillar 2 workstreams. Cross-check every status claim against the AUKUS MILESTONE TRACKER. Each: url, source, headline, body_text, pillar ("1", "2", or "both"), category.
@@ -453,8 +451,7 @@ Return ONLY valid JSON. Begin your response with {{ and end it with }}. No code 
 # WORD COUNT AND CONTENT MINIMUMS
 # ─────────────────────────────────────────────────────────────────────────────
 
-_TEXT_FIELDS = ("body", "body_text", "summary", "detail", "so_what",
-                "pattern_note", "central_argument", "policy_so_what",
+_TEXT_FIELDS = ("body", "body_text", "summary", "detail", "central_argument", "policy_so_what",
                 "key_line", "why_it_matters")
 
 _COUNTED_SECTIONS = (

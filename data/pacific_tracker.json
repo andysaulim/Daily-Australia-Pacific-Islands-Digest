@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-08",
+  "last_updated": "2026-09-09",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Five leaders absent from Palau summit as Australia's treaty run reaches Fiji",
@@ -65,11 +65,11 @@
       "event_count": 1
     },
     "Palau": {
-      "last_event": "Forum communique criticises China's July ICBM test",
-      "last_event_date": "2026-09-07",
+      "last_event": "Affirmed, noted, endorsed: Pacific Islands Forum leaders in Koror",
+      "last_event_date": "2026-09-09",
       "last_activity_type": "other",
-      "url": "https://www.islapublic.org/news/2026-09-07/pacific-islands-forum-leaders-criticize-chinas-july-icbm-test",
-      "event_count": 17
+      "url": "https://devpolicy.org/affirmed-noted-endorsed-pacific-islands-forum-leaders-in-koror-2026-09-09/",
+      "event_count": 18
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-09",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Affirmed, noted, endorsed: Pacific Islands Forum leaders in Koror",
+      "url": "https://devpolicy.org/affirmed-noted-endorsed-pacific-islands-forum-leaders-in-koror-2026-09-09/",
+      "section": "also_today"
+    },
     {
       "date": "2026-09-08",
       "country": "Solomon Islands",

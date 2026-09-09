@@ -1074,7 +1074,12 @@ def main():
     from shared.published import write_if_safe as _write_if_safe
     entries.sort(key=lambda e: str(e.get("date") or ""))
     _write_if_safe(manifest_path, entries, _archive_ok)
-    (archive_dir / "index.html").write_text(_build_index_html(), encoding="utf-8")
+    _index_html = _build_index_html()
+    (archive_dir / "index.html").write_text(_index_html, encoding="utf-8")
+    # Every issue links "Past issues" at archive.html, and nothing wrote that
+    # file, so the pill 404'd in every brief ever sent. The index already is
+    # the issue list; publish it under the name the brief asks for.
+    (archive_dir / "archive.html").write_text(_index_html, encoding="utf-8")
 
     # PDF, best-effort. Generated from the archived HTML rather than
     # re-rendered, so the file a reader downloads is byte-for-byte the

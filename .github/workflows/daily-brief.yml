@@ -29,6 +29,13 @@ on:
     - cron: '0 13 * * 1-5'   # 9:00 AM ET, last resort
   workflow_dispatch:
     inputs:
+      send_to:
+        description: >-
+          Test send: deliver this run to these addresses only, comma-separated.
+          Leave blank for the normal distribution list. Skips the archive and
+          tracker writes, so a test leaves no trace in the published history.
+        type: string
+        default: ''
       replace_today:
         description: >-
           Regenerate today's issue. Hides today's own publications from the
@@ -136,6 +143,9 @@ jobs:
         run: |
           if [ "${{ inputs.replace_today }}" = "true" ]; then
             python run.py --replace-today
+          elif [ -n "${{ inputs.send_to }}" ]; then
+            echo "::notice::TEST SEND to ${{ inputs.send_to }} — not archived or tracked."
+            python run.py --send-to "${{ inputs.send_to }}" --no-track
           else
             python run.py
           fi

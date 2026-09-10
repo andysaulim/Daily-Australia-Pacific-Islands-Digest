@@ -1133,9 +1133,12 @@ print("\n=== 14s. Schedule slots and the double-send guard ===")
 # slot no longer decides the day. That is only safe because the guard skips
 # every slot after the first, so the cost of five extra slots is ~8s each and
 # not five extra emails.
-import yaml as _yaml
-_wf_doc = _yaml.safe_load(_wf)
-_crons = [c["cron"] for c in _wf_doc[True]["schedule"]]
+# Parsed with a regex rather than PyYAML on purpose. This suite is a hard gate
+# ahead of the send, and PyYAML is not in requirements.txt and is not installed
+# on the runner: the import raised ModuleNotFoundError there, failed the gate,
+# and blocked the brief over a dependency the pipeline itself never uses. A
+# test-only import must not be able to stop a send.
+_crons = re.findall(r"^\s*-\s*cron:\s*['\"]([^'\"]+)['\"]", _wf, re.M)
 check("four schedule slots", len(_crons) == 4, str(len(_crons)))
 # Delivery moved to 7 AM ET, seven days, matching the other three editions.
 # The first slot sits just after the external primary at 11:00 UTC so it acts
@@ -1184,12 +1187,14 @@ check("a dispatch no longer bypasses the once-a-day rule",
 check("the floor is evaluated in ET, not UTC", 'TZ=America/New_York date +%-H' in _wf)
 check("a test address is exempt from the floor", '-z "${{ inputs.send_to }}"' in _wf)
 check("force_send overrides the floor", '"${{ inputs.force_send }}" != "true"' in _wf)
-check("a slot skips once one has succeeded", 'elif [ "$success_count" -gt "0" ]' in _wf)
+check("a slot skips once the list has been mailed", 'elif [ "$success_count" -gt "0" ]' in _wf
+      and 'LAST_SENT' in _wf)
 # A run counts ITSELF in the in-progress query, so the threshold is 1, not 0.
 check("a slot skips while another is still in flight", '"$total" -gt "1"' in _wf)
 check("runs queue rather than overlap",
-      _wf_doc["concurrency"]["group"] == "daily-brief"
-      and _wf_doc["concurrency"]["cancel-in-progress"] is False)
+      re.search(r"^concurrency:\s*$", _wf, re.M) is not None
+      and re.search(r"^\s*group:\s*daily-brief\s*$", _wf, re.M) is not None
+      and re.search(r"^\s*cancel-in-progress:\s*false\s*$", _wf, re.M) is not None)
 
 print("\n=== 14t. The external cron is documented correctly ===")
 # This is the step that actually fixes delivery, and the token advice is the

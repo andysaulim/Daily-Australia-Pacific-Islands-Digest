@@ -17,18 +17,22 @@ on:
     # slot no longer decides the day: the guard runs the first that arrives and
     # every later one costs about eight seconds to skip itself.
     #
-    # Times are UTC and GitHub does NOT adjust for daylight saving. These are
-    # set for EDT (UTC-4), so 10:00 is 6:00 AM ET. From November they land an
-    # hour earlier in ET, at 5:00 AM. Shift them an hour later for EST if that
-    # matters; the guard makes an early run harmless either way.
-    - cron: '0 10 * * 1-5'   # 6:00 AM ET, the intended hour
-    - cron: '30 10 * * 1-5'  # 6:30 AM ET
-    - cron: '0 11 * * 1-5'   # 7:00 AM ET
-    - cron: '30 11 * * 1-5'  # 7:30 AM ET
-    - cron: '0 12 * * 1-5'   # 8:00 AM ET
-    - cron: '0 13 * * 1-5'   # 9:00 AM ET, last resort
+    # Delivery is 7 AM ET, seven days a week, matching the other three
+    # editions. Times are UTC and GitHub does NOT adjust for daylight saving:
+    # these are set for EDT (UTC-4), so 11:00 is 7:00 AM ET, and from November
+    # they land an hour earlier in ET. The EARLIEST_SEND_HOUR_ET floor in the
+    # guard below is evaluated in ET, so it holds across the change and an
+    # early slot simply no-ops rather than mailing the list at 6.
+    - cron: '10 11 * * *'    # 7:10 AM ET, just after the external primary
+    - cron: '40 11 * * *'    # 7:40 AM ET
+    - cron: '40 12 * * *'    # 8:40 AM ET
+    - cron: '40 13 * * *'    # 9:40 AM ET, last resort
   workflow_dispatch:
     inputs:
+      force_send:
+        description: 'Send even outside the 7 AM ET delivery window. The external cron posts no inputs, so it is unaffected.'
+        type: boolean
+        default: false
       send_to:
         description: >-
           Test send: deliver this run to these addresses only, comma-separated.
@@ -83,6 +87,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Earliest hour this brief may reach the list, in ET. Nothing that
+          # mails the list runs before it, whatever started the run: the
+          # external cron has dispatched around midnight ET and this edition
+          # went out at 00:00 on 9 September. A send_to test address is exempt
+          # (it never reaches the list), as is an explicit force_send.
+          EARLIEST_ET="${{ vars.EARLIEST_SEND_HOUR_ET || '7' }}"
+          HOUR_ET=$(TZ=America/New_York date +%-H)
+          if [ "$HOUR_ET" -lt "$EARLIEST_ET" ] \
+             && [ -z "${{ inputs.send_to }}" ] \
+             && [ "${{ inputs.force_send }}" != "true" ]; then
+            echo "::notice::${HOUR_ET}:00 ET is before the ${EARLIEST_ET}:00 ET earliest send — skipping."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [ "${{ github.event_name }}" != "schedule" ]; then
             echo "Dispatch trigger, running"
             echo "should_run=true" >> "$GITHUB_OUTPUT"

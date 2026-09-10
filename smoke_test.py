@@ -1136,9 +1136,14 @@ print("\n=== 14s. Schedule slots and the double-send guard ===")
 import yaml as _yaml
 _wf_doc = _yaml.safe_load(_wf)
 _crons = [c["cron"] for c in _wf_doc[True]["schedule"]]
-check("six schedule slots", len(_crons) == 6, str(len(_crons)))
-check("the first slot aims at the intended 6:00 AM ET hour", _crons[0] == "0 10 * * 1-5")
-check("every slot is weekdays only", all(c.endswith("* * 1-5") for c in _crons))
+check("four schedule slots", len(_crons) == 4, str(len(_crons)))
+# Delivery moved to 7 AM ET, seven days, matching the other three editions.
+# The first slot sits just after the external primary at 11:00 UTC so it acts
+# as a fallback rather than beating it to the list.
+check("the first slot lands just after the 7:00 AM ET primary", _crons[0] == "10 11 * * *")
+check("every slot runs seven days", all(c.endswith("* * *") for c in _crons))
+check("no slot can fire before the 7 AM ET hour",
+      all(int(c.split()[1]) >= 11 for c in _crons), str(_crons))
 check("slots are distinct", len(set(_crons)) == len(_crons))
 check("slots are in ascending order",
       _crons == sorted(_crons, key=lambda c: (int(c.split()[1]), int(c.split()[0]))))
@@ -1147,7 +1152,12 @@ check("the comment records the measured delays, not a guess",
 check("the daylight-saving caveat is stated", "daylight saving" in _wf)
 
 # The guard is what makes six slots safe rather than six sends.
-check("a dispatch never consults the guard", 'if [ "${{ github.event_name }}" != "schedule" ]' in _wf)
+check("a dispatch still bypasses the once-a-day count", 'if [ "${{ github.event_name }}" != "schedule" ]' in _wf)
+# The floor is what stopped this edition mailing the list at 00:00 on 9 Sep.
+check("an earliest-send hour is enforced", "EARLIEST_SEND_HOUR_ET" in _wf)
+check("the floor is evaluated in ET, not UTC", 'TZ=America/New_York date +%-H' in _wf)
+check("a test address is exempt from the floor", '-z "${{ inputs.send_to }}"' in _wf)
+check("force_send overrides the floor", '"${{ inputs.force_send }}" != "true"' in _wf)
 check("a slot skips once one has succeeded", 'elif [ "$success_count" -gt "0" ]' in _wf)
 # A run counts ITSELF in the in-progress query, so the threshold is 1, not 0.
 check("a slot skips while another is still in flight", '"$total" -gt "1"' in _wf)

@@ -1341,6 +1341,29 @@ check("no assistant turn echoes the previous digest",
 check("regenerate_digest documents that it holds FAST_MODEL first",
       "only the second escalates" in inspect.getdoc(digest_mod.regenerate_digest))
 
+# ── Subject line ─────────────────────────────────────────────────────────────
+# One shape across all four editions: "<Edition> Daily Brief | <Weekday>,
+# <Month> <D>, <Year>". Korea used to carry a DIGEST_SUBJECT_STYLE variable that
+# appended the lead story, so its subject differed from its siblings depending
+# on a repo setting nobody would think to check.
+import re as _re
+from datetime import datetime as _dt
+from zoneinfo import ZoneInfo as _ZI
+import send_email as _se
+_src = inspect.getsource(_se)
+_m = _re.search(r'subject = f"([^"]+)"', _src)
+check("send_email builds a default subject", _m is not None)
+if _m:
+    _ds = _dt.now(_ZI("America/New_York")).strftime("%A, %B %-d, %Y")
+    _subj = _m.group(1).replace("{date_str}", _ds).replace("{BRIEF_NAME}", _se.BRIEF_NAME)
+    check("house subject format: <Edition> Daily Brief | <Weekday>, <Month> <D>, <Year>",
+          _re.fullmatch(r"Australia Daily Brief \| \w+, \w+ \d{1,2}, \d{4}", _subj) is not None,
+          _subj)
+    check("the separator is a pipe, not a dash",
+          "|" in _m.group(1) and "\u2014" not in _m.group(1))
+    check("the subject names the same brief as the masthead",
+          _se.BRIEF_NAME == "Australia Daily Brief", _se.BRIEF_NAME)
+
 print("\n" + "=" * 50)
 if FAILS:
     print(f"  {len(FAILS)} FAILURE(S): " + "; ".join(FAILS))

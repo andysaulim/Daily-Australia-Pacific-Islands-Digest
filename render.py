@@ -904,7 +904,7 @@ def render(digest: dict) -> str:
         {_foot_links}
       </td></tr>
       <tr><td style="padding:16px 32px 4px;text-align:center;">
-    <div style="font-family:Georgia,serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.80);max-width:520px;margin:0 auto;">
+    <div style="font-family:Georgia,serif;font-size:12px;line-height:1.6;color:rgba(255,255,255,0.80);max-width:none;margin:0 auto;white-space:normal;">
       You are receiving the Australia Daily Brief as a member of the CSIS Australia Chair distribution list.
     </div>
   </td></tr>
@@ -994,7 +994,12 @@ def _shell(body: str, date_str: str) -> str:
       .story-card {{ padding:12px 10px !important; }}
       p, div {{ word-wrap:break-word !important; overflow-wrap:break-word !important; }}
       img {{ max-width:100% !important; height:auto !important; }}
-      body, td, div, p, span {{ font-size:14px !important; -webkit-text-size-adjust:100%; }}
+      /* Keep the iOS auto-zoom guard, drop the blanket size. Forcing every
+         td, div, p and span to one size on a phone flattened the whole
+         hierarchy, so a section label, a body copy paragraph and a footnote
+         all rendered at 14px. That is why this edition read larger than the
+         other three, none of which carries such a rule. */
+      body, td, div, p, span {{ -webkit-text-size-adjust:100%; }}
       div[style*="font-size:10px"], div[style*="font-size:10px"],
       span[style*="font-size:10px"], span[style*="font-size:10px"] {{ font-size:11px !important; }}
       a {{ min-height:44px; min-width:44px; display:inline-block; line-height:44px; }}

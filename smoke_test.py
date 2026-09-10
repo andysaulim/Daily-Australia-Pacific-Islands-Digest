@@ -1155,6 +1155,14 @@ check("the daylight-saving caveat is stated", "daylight saving" in _wf)
 check("a dispatch still bypasses the once-a-day count", 'if [ "${{ github.event_name }}" != "schedule" ]' in _wf)
 # The floor is what stopped this edition mailing the list at 00:00 on 9 Sep.
 check("an earliest-send hour is enforced", "EARLIEST_SEND_HOUR_ET" in _wf)
+# The floor must not sit above the only punctual trigger. This repo's GitHub
+# crons run ~4h late; the external dispatch at 10:00 UTC (6 ET) is what
+# actually delivers. A floor of 7 rejected it and the 10 September brief did
+# not go out in the morning. Raise this only after repointing that job.
+check("the floor default is 6, matching the external dispatch at 10:00 UTC",
+      "EARLIEST_SEND_HOUR_ET || '6'" in _wf)
+check("the reason the floor is 6 is written down, not just the value",
+      "four hours late" in _wf and "11:00 UTC" in _wf)
 check("the floor is evaluated in ET, not UTC", 'TZ=America/New_York date +%-H' in _wf)
 check("a test address is exempt from the floor", '-z "${{ inputs.send_to }}"' in _wf)
 check("force_send overrides the floor", '"${{ inputs.force_send }}" != "true"' in _wf)

@@ -92,7 +92,18 @@ jobs:
           # external cron has dispatched around midnight ET and this edition
           # went out at 00:00 on 9 September. A send_to test address is exempt
           # (it never reaches the list), as is an explicit force_send.
-          EARLIEST_ET="${{ vars.EARLIEST_SEND_HOUR_ET || '7' }}"
+          # SIX, not seven, and deliberately so until the external cron moves.
+          # This repo's GitHub crons run about four hours late, every day
+          # (10:00 UTC fired at 14:04, 10:30 at 14:45, and so on), so they have
+          # never been what delivered the 6 AM brief. The punctual trigger is
+          # the external cron-job.org dispatch at 10:00 UTC = 6:00 ET. Setting
+          # the floor to 7 on 10 September rejected that dispatch and left only
+          # the late crons, and the brief did not go out in the morning at all.
+          # A floor of 6 still blocks the midnight-ET dispatch this was added
+          # for. To move delivery to 7 AM properly: repoint the cron-job.org
+          # job at 11:00 UTC, THEN set the EARLIEST_SEND_HOUR_ET repo variable
+          # to 7. Raising the floor before moving the job breaks the send.
+          EARLIEST_ET="${{ vars.EARLIEST_SEND_HOUR_ET || '6' }}"
           HOUR_ET=$(TZ=America/New_York date +%-H)
           if [ "$HOUR_ET" -lt "$EARLIEST_ET" ] \
              && [ -z "${{ inputs.send_to }}" ] \

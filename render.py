@@ -702,7 +702,7 @@ def render(digest: dict) -> str:
         html = "".join(
             _item_block(_esc(_str(i.get("category", ""))),
                         _esc(_clean_src(_str(i.get("source", "")))),
-                        _esc(i.get("headline", "")), _emphasis(_esc(i.get("body_text", ""))),
+                        _emphasis(_esc(i.get("headline", ""))), _emphasis(_esc(i.get("body_text", ""))),
                         i.get("url", ""), bar_color=_cat_color(_str(i.get("category", "")), NAVY))
             for i in canberra)
         sections.append(f"""
@@ -717,7 +717,7 @@ def render(digest: dict) -> str:
         html = "".join(
             _item_block(_esc(_str(i.get("category", ""))),
                         _esc(_clean_src(_str(i.get("source", "")))),
-                        _esc(i.get("headline", "")), _emphasis(_esc(i.get("body_text", ""))),
+                        _emphasis(_esc(i.get("headline", ""))), _emphasis(_esc(i.get("body_text", ""))),
                         i.get("url", ""), bar_color="#B8860B")
             for i in biz)
         sections.append(f"""
@@ -836,7 +836,7 @@ def render(digest: dict) -> str:
                           f"margin-top:3px;'><strong>Argument:</strong> {arg}</div>")
             html += _item_block(
                 authors, _esc(_clean_src(_str(item.get("source", "")))),
-                _esc(item.get("headline", "")), _emphasis(_esc(item.get("summary", ""))),
+                _emphasis(_esc(item.get("headline", ""))), _emphasis(_esc(item.get("summary", ""))),
                 item.get("url", ""), bar_color="#8E44AD", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>
@@ -855,7 +855,7 @@ def render(digest: dict) -> str:
             extra = ""
             html += _item_block(
                 meta, _esc(_clean_src(_str(item.get("source", "")))),
-                _esc(item.get("headline", "")), _emphasis(_esc(item.get("summary", ""))),
+                _emphasis(_esc(item.get("headline", ""))), _emphasis(_esc(item.get("summary", ""))),
                 item.get("url", ""), bar_color="#16A085", extra_html=extra)
         sections.append(f"""
         <div {_SEC}>

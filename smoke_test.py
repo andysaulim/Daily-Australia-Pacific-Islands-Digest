@@ -1426,6 +1426,21 @@ _h2 = _rmod.render(_d2)
 check("emphasis cannot smuggle markup past the escaper", "<script>" not in _h2)
 check("a genuine name still bolds", 'font-weight:700;">A Name</strong>' in _h2)
 
+# The fixture does not populate every section — Australia's omits canberra
+# politics, business, op-eds and academic — so a walk of the fixture alone can
+# pass while those sections still leak. Two backstops: the walk must actually
+# have marked a meaningful number of fields, and the renderer's source must
+# contain no unwrapped prose site at all.
+check("the markdown walk actually covered fields, not zero",
+      len(_marks) >= 8, f"{len(_marks)} fields marked")
+import re as _re2, pathlib as _pl2
+_rsrc = _pl2.Path("render.py").read_text(encoding="utf-8")
+_unwrapped = _re2.findall(
+    r'(?<!_emphasis\()\b_esc\(\w+\.get\("(detail|context|headline|note|body_text|body|summary)", ""\)\)',
+    _rsrc)
+check("no prose field is rendered without the emphasis conversion",
+      not _unwrapped, ", ".join(sorted(set(_unwrapped))))
+
 
 print("\n" + "=" * 50)
 if FAILS:

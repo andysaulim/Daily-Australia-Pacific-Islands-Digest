@@ -502,7 +502,7 @@ def render(digest: dict) -> str:
         html = ""
         for story in top_stories:
             cat = _esc(_str(story.get("category_tag", story.get("category", ""))))
-            headline = _esc(story.get("headline", ""))
+            headline = _emphasis(_esc(story.get("headline", "")))
             body = _emphasis(_esc(story.get("body", "")))
             src_line = _esc(_clean_src(_str(story.get("src_line", story.get("source", "")))))
             url = story.get("url", "")
@@ -538,7 +538,7 @@ def render(digest: dict) -> str:
         html = ""
         for item in overnight:
             cat = _esc(_str(item.get("category", "")))
-            h = _esc(item.get("headline", ""))
+            h = _emphasis(_esc(item.get("headline", "")))
             b = _emphasis(_esc(item.get("body_text", "")))
             src = _esc(_clean_src(_str(item.get("source", ""))))
             url = item.get("url", "")
@@ -576,7 +576,7 @@ def render(digest: dict) -> str:
     key_stat = digest.get("key_stat") or {}
     _ks_num = str(key_stat.get("number", "")).strip() if isinstance(key_stat, dict) else ""
     if _ks_num:
-        _ks_context = _esc(key_stat.get("context", ""))
+        _ks_context = _emphasis(_esc(key_stat.get("context", "")))
         _ks_source = _esc(_clean_src(_str(key_stat.get("source", ""))))
         sections.append(f"""
         <div {_SEC}>
@@ -603,7 +603,7 @@ def render(digest: dict) -> str:
             html += _item_block(
                 _esc(label),
                 _esc(_clean_src(_str(item.get("source", "")))),
-                _esc(item.get("headline", "")),
+                _emphasis(_esc(item.get("headline", ""))),
                 _emphasis(_esc(item.get("body_text", ""))),
                 item.get("url", ""),
                 bar_color=NAVY_DEEP,
@@ -629,7 +629,7 @@ def render(digest: dict) -> str:
                 html += _item_block(
                     _esc(_str(item.get("country", "Regional"))),
                     _esc(_clean_src(_str(item.get("source", "")))),
-                    _esc(item.get("headline", "")),
+                    _emphasis(_esc(item.get("headline", ""))),
                     _emphasis(_esc(item.get("body_text", ""))),
                     item.get("url", ""),
                     bar_color=TEAL,
@@ -655,7 +655,7 @@ def render(digest: dict) -> str:
                 html += _item_block(
                     _esc(_str(item.get("category", ""))),
                     _esc(_clean_src(_str(item.get("source", "")))),
-                    _esc(item.get("headline", "")),
+                    _emphasis(_esc(item.get("headline", ""))),
                     _emphasis(_esc(item.get("body_text", ""))),
                     item.get("url", ""),
                     bar_color="#1B6A4A",
@@ -684,7 +684,7 @@ def render(digest: dict) -> str:
             <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid {TEAL_LT};">
               <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.5px;">{meta}{reaction}</div>
               <div style="font-size:13px;font-weight:600;color:#fff;margin:2px 0 3px;">
-                {_link_or_text(_esc(item.get("headline", "")), item.get("url", ""),
+                {_link_or_text(_emphasis(_esc(item.get("headline", ""))), item.get("url", ""),
                                style=f"color:#fff;border-bottom:1px solid {TEAL_LT};padding-bottom:1px;text-decoration:none;")}
               </div>
               <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);">{_emphasis(_esc(item.get("body_text", "")))}</div>
@@ -739,7 +739,7 @@ def render(digest: dict) -> str:
             html += _item_block(
                 _esc(_str(item.get("document_type", "Document"))),
                 _esc(_clean_src(_str(item.get("source", "")))),
-                _esc(item.get("headline", "")),
+                _emphasis(_esc(item.get("headline", ""))),
                 _emphasis(_esc(item.get("body_text", ""))),
                 item.get("url", ""),
                 bar_color="#5D6D7E",
@@ -810,7 +810,7 @@ def render(digest: dict) -> str:
         for _cat, _items in _groups.items():
             rows = "".join(
                 _compact_row(cat="" if _multi else _esc(_cat),
-                             headline=_esc(i.get("headline", "")),
+                             headline=_emphasis(_esc(i.get("headline", ""))),
                              url=i.get("url", ""),
                              src=_esc(_clean_src(_str(i.get("source", "")))),
                              body=_emphasis(_esc(i.get("body_text", ""))))

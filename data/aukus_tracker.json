@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-05",
+  "last_updated": "2026-09-10",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-10",
+      "headline": "Urgent call to review KPMG's classified AUKUS contracts",
+      "url": "https://www.theaustralian.com.au/business/leaky-ship-kpmg-retains-126m-in-contracts-for-topsecret-aukus-work/news-story/6cd4fc55027859e0b1f829bb69f025d7",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-05",
       "headline": "ABC: everyone but Australia is reconsidering its relationship with America",

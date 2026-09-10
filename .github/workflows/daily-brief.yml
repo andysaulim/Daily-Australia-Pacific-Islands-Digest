@@ -112,20 +112,43 @@ jobs:
             echo "should_run=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          TODAY_ET_EARLY=$(TZ=America/New_York date +%Y-%m-%d)
+          git fetch -q origin "${GITHUB_REF_NAME:-main}" 2>/dev/null || true
+          SENT_EARLY=$(git show "origin/${GITHUB_REF_NAME:-main}:last_sent.txt" 2>/dev/null | tr -d '[:space:]' || true)
           if [ "${{ github.event_name }}" != "schedule" ]; then
+            # A dispatch used to send unconditionally. The external cron fires
+            # through this path, so a second dispatch on the same day mailed the
+            # list twice — the fault the Japan edition hit on 9 September, when
+            # four copies went out. A test address and force_send still bypass.
+            if [ "$SENT_EARLY" = "$TODAY_ET_EARLY" ] \
+               && [ -z "${{ inputs.send_to }}" ] \
+               && [ "${{ inputs.force_send }}" != "true" ]; then
+              echo "::notice::Today's edition ($TODAY_ET_EARLY) already went to the list — skipping. Re-run with force_send to override."
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
             echo "Dispatch trigger, running"
             echo "should_run=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          # Was the LIST already mailed today? Read the marker the send writes,
+          # from the remote rather than this checkout, which may predate it.
+          # Counting completed runs instead — which is what this did — cannot
+          # tell a run that sent from a run that skipped, and a run rejected by
+          # the floor above still concludes "success".
+          TODAY_ET=$(TZ=America/New_York date +%Y-%m-%d)
+          git fetch -q origin "${GITHUB_REF_NAME:-main}" 2>/dev/null || true
+          LAST_SENT=$(git show "origin/${GITHUB_REF_NAME:-main}:last_sent.txt" 2>/dev/null | tr -d '[:space:]' || true)
+          [ -n "$LAST_SENT" ] || LAST_SENT=$(tr -d '[:space:]' < last_sent.txt 2>/dev/null || true)
+          # Still worth knowing whether one is in flight, so two slots that land
+          # together do not both send.
           today=$(date -u +%Y-%m-%d)
-          success_count=$(gh run list --repo ${{ github.repository }} \
-            --workflow "Australia Chair Daily Brief" \
-            --status success --created "$today" \
-            --json conclusion -q 'length' 2>/dev/null || echo "0")
           inprogress_count=$(gh run list --repo ${{ github.repository }} \
             --workflow "Australia Chair Daily Brief" \
             --status in_progress --created "$today" \
             --json conclusion -q 'length' 2>/dev/null || echo "0")
+          success_count=0
+          [ "$LAST_SENT" = "$TODAY_ET" ] && success_count=1
           total=$((success_count + inprogress_count))
           if [ "$total" -gt "1" ]; then
             echo "A run already succeeded or is in flight, skipping fallback"
@@ -196,6 +219,18 @@ jobs:
             python run.py
           fi
 
+      # A real record that the list was mailed, as opposed to a run merely
+      # finishing. The guard used to infer one from the other, which held only
+      # while every run that got past it went on to send. The earliest-send
+      # floor broke that: on 10 September the 6:00 ET dispatch was rejected by
+      # the floor, the job still concluded "success", and the guard counted it
+      # as the day's send — so every later cron stood down and the brief never
+      # went out. A test send to a single address is not a send to the list and
+      # deliberately does not write this.
+      - name: Record the send
+        if: ${{ steps.send.outcome == 'success' && steps.guard.outputs.should_run == 'true' && inputs.send_to == '' }}
+        run: TZ=America/New_York date +%Y-%m-%d > last_sent.txt
+
       # Everything past the send is continue-on-error on purpose. A red
       # post-send step would mark the run failed and let a fallback cron
       # send a second copy of an issue that already went out.
@@ -238,7 +273,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data README.md 2>/dev/null || true
+          git add data README.md last_sent.txt 2>/dev/null || true
           [ -f metrics.jsonl ] && git add metrics.jsonl || true
           if ! git diff --cached --quiet; then
             git commit -m "Brief state: archive, trackers, stats [skip ci]"

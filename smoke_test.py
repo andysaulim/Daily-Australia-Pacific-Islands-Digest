@@ -1163,6 +1163,24 @@ check("the floor default is 6, matching the external dispatch at 10:00 UTC",
       "EARLIEST_SEND_HOUR_ET || '6'" in _wf)
 check("the reason the floor is 6 is written down, not just the value",
       "four hours late" in _wf and "11:00 UTC" in _wf)
+# A run that finished is not a brief that sent. The floor created exactly that
+# state on 10 September: the 6:00 dispatch was rejected, the job concluded
+# success, and the guard counted it as the day's send, so every later cron
+# stood down and nothing went out.
+check("a real send marker is written, not inferred from the run",
+      "- name: Record the send" in _wf)
+check("the marker records a send to the LIST, not a test address",
+      "inputs.send_to == ''" in _wf)
+check("the marker is committed so the next run can read it",
+      "git add data README.md last_sent.txt" in _wf)
+check("the guard keys on the marker, not on a count of finished runs",
+      "LAST_SENT" in _wf and "--status success --created" not in _wf)
+check("the marker is read from the remote, not the frozen checkout",
+      'git show "origin/${GITHUB_REF_NAME:-main}:last_sent.txt"' in _wf)
+check("an in-flight run still blocks a concurrent one",
+      "inprogress_count" in _wf)
+check("a dispatch no longer bypasses the once-a-day rule",
+      "already went to the list" in _wf)
 check("the floor is evaluated in ET, not UTC", 'TZ=America/New_York date +%-H' in _wf)
 check("a test address is exempt from the floor", '-z "${{ inputs.send_to }}"' in _wf)
 check("force_send overrides the floor", '"${{ inputs.force_send }}" != "true"' in _wf)

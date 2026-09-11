@@ -1442,6 +1442,42 @@ check("no prose field is rendered without the emphasis conversion",
       not _unwrapped, ", ".join(sorted(set(_unwrapped))))
 
 
+_COST_DIGEST_MOD = digest_mod
+_COST_RUN_FILE = "run.py"
+_COST_WF_FILE = ".github/workflows/daily-brief.yml"
+# ── API cost must be recorded ────────────────────────────────────────────────
+# Recording spend has three parts and any one can go missing without a symptom:
+# a per-call ledger, a write of that ledger into metrics.jsonl, and a workflow
+# step that commits the file. The Japan edition had none of the three and
+# nobody noticed for months; the Korea edition had the first two and its file
+# lived only in an Actions cache that GitHub evicts after seven days. Neither
+# showed up as a failure, because a missing cost record looks exactly like a
+# cheap week. This asserts all three.
+import inspect as _ci, pathlib as _cp, re as _cr
+
+_cost_src = _ci.getsource(_COST_DIGEST_MOD)
+check("digest keeps a per-call token ledger",
+      "TOKEN_LEDGER" in _cost_src or "_RUN_USAGE" in _cost_src)
+check("the ledger carries model, tokens and cache counts",
+      all(k in _cost_src for k in ('"model"', '"input"', '"output"')) or
+      all(k in _cost_src for k in ("input_tokens", "output_tokens")))
+check("a price table exists and names the models in use",
+      "MODEL_PRICING" in _cost_src or "_PRICING" in _cost_src or "PRICE" in _cost_src.upper())
+
+_run_src = _cp.Path(_COST_RUN_FILE).read_text(encoding="utf-8")
+check("run.py writes a metrics line per run",
+      "metrics.jsonl" in _run_src or "METRICS_JSONL" in _run_src)
+check("the metrics write cannot break a send",
+      _cr.search(r"try:[^#]{0,400}metrics", _run_src, _cr.S) is not None or
+      "non-fatal" in _run_src.lower())
+
+_wf_src = _cp.Path(_COST_WF_FILE).read_text(encoding="utf-8")
+check("the workflow commits metrics.jsonl, so it outlives any cache",
+      "metrics.jsonl" in _wf_src)
+_gi = _cp.Path(".gitignore")
+check("metrics.jsonl is not gitignored (a committed file that git skips is a silent loss)",
+      not (_gi.exists() and any(l.strip() == "metrics.jsonl" for l in _gi.read_text().splitlines())))
+
 print("\n" + "=" * 50)
 if FAILS:
     print(f"  {len(FAILS)} FAILURE(S): " + "; ".join(FAILS))

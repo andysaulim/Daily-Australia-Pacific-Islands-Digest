@@ -1,11 +1,151 @@
 [
   {
-    "date": "2026-09-11",
-    "headline_re": "Chinese firm buys $1bn of PNG mines and ports · NZ Treasury: Luxon and Peters bypassed Cabinet on Forum hosting · Fletcher says Beijing turning 'smug' · PNG court forces Solwara disclosure · Rinehart backs Hanson against Hastie",
+    "date": "2026-08-25",
+    "headline_re": "Chinese missile near Tuvalu's EEZ leaves PIF without joint statement · China's new ambassador presses Canberra on 'core interests' · Canberra silent as US moves to 'dismantle' ICC · Fiji voter roll hits record 723,771 · RBA minutes show board members eyeing another rise",
     "top_stories_count": 3,
+    "pacific_count": 10,
+    "nz_count": 3,
+    "word_count": 1856,
+    "url": "digest_2026-08-25.html",
+    "pdf": false
+  },
+  {
+    "date": "2026-08-26",
+    "headline_re": "Kiribati moves to lock in Beijing recognition · PNG parliament to vote on Bougainville independence · Gosling stood aside as defence envoy · Politico: Iran war squeezes Australian missile supply · PIF Leaders Meeting opens in Koror Aug 30",
+    "top_stories_count": 4,
+    "pacific_count": 9,
+    "nz_count": 2,
+    "word_count": 1870,
+    "url": "digest_2026-08-26.html",
+    "pdf": false
+  },
+  {
+    "date": "2026-08-27",
+    "headline_re": "Kiribati weighs constitutional lock on China ties · PNG parliament opens Bougainville debate · WA publishes AUKUS reactor accident plan · Malinauskas warns Albanese on GST · Taiwan foreign minister departs for Palau Forum",
+    "top_stories_count": 4,
+    "pacific_count": 3,
+    "nz_count": 1,
+    "word_count": 1383,
+    "url": "digest_2026-08-27.html",
+    "pdf": false
+  },
+  {
+    "date": "2026-08-28",
+    "headline_re": "PIF Leaders Meeting opens Monday in Koror · NZ Realm leaders meet in Auckland · PNG pushes Bougainville vote months away · China's new Canberra envoy draws 'wolf warrior' label · Fiji charges Bainimarama with inciting mutiny",
+    "top_stories_count": 4,
+    "pacific_count": 3,
+    "nz_count": 1,
+    "word_count": 1568,
+    "url": "digest_2026-08-28.html",
+    "pdf": false
+  },
+  {
+    "date": "2026-08-31",
+    "headline_re": "Solomon Islands PM recalled from Koror as three ministers quit · Five PIF members without leaders · US and Taiwan accuse Beijing of coercing Palau · Hanson accuses Albanese of inciting violence · Fiji constitution review reports",
+    "top_stories_count": 4,
+    "pacific_count": 6,
+    "nz_count": 2,
+    "word_count": 1475,
+    "url": "digest_2026-08-31.html",
+    "pdf": false
+  },
+  {
+    "date": "2026-09-01",
+    "headline_re": "China warns of 'consequences' over Taiwan's PIF role · Solomon Islands PM flies home mid-summit · US and NZ fund Cook Islands port · Peters-Luxon split over Paris Agreement · AU bond yields hit 15-year high",
+    "top_stories_count": 4,
     "pacific_count": 7,
     "nz_count": 1,
-    "word_count": 1894,
+    "word_count": 1616,
+    "url": "digest_2026-09-01.html",
+    "pdf": false
+  },
+  {
+    "date": "2026-09-02",
+    "headline_re": "PIF fractures over Taiwan, five leaders absent · US and NZ fund $60 million Cook Islands port · Canberra pledges $600 million Pacific drug plan · Australian GDP surprise fuels RBA hike bets · RBNZ delivers back-to-back hike",
+    "top_stories_count": 4,
+    "pacific_count": 10,
+    "nz_count": 2,
+    "word_count": 1719,
+    "url": "digest_2026-09-02.html",
+    "pdf": false
+  },
+  {
+    "date": "2026-09-03",
+    "headline_re": "PIF split over China missile condemnation · Marles, Hegseth flag bigger US force posture in Australia · Solomon Islands no-confidence vote set for Sept 7 · Peters holds 1992 Taiwan protocol for NZ-hosted 2027 PIF · US pledges $150 million Pacific aid package",
+    "top_stories_count": 3,
+    "pacific_count": 6,
+    "nz_count": 2,
+    "word_count": 1661,
+    "url": "digest_2026-09-03.html",
+    "pdf": true
+  },
+  {
+    "date": "2026-09-04",
+    "headline_re": "PIF communique rebukes China missile test, Nauru dissents · New Zealand joins Forum Troika, to host 2027 Leaders Meeting · Solomon Islands PM Wale reshuffles cabinet ahead of no-confidence vote · PNG parliament could vote on Bougainville independence next month · ASX 200 down 0.95 percent",
+    "top_stories_count": 2,
+    "pacific_count": 7,
+    "nz_count": 1,
+    "word_count": 1326,
+    "url": "digest_2026-09-04.html",
+    "pdf": true
+  },
+  {
+    "date": "2026-09-05",
+    "headline_re": "PIF closes with China missile statement, Nauru dissents · One Nation topples Labor in WA by-election · ADF sexual violence inquiry named · Kiribati calls Forum snub 'disappointing' · France boosts New Caledonia funding",
+    "top_stories_count": 3,
+    "pacific_count": 8,
+    "nz_count": 2,
+    "word_count": 1869,
+    "url": "digest_2026-09-05.html",
+    "pdf": true
+  },
+  {
+    "date": "2026-09-07",
+    "headline_re": "Leaked $980m Solomons treaty text surfaces · Wale survives no-confidence motion · NZ coalition leads pre-election poll · Coalition presses Labor on Chinese BHP stake · PIF's China rebuke buried in communique",
+    "top_stories_count": 3,
+    "pacific_count": 4,
+    "nz_count": 2,
+    "word_count": 2034,
+    "url": "digest_2026-09-07.html",
+    "pdf": true
+  },
+  {
+    "date": "2026-09-08",
+    "headline_re": "Solomon Islands accuses Australia of interference · Albanese unveils Digital Duty of Care · Wong preps Israel sanctions, no trade ban · NZ military seeks deeper Australia ties · PIF Koror wrap lands",
+    "top_stories_count": 3,
+    "pacific_count": 7,
+    "nz_count": 3,
+    "word_count": 1634,
+    "url": "digest_2026-09-08.html",
+    "pdf": true
+  },
+  {
+    "date": "2026-09-09",
+    "headline_re": "Nauru NZYQ deal published, AU$2.5B over 30 years · Solomon Islands opposition alleges Australian interference · Wong holds out on settlement import ban · NZ public servants strike · Brent tops $100 after US tanker strikes",
+    "top_stories_count": 3,
+    "pacific_count": 2,
+    "nz_count": 2,
+    "word_count": 1508,
+    "url": "digest_2026-09-09.html",
+    "pdf": true
+  },
+  {
+    "date": "2026-09-10",
+    "headline_re": "Rudd warns one-in-three Taiwan risk by 2028 · Naoero opens Jerusalem embassy · Landau in Chuuk and Honiara · Five Eyes report: SAS veterans courted by Russia · Canberra softens LNG reservation rule",
+    "top_stories_count": 4,
+    "pacific_count": 9,
+    "nz_count": 2,
+    "word_count": 1931,
+    "url": "digest_2026-09-10.html",
+    "pdf": true
+  },
+  {
+    "date": "2026-09-11",
+    "headline_re": "Peters dismisses Treasury over 2027 Forum bid · NZ First offers Pacific overstayers two-year amnesty · Ex-envoy says Coalition was 'delighted' by Beijing coercion · ADF drone shield has China links · Rudd enters Austal USA fight",
+    "top_stories_count": 3,
+    "pacific_count": 3,
+    "nz_count": 1,
+    "word_count": 1677,
     "url": "digest_2026-09-11.html"
   }
 ]

@@ -1061,6 +1061,13 @@ def main():
     from shared.published import load as _load_published
     entries, _archive_ok = _load_published(
         manifest_path, os.environ.get("WEB_URL", ""), fallback=[])
+    # The published copy is authoritative, but it was truncated to one row
+    # once already, while fifteen issues were live. data/archive_seed.json is
+    # a floor rebuilt from those issues: dates the site did not return are
+    # restored from it, dates it did return win.
+    from shared.published import merge_seed as _merge_seed
+    if _archive_ok:
+        entries = _merge_seed(entries, Path("data/archive_seed.json"))
     entries = [e for e in entries if e.get("date") != date_slug]
     entries.append({
         "date": date_slug,

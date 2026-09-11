@@ -581,7 +581,7 @@ def render(digest: dict) -> str:
         sections.append(f"""
         <div {_SEC}>
           <a name="key-stat" id="key-stat"></a>{_sec_label("Stat of the Day")}
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFF6F8;border-left:3px solid {TEAL};border-radius:3px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFF6F8;border-top:2px solid {TEAL};border-bottom:1px solid #E4E7EB;">
             <tr><td style="padding:14px 16px;">
               <div style="font-family:Georgia,serif;font-size:26px;font-weight:700;color:{TEAL};line-height:1;">{_esc(_ks_num)}</div>
               <div style="font-family:Georgia,serif;font-size:14px;color:{INK};margin-top:5px;line-height:1.4;">{_esc(key_stat.get("label", ""))}</div>

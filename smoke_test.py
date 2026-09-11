@@ -597,9 +597,13 @@ check("prompt injects the block",
 _mhtml = render_mod.render({"re_line": "x", "morning_memo": ["a", "b", "c"],
                             "market_indicators": _mk})
 check("strip renders the indicator", "ASX 200" in _mhtml and "8,123" in _mhtml)
-# On the dark strip the alert red is unreadable, so a fall takes the
-# lightened variant the rest of the dark chrome uses.
-check("a fall renders red", "#FF8A8A" in _mhtml)
+# On the dark strip the alert red is unreadable, so a fall takes a lightened
+# variant. It is now the same pair every edition uses: this repo had a third
+# set of greens and reds for no recorded reason. 5.58 and 8.49 on the strip.
+check("a fall renders the house red", "#E8697A" in _mhtml)
+check("a rise renders the house green", "#69C88E" in _mhtml or "+" not in _mhtml)
+check("the old edition-only pair is gone",
+      "#FF8A8A" not in _mhtml and "#5FD08A" not in _mhtml)
 check("strip absent when nothing resolved",
       "ASX 200" not in render_mod.render({"re_line": "x",
                                           "morning_memo": ["a", "b", "c"]}))

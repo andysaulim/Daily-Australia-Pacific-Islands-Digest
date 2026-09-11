@@ -434,7 +434,9 @@ def render(digest: dict) -> str:
             tiles = ""
             for idx, m in enumerate(_resolved):
                 pct = m.get("change_pct", 0) or 0
-                colour = "#5FD08A" if pct > 0 else "#FF8A8A" if pct < 0 else "#9DB2CE"
+                # The house pair, the same in all four editions. This had a
+                # third set of greens and reds for no reason anyone recorded.
+                colour = "#69C88E" if pct > 0 else "#E8697A" if pct < 0 else "#9DB2CE"
                 sign = "+" if pct > 0 else ""
                 edge = ("" if idx == 0 else
                         "border-left:1px solid rgba(255,255,255,0.10);")
@@ -543,7 +545,12 @@ def render(digest: dict) -> str:
             src = _esc(_clean_src(_str(item.get("source", ""))))
             url = item.get("url", "")
             badge = _signal_badge(item.get("signal_type", ""))
-            tail = (f'<span style="color:{MUTE};"> &mdash; {b}</span>' if b else "")
+            # Headline on its own line, the clause beneath it. Running them
+            # together behind an em-dash made a two-line wrap read as one long
+            # sentence, and the eye could not find where an item ended.
+            tail = (f'<div style="font-family:Georgia,serif;font-size:13px;'
+                    f'line-height:1.45;color:{MUTE};margin-top:2px;">{b}</div>'
+                    if b else "")
             html += (f'<tr>'
                      f'<td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;'
                      f'font-family:Arial,sans-serif;font-size:10px;font-weight:700;'
@@ -552,9 +559,9 @@ def render(digest: dict) -> str:
                      f'<td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;'
                      f'font-size:13px;line-height:1.45;color:{INK};'
                      f'border-bottom:1px solid #EEF0F3;">'
-                     f'{_link_or_text(h, url)}{tail}'
+                     f'<div>{_link_or_text(h, url)}'
                      f'<span style="font-family:Arial,sans-serif;font-size:11px;color:{MUTE};">'
-                     f' &middot; {src}</span>'
+                     f' &middot; {src}</span></div>{tail}'
                      + (f'<div style="margin-top:4px;">{badge}</div>' if badge else "")
                      + f'</td></tr>')
         html = (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '

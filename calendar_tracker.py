@@ -129,10 +129,15 @@ def build_context_block() -> str:
     pending = [e for e in data.get("events", [])
                if e.get("confidence") in ("expected", "seed") and not e.get("date")]
     if pending:
-        lines.append("  Standing fixtures with NO confirmed date, refer to these as "
-                     "windows, never as dates:")
+        lines.append("  Standing fixtures with NO announced date. These are a WATCH "
+                     "LIST, not calendar entries. The text in brackets is how often "
+                     "the event recurs, not when the next one falls — it is never a "
+                     "window and must never be copied into a window field. Put one "
+                     "of these in calendar_watch only if today's reporting gives it "
+                     "a date or names a month:")
         for e in pending:
-            lines.append(f"    - {e['event']} ({e.get('window', 'date not announced')})")
+            lines.append(f"    - {e['event']} (recurs: "
+                         f"{e.get('window', 'cadence not recorded')})")
 
     otd = on_this_day()
     if otd:
@@ -147,6 +152,18 @@ def build_context_block() -> str:
                  "the confirmed list above. Do NOT generate a date from memory. For a "
                  "standing fixture with no confirmed date, write the window "
                  "(\"expected in August\"), never a specific day.")
+    lines.append("  RULE: a window is a TIME and must name a month — \"expected in "
+                 "August\", \"late November 2026\", \"the March sitting\". A cadence "
+                 "is not a window: \"annual\", \"venue alternates\", \"roughly twice "
+                 "yearly\", \"periodic\" tell the reader nothing about when, and an "
+                 "entry whose window reads like that is dropped before it prints. "
+                 "If you cannot give a day or a month, leave the entry out.")
+    lines.append("  RULE: nearest first, and prefer what today's brief actually "
+                 "covered. A date inside the next six weeks that follows from a "
+                 "story in this issue — a sitting week, a court return, a ruling, a "
+                 "summit, a ratification deadline, a rate decision — is worth more "
+                 "than a recurring summit a year out. Four entries a reader can act "
+                 "on beat five padded with fixtures.")
     return "\n".join(lines)
 
 

@@ -261,6 +261,66 @@ def _cal_block(date_val: str, confirmed: bool) -> tuple[str, str]:
     return when.strftime("%b"), str(when.day)
 
 
+_MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"]
+_MONTH_RE = _re.compile(
+    r"\b(" + "|".join(m[:3] for m in _MONTH_NAMES) + r")[a-z]*\b", _re.I)
+
+
+def _cal_window_block(window: str) -> tuple[str, str]:
+    """("Sep", "2027") for a window that names a month, ("", "") otherwise.
+
+    A window is a time. "September 2027" is one. "annual, venue alternates"
+    is a cadence — it says how often the event recurs, not when the next one
+    falls — and the calendar column was stamping it as though it were a date,
+    with the current year appended, so a standing fixture read as an event on
+    an unnamed day in 2026.
+
+    Anything without a month is not a window and gets no stamp; the caller
+    drops it rather than printing a cadence in the date column.
+    """
+    text = (window or "").strip()
+    if not text:
+        return "", ""
+    m = _MONTH_RE.search(text)
+    if not m:
+        return "", ""
+    mon = m.group(1)[:3].title()
+    year = _re.search(r"\b(20\d{2})\b", text)
+    if year:
+        return mon, year.group(1)
+    from zoneinfo import ZoneInfo
+    now = datetime.now(ZoneInfo("America/New_York"))
+    # A month already past this year means the next one, not the last one.
+    idx = [n[:3] for n in _MONTH_NAMES].index(mon) + 1
+    return mon, str(now.year + (1 if idx < now.month else 0))
+
+
+def _cal_order(entry: dict) -> tuple:
+    """Sort key putting the nearest event first.
+
+    The section is called Upcoming and was arriving in whatever order the
+    model emitted, so a 2027 forum sat above a general election seven weeks
+    out. Confirmed days sort by the day; month windows sort to the first of
+    that month, behind a confirmed date on the same day.
+    """
+    date_val = _str(entry.get("date", ""))
+    if date_val and entry.get("confirmed"):
+        try:
+            when = datetime.strptime(date_val[:10], "%Y-%m-%d")
+            return (when.year, when.month, when.day, 0)
+        except ValueError:
+            pass
+    mon, year = _cal_window_block(_str(entry.get("window", "")))
+    if mon:
+        idx = [n[:3] for n in _MONTH_NAMES].index(mon) + 1
+        # Last in its month, not first. Sorted to the 1st, a window reading
+        # only "November 2026" came out above a general election confirmed
+        # for November 7, so the vaguer row led the firmer one.
+        return (int(year), idx, 99, 1)
+    return (9999, 99, 99, 2)
+
+
 def _cal_stamp(date_val: str, window: str, confirmed: bool) -> str:
     """Calendar date or window, always carrying a year.
 
@@ -760,11 +820,25 @@ def render(digest: dict) -> str:
 
     # ── 13. Upcoming ─────────────────────────────────────────────────────
     # "Calendar Watch" in this edition, "Upcoming" everywhere else; one name.
-    # A confirmed date now gets the solid accent block Korea uses, so the
-    # column scans as a calendar. An entry with only a window keeps its text
-    # stamp — inventing a day for "expected in August" would be worse than
-    # showing the phrase.
-    calendar = _real_items(digest, "calendar_watch")
+    #
+    # Every surviving row carries a stamp of the same size and shape, so the
+    # left column scans as a calendar instead of alternating between a date
+    # block and a phrase that wrapped onto two lines.
+    #
+    # Three rules decide what survives. A confirmed day gets the solid accent
+    # block. A window naming a month gets the same block outlined rather than
+    # filled, month over year: the shape says "this is when", the treatment
+    # says "not to the day". An entry with neither a day nor a month is
+    # dropped — a standing fixture whose window was a cadence, "annual, venue
+    # alternates", never told the reader when anything happens, and the column
+    # was stamping the current year onto it, so it claimed that it did.
+    #
+    # Then nearest first. The section is called Upcoming and was arriving in
+    # whatever order the model emitted, which put a 2027 forum above a general
+    # election seven weeks out.
+    calendar = [e for e in _real_items(digest, "calendar_watch")
+                if isinstance(e, dict) and _cal_order(e)[3] != 2]
+    calendar.sort(key=_cal_order)
     if calendar:
         rows = ""
         for entry in calendar:
@@ -776,21 +850,27 @@ def render(digest: dict) -> str:
                               f'<td align="center" style="padding:4px 0 5px;width:46px;">'
                               f'<div style="font-family:Arial,sans-serif;font-size:10px;'
                               f'font-weight:700;letter-spacing:1.5px;'
-                              f'color:rgba(255,255,255,0.85);">{_esc(mon)}</div>'
+                              f'color:rgba(255,255,255,0.85);">{_esc(mon.upper())}</div>'
                               f'<div style="font-family:Georgia,serif;font-size:16px;'
                               f'font-weight:700;color:#fff;line-height:1;">{_esc(day)}</div>'
                               f'</td></tr></table>')
-                cell_width = "54"
             else:
-                stamp = _esc(_cal_stamp(_str(entry.get("date", "")),
-                                        _str(entry.get("window", "")), confirmed))
-                stamp_cell = (f'<div class="cal-date" style="font-size:11px;font-weight:700;'
-                              f'color:{MUTE};font-family:Arial,sans-serif;'
-                              f'letter-spacing:0.5px;">{stamp}</div>')
-                cell_width = "110"
+                mon, year = _cal_window_block(_str(entry.get("window", "")))
+                stamp_cell = (f'<table cellpadding="0" cellspacing="0" border="0" '
+                              f'class="cal-window" '
+                              f'style="background:#E9F2F4;border:1px solid {TEAL};">'
+                              f'<tr>'
+                              f'<td align="center" style="padding:4px 0 5px;width:44px;">'
+                              f'<div style="font-family:Arial,sans-serif;font-size:10px;'
+                              f'font-weight:700;letter-spacing:1.5px;'
+                              f'color:{TEAL};">{_esc(mon.upper())}</div>'
+                              f'<div style="font-family:Georgia,serif;font-size:13px;'
+                              f'font-weight:700;color:{NAVY};line-height:1.15;">'
+                              f'{_esc(year)}</div>'
+                              f'</td></tr></table>')
             rows += f"""
               <tr>
-                <td width="{cell_width}" style="vertical-align:top;padding:9px 12px 9px 0;">{stamp_cell}</td>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;">{stamp_cell}</td>
                 <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
                   <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:{NAVY};">{_esc(entry.get("event", ""))}</div>
                   <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">{_esc(entry.get("why_it_matters", ""))}</div>
@@ -801,6 +881,7 @@ def render(digest: dict) -> str:
           <a name="calendar" id="calendar"></a>{_sec_label("Upcoming")}
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="cal-table">{rows}</table>
         </div>""")
+
 
     # ── 14. Also Today (the wire) ────────────────────────────────────────
     wire = _real_items(digest, "also_today")
@@ -1074,6 +1155,10 @@ def _shell(body: str, date_str: str) -> str:
       .wrapper [style*="color:#0D1B2A"] {{ color:#D5D8DC !important; }}
       .wrapper [style*="color:#17798c"] {{ color:#5FC2D6 !important; }}
       .wrapper [style*="color:#17798C"] {{ color:#5FC2D6 !important; }}
+      /* NZ_GREEN, the third geography's accent. It reached the output with
+         no dark rule and kept its light value: #1B6A4A on #222 is 2.1:1. */
+      .wrapper [style*="color:#1b6a4a"] {{ color:#6FC79A !important; }}
+      .wrapper [style*="color:#1B6A4A"] {{ color:#6FC79A !important; }}
       .wrapper [style*="color:#1b2a4a"] {{ color:#D5D8DC !important; }}
       .wrapper [style*="color:#1B2A4A"] {{ color:#D5D8DC !important; }}
       .wrapper [style*="color:#2c3e50"] {{ color:#D5D8DC !important; }}

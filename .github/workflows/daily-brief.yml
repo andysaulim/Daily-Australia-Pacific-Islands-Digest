@@ -248,9 +248,44 @@ jobs:
       # as the day's send — so every later cron stood down and the brief never
       # went out. A test send to a single address is not a send to the list and
       # deliberately does not write this.
+      # The send marker is what stops a second copy going out, so it is pushed
+      # on its own, immediately, and not bundled with the rest of the state.
+      # The combined commit below carries data/, README and metrics as well;
+      # a conflict or a failure in any of those would take the marker with it,
+      # and the run still concludes success because that step is
+      # continue-on-error by design. Then the next fallback cron reads a marker
+      # that predates today and mails the list again.
+      #
+      # Alone, this push touches one small file that only this workflow ever
+      # writes, so there is nothing for it to conflict with.
       - name: Record the send
+        id: record
+        # Surfaces a failed marker push without halting the job: the archive
+        # deploy and the tracker commit still run, and the alert below fires.
+        # Losing the day's archive on top of a transient push failure would be
+        # a second fault caused by reporting the first.
+        continue-on-error: true
         if: ${{ steps.send.outcome == 'success' && steps.guard.outputs.should_run == 'true' && inputs.send_to == '' }}
-        run: TZ=America/New_York date +%Y-%m-%d > last_sent.txt
+        run: |
+          TZ=America/New_York date +%Y-%m-%d > last_sent.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add last_sent.txt
+          if git diff --cached --quiet; then
+            echo "Marker already reads $(cat last_sent.txt), nothing to push"
+            exit 0
+          fi
+          git commit -m "Sent $(cat last_sent.txt) [skip ci]"
+          for i in 1 2 3 4; do
+            git pull --rebase origin "${GITHUB_REF_NAME:-main}" \
+              && git push origin "HEAD:${GITHUB_REF_NAME:-main}" && exit 0
+            sleep $((i * 4))
+          done
+          # Reaching here means the list was mailed and the record of it did
+          # not reach the remote. Fail loudly: a fallback cron would otherwise
+          # read a stale marker and send today's issue a second time.
+          echo "::error::Sent, but could not push last_sent.txt — a fallback may re-send"
+          exit 1
 
       # Everything past the send is continue-on-error on purpose. A red
       # post-send step would mark the run failed and let a fallback cron
@@ -305,7 +340,8 @@ jobs:
           fi
 
       - name: Send failure alert
-        if: failure() && steps.guard.outputs.should_run == 'true'
+        if: ${{ (failure() || steps.record.outcome == 'failure')
+                && steps.guard.outputs.should_run == 'true' }}
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
@@ -325,7 +361,11 @@ jobs:
           body = (
               f"The Australia Chair Daily Brief pipeline failed at {now}.\n\n"
               f"Run: {os.environ['RUN_URL']}\n\n"
-              "The next fallback cron will retry automatically."
+              "The next fallback cron will retry automatically.\n\n"
+              "If the run log shows the send succeeded but last_sent.txt could "
+              "not be pushed, the opposite applies: today's issue HAS gone out, "
+              "and a fallback may send it a second time. Push the marker by "
+              "hand, or disable today's remaining runs."
           )
           msg = MIMEText(body)
           msg["Subject"] = f"Australia Chair Daily Brief FAILED, {now}"

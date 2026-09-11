@@ -168,7 +168,7 @@ def _sec_label(label: str, color: str = RING_ON_DARK) -> str:
         'class="sec-bar" style="background:#14181F;margin-bottom:14px;">'
         '<tr><td style="padding:9px 14px;">'
         f'<span style="font-family:Arial,sans-serif;font-size:12px;color:{color};'
-        'line-height:1;vertical-align:middle;margin-right:9px;">&#9675;</span>'
+        'line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span>'
         '<span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;'
         'text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;'
         f'vertical-align:middle;">{label}</span>'

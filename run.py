@@ -1076,10 +1076,19 @@ def main():
     _write_if_safe(manifest_path, entries, _archive_ok)
     _index_html = _build_index_html()
     (archive_dir / "index.html").write_text(_index_html, encoding="utf-8")
-    # Every issue links "Past issues" at archive.html, and nothing wrote that
-    # file, so the pill 404'd in every brief ever sent. The index already is
-    # the issue list; publish it under the name the brief asks for.
-    (archive_dir / "archive.html").write_text(_index_html, encoding="utf-8")
+    # Every issue links "Past issues" at archive.html. This used to publish a
+    # copy of the landing page; it is now the house archive page, the same
+    # layout and search as the other three, built from the same module.
+    try:
+        import archive_page
+        (archive_dir / "archive.html").write_text(
+            archive_page.build(entries, title="Australia Daily Brief",
+                               chair="CSIS Australia Chair", accent="#1B90A6",
+                               latest_href="latest.html"),
+            encoding="utf-8")
+    except Exception as _e:                                     # noqa: BLE001
+        print(f"  ⚠ Archive page skipped (non-fatal): {_e}")
+        (archive_dir / "archive.html").write_text(_index_html, encoding="utf-8")
 
     # PDF, best-effort. Generated from the archived HTML rather than
     # re-rendered, so the file a reader downloads is byte-for-byte the

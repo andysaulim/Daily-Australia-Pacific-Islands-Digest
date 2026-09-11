@@ -81,6 +81,15 @@ jobs:
     # licence to send a second copy.
     timeout-minutes: 45
     steps:
+      # Checkout first. The guard below reads last_sent.txt out of the
+      # repository, and before a checkout there is neither a working tree nor
+      # a git remote to read it from: placed ahead of the guard, both the git
+      # show and its working-tree fallback failed silently, the marker always
+      # read empty, and every fallback cron concluded nothing had been sent
+      # and ran the whole pipeline again. The checkout is seconds; the guard
+      # still runs before Python, the dependencies and the browser.
+      - uses: actions/checkout@v4
+
       # Guard: on a fallback cron, skip if a dispatch already sent today.
       - name: Check if already sent today
         id: guard
@@ -160,9 +169,6 @@ jobs:
             echo "No successful run yet today, running fallback"
             echo "should_run=true" >> "$GITHUB_OUTPUT"
           fi
-
-      - uses: actions/checkout@v4
-        if: steps.guard.outputs.should_run == 'true'
 
       - name: Set up Python
         if: steps.guard.outputs.should_run == 'true'

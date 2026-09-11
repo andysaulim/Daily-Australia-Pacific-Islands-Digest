@@ -356,7 +356,7 @@ def render(digest: dict) -> str:
               'font-family:Arial,sans-serif;font-size:11px;font-weight:700;'
               'letter-spacing:0.5px;color:#14181F;'
               'background:#FFFFFF;'
-              'border-radius:14px;'
+              'border-radius:3px;'
               'text-decoration:none;white-space:nowrap;')
         _links = [f'<a class="pill" href="{_esc(web_url)}" style="{_a}">Read online</a>']
         # The dated PDF when the run published one, so the link names the issue
@@ -881,9 +881,9 @@ def render(digest: dict) -> str:
     if web_url:
         _fa = 'color:rgba(255,255,255,0.95);text-decoration:none;'
         _fbase = web_url[:-len("latest.html")] if web_url.endswith("latest.html") else ""
-        _parts = [f'<a class="pill" href="{_esc(web_url)}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:14px;text-decoration:none;white-space:nowrap;">Read online</a>']
+        _parts = [f'<a class="pill" href="{_esc(web_url)}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Read online</a>']
         if _fbase:
-            _parts.append(f'<a class="pill" href="{_esc(_fbase + "archive.html")}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:14px;text-decoration:none;white-space:nowrap;">Past issues</a>')
+            _parts.append(f'<a class="pill" href="{_esc(_fbase + "archive.html")}" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Past issues</a>')
         _foot_links = ('<div style="margin-top:11px;font-family:Arial,sans-serif;'
                        'font-size:11px;letter-spacing:0.5px;">'
                        + '<span style="color:rgba(255,255,255,0.45);">&nbsp;&middot;&nbsp;</span>'.join(_parts)

@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-09-09",
+  "last_updated": "2026-09-11",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "Five leaders absent from Palau summit as Australia's treaty run reaches Fiji",
-      "last_event_date": "2026-09-05",
-      "last_activity_type": "security agreement",
-      "url": "https://www.thesaturdaypaper.com.au/news/foreign-relations/2026/09/05/did-china-undercut-pacific-islands-forum",
-      "event_count": 3
+      "last_event": "Chinese company buys Papua New Guinea mines and port facilities for more than $1 billion",
+      "last_event_date": "2026-09-11",
+      "last_activity_type": "port / infrastructure",
+      "url": "https://islandsbusiness.com/news-break/chinese-firm-buys-png-gold-mine/",
+      "event_count": 4
     },
     "Fiji": {
       "last_event": "Rabuka denies China influenced decision to skip PIF summit",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-11",
+      "country": "Papua New Guinea",
+      "activity": "port / infrastructure",
+      "headline": "Chinese company buys Papua New Guinea mines and port facilities for more than $1 billion",
+      "url": "https://islandsbusiness.com/news-break/chinese-firm-buys-png-gold-mine/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-09",
       "country": "Palau",

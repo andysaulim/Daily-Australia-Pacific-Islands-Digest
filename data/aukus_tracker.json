@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-10",
+  "last_updated": "2026-09-11",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -60,10 +60,10 @@
     },
     {
       "workstream": "quantum technologies",
-      "status": "no recent reporting",
-      "note": null,
-      "source_url": null,
-      "last_seen": null
+      "status": "reported",
+      "note": "China is poised to lead in research on quantum technologies. Democracies must act",
+      "source_url": "https://www.aspistrategist.org.au/china-is-poised-to-lead-in-research-on-quantum-technologies-democracies-must-act/",
+      "last_seen": "2026-09-11"
     },
     {
       "workstream": "artificial intelligence and autonomy",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-11",
+      "headline": "China is poised to lead in research on quantum technologies. Democracies must act",
+      "url": "https://www.aspistrategist.org.au/china-is-poised-to-lead-in-research-on-quantum-technologies-democracies-must-act/",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-09-11",
+      "headline": "British envoy fields questions on UK yard capacity for SSN-AUKUS timetable",
+      "url": "https://www.abc.net.au/listen/programs/global-roaming/25-years-since-9-11-has-aukus-made-australia-stronger-/107068042",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-10",
       "headline": "Urgent call to review KPMG's classified AUKUS contracts",

@@ -388,10 +388,38 @@ check("starved payload alerts on the prestige gap",
 check("starved payload warns on tier floors",
       any("tier1" in w for w in _starved["warnings"]))
 
-_healthy = pipeline_health.check(
-    payload={"tier1": [{"source": "ABC News"}] * 50 + [{"source": "SMH"}] * 10,
-             "tier2": [{}] * 10, "tier3": [{}] * 3, "tier4": [{}] * 3})
+# Pin "today" to the day the baselines were verified. The staleness alert is
+# real and worth having, but it fires on the calendar rather than on the
+# payload, so leaving it live here made a BLOCKING suite fail with the passage
+# of time: at +400 days this check failed, and it gates the send. A suite that
+# can cancel a brief must depend only on the code it is testing.
+_bl_verified = pipeline_health._baseline_verified_date(
+    __import__("digest")._REGIONAL_BASELINES)
+_real_today = pipeline_health._today
+if _bl_verified is not None:
+    pipeline_health._today = lambda: _bl_verified
+try:
+    _healthy = pipeline_health.check(
+        payload={"tier1": [{"source": "ABC News"}] * 50 + [{"source": "SMH"}] * 10,
+                 "tier2": [{}] * 10, "tier3": [{}] * 3, "tier4": [{}] * 3})
+finally:
+    pipeline_health._today = _real_today
 check("healthy payload raises no alerts", not _healthy["alerts"], str(_healthy["alerts"]))
+# The staleness alert must still fire when it should — pinning the date above
+# must not have disabled it.
+_stale = None
+if _bl_verified is not None:
+    from datetime import timedelta as _td
+    pipeline_health._today = lambda: _bl_verified + _td(days=pipeline_health.BASELINE_ALERT_DAYS + 1)
+    try:
+        _stale = pipeline_health.check(
+            payload={"tier1": [{"source": "ABC News"}] * 50 + [{"source": "SMH"}] * 10,
+                     "tier2": [{}] * 10, "tier3": [{}] * 3, "tier4": [{}] * 3})
+    finally:
+        pipeline_health._today = _real_today
+check("the baseline staleness alert still fires when it should",
+      _stale is None or any("last verified" in a for a in _stale["alerts"]),
+      str(_stale["alerts"]) if _stale else "")
 
 # The stream-retry tuple must catch what the SDK's backend actually raises.
 # Catching the wrong HTTP library's classes is how this silently became dead

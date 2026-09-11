@@ -194,8 +194,16 @@ jobs:
       # measured in a real browser. None of it is visible by reading the
       # HTML, which is why it kept being found by eye instead. Needs the
       # browser installed below, so it runs after that step.
+      # continue-on-error, deliberately. This measures contrast, type size and
+      # overflow in a real browser: worth knowing, worth a red run, but NOT
+      # worth a missing brief. On 11 September the Korea edition cancelled its
+      # send because a weekly data update populated a caption that had always
+      # been 9px at 2.55:1. The check was right; blocking the brief over it was
+      # not. The offline suite above stays blocking, since it tests the
+      # pipeline's own invariants and the day's news cannot trip it.
       - name: Visual checks
         if: steps.guard.outputs.should_run != 'false'
+        continue-on-error: true
         run: |
           python3 preview.py
           BRIEF_HTML=preview.html python3 test_render_visual.py

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-12",
+  "last_updated": "2026-09-13",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-13",
+      "headline": "Australian Naval Institute convenes experts on AUKUS progress",
+      "url": "https://navalinstitute.com.au/experts-look-at-aukus-progress/",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-12",
       "headline": "Anthropic says Iran used its American AI model to target US Navy warships",

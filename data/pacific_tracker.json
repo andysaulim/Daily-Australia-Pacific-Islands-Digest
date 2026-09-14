@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-11",
+  "last_updated": "2026-09-14",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Chinese company buys Papua New Guinea mines and port facilities for more than $1 billion",
@@ -30,11 +30,11 @@
       "event_count": 2
     },
     "Samoa": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "Chinese-owned retail expansion squeezes Samoan village shops",
+      "last_event_date": "2026-09-14",
+      "last_activity_type": "other",
+      "url": "https://www.samoaobserver.ws/category/samoa/122021",
+      "event_count": 1
     },
     "Tonga": {
       "last_event": "China reaffirms Cook Islands seabed backing as US scientist heads to Rarotonga",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-14",
+      "country": "Samoa",
+      "activity": "other",
+      "headline": "Chinese-owned retail expansion squeezes Samoan village shops",
+      "url": "https://www.samoaobserver.ws/category/samoa/122021",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-11",
       "country": "Papua New Guinea",

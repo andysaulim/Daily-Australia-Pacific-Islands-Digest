@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-13",
+  "last_updated": "2026-09-14",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-14",
+      "headline": "Hunter-class frigate bill reaches $27 billion for first three ships",
+      "url": "https://www.abc.net.au/news/2026-09-14/federal-politics-australia-billions-spent-on-three-warships/107132330",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-09-14",
+      "headline": "Britain delays final order for AUKUS submarine fleet until 2028",
+      "url": "https://www.theaustralian.com.au/world/uk-delays-final-order-for-new-aukus-nuclear-submarine-fleet-until-2028/news-story/f60509abcc1e58e5297847657dfdb82e",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-13",
       "headline": "Australian Naval Institute convenes experts on AUKUS progress",

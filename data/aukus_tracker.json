@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-14",
+  "last_updated": "2026-09-15",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-15",
+      "headline": "CSIS marks AUKUS at five: real progress, hard challenges ahead",
+      "url": "https://www.csis.org/analysis/aukus-turns-five-real-progress-hard-challenges-ahead",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-14",
       "headline": "Hunter-class frigate bill reaches $27 billion for first three ships",

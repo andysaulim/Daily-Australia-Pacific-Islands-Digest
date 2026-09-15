@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-14",
+  "last_updated": "2026-09-15",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Chinese company buys Papua New Guinea mines and port facilities for more than $1 billion",
@@ -65,11 +65,11 @@
       "event_count": 1
     },
     "Palau": {
-      "last_event": "China's Pacific envoy Qian Bo attended the 55th Forum Leaders Meeting",
-      "last_event_date": "2026-09-09",
+      "last_event": "US think tank urges shift of American forces to Guam and the second island chain",
+      "last_event_date": "2026-09-15",
       "last_activity_type": "other",
-      "url": "https://www.einpresswire.com/article/940358612/special-envoy-for-pacific-island-countries-affairs-of-the-chinese-government-qian-bo-attends-the-55th-pacific-islands-forum-leaders-meeting",
-      "event_count": 19
+      "url": "https://www.rnz.co.nz/news/pacific/1387911/us-think-tank-proposes-military-shift-to-guam-cnmi-and-pacific-islands",
+      "event_count": 20
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-15",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "US think tank urges shift of American forces to Guam and the second island chain",
+      "url": "https://www.rnz.co.nz/news/pacific/1387911/us-think-tank-proposes-military-shift-to-guam-cnmi-and-pacific-islands",
+      "section": "top_stories"
+    },
     {
       "date": "2026-09-14",
       "country": "Samoa",

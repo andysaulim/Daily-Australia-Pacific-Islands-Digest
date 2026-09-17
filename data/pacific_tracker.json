@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-16",
+  "last_updated": "2026-09-17",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Chinese company buys Papua New Guinea mines and port facilities for more than $1 billion",
@@ -23,11 +23,11 @@
       "event_count": 7
     },
     "Vanuatu": {
-      "last_event": "Forum's China rebuke buried in communique as Micronesian rift persists",
-      "last_event_date": "2026-09-07",
+      "last_event": "China donates NZ$155,000 to Vanuatu recovery",
+      "last_event_date": "2026-09-17",
       "last_activity_type": "other",
-      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/pif-wrap/107123014",
-      "event_count": 2
+      "url": "https://islandsbusiness.com/news-break/china-donates-nzd155000-to-vanuatu-recovery/",
+      "event_count": 3
     },
     "Samoa": {
       "last_event": "Chinese-owned retail expansion squeezes Samoan village shops",
@@ -58,11 +58,11 @@
       "event_count": 2
     },
     "Nauru": {
-      "last_event": "Pacific Islands Forum closes with joint statement on China's missile test, Nauru alone dissents",
-      "last_event_date": "2026-09-05",
+      "last_event": "Forum says no member blocked China missile statement",
+      "last_event_date": "2026-09-17",
       "last_activity_type": "other",
-      "url": "https://www.samoaobserver.ws/category/samoa/121898",
-      "event_count": 1
+      "url": "https://www.fbcnews.com.fj/news/pif-says-no-member-blocked-china-missile-statement-01/",
+      "event_count": 2
     },
     "Palau": {
       "last_event": "US think tank urges shift of American forces to Guam and the second island chain",
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-17",
+      "country": "Nauru",
+      "activity": "other",
+      "headline": "Forum says no member blocked China missile statement",
+      "url": "https://www.fbcnews.com.fj/news/pif-says-no-member-blocked-china-missile-statement-01/",
+      "section": "primary_documents"
+    },
+    {
+      "date": "2026-09-17",
+      "country": "Vanuatu",
+      "activity": "other",
+      "headline": "China donates NZ$155,000 to Vanuatu recovery",
+      "url": "https://islandsbusiness.com/news-break/china-donates-nzd155000-to-vanuatu-recovery/",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-16",
       "country": "Solomon Islands",

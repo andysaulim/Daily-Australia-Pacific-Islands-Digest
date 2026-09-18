@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-17",
+  "last_updated": "2026-09-18",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-18",
+      "headline": "AUKUS felt 'too hard' at times, former White House official says",
+      "url": "https://www.abc.net.au/news/2026-09-18/aukus-on-track-but-faces-challenges-five-years-in/107166564",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-17",
       "headline": "USSC charts a narrowing age gap on AUKUS submarines",

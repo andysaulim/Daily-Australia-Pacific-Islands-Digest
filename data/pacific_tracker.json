@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-17",
+  "last_updated": "2026-09-20",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Chinese company buys Papua New Guinea mines and port facilities for more than $1 billion",
@@ -9,11 +9,11 @@
       "event_count": 4
     },
     "Fiji": {
-      "last_event": "Guangdong provincial government to expand solar lighting across Fiji",
-      "last_event_date": "2026-09-16",
+      "last_event": "Fiji passes 100,000 monthly visitors for the first time",
+      "last_event_date": "2026-09-20",
       "last_activity_type": "other",
-      "url": "https://islandsbusiness.com/news-break/solar-lighting-to-expand-across-fiji-as-communities-seek-safer-public-spaces/",
-      "event_count": 4
+      "url": "https://fijisun.com.fj/news/nation/fiji-welcomes-record-105791-visitors-in-july",
+      "event_count": 5
     },
     "Solomon Islands": {
       "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-20",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Fiji passes 100,000 monthly visitors for the first time",
+      "url": "https://fijisun.com.fj/news/nation/fiji-welcomes-record-105791-visitors-in-july",
+      "section": "pacific_wire"
+    },
     {
       "date": "2026-09-17",
       "country": "Nauru",

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-19",
+  "last_updated": "2026-09-22",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-22",
+      "headline": "US torpedo test-fired from UK sea drone for first time under AUKUS",
+      "url": "https://www.abc.net.au/news/2026-09-22/aukus-us-uk-torpedo-test-fire-unmanned-submarine/107179898",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-19",
       "headline": "Commentary: AUKUS 'isn't a mistake, it's a strategic necessity'",

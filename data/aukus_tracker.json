@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-22",
+  "last_updated": "2026-09-23",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -53,10 +53,10 @@
   "pillar2": [
     {
       "workstream": "undersea capabilities",
-      "status": "no recent reporting",
-      "note": null,
-      "source_url": null,
-      "last_seen": null
+      "status": "reported",
+      "note": "ADM podcast examines AUKUS pressure points and DroneShield",
+      "source_url": "https://www.australiandefence.com.au/podcasts/adm-podcast-182-aukus-pressure-points-and-droneshield-developments",
+      "last_seen": "2026-09-23"
     },
     {
       "workstream": "quantum technologies",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-23",
+      "headline": "ADM podcast examines AUKUS pressure points and DroneShield",
+      "url": "https://www.australiandefence.com.au/podcasts/adm-podcast-182-aukus-pressure-points-and-droneshield-developments",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-22",
       "headline": "US torpedo test-fired from UK sea drone for first time under AUKUS",

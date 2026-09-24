@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-23",
+  "last_updated": "2026-09-24",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG police rescue thirty-nine Indonesians from trafficking ring",
@@ -65,11 +65,11 @@
       "event_count": 2
     },
     "Palau": {
-      "last_event": "From Palau to New York: a Pacific perspective on meaningful participation",
-      "last_event_date": "2026-09-23",
-      "last_activity_type": "senior visit",
-      "url": "https://www.pacificislandtimes.com/post/from-palau-to-new-york-a-pacific-perspective-on-meaningful-participation",
-      "event_count": 21
+      "last_event": "Forum chair Whipps: Pacific 'not a theatre for geopolitical competition'",
+      "last_event_date": "2026-09-24",
+      "last_activity_type": "other",
+      "url": "https://islandsbusiness.com/pacnews/pacnews-three-24-september-2026/",
+      "event_count": 22
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-24",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Forum chair Whipps: Pacific 'not a theatre for geopolitical competition'",
+      "url": "https://islandsbusiness.com/pacnews/pacnews-three-24-september-2026/",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-23",
       "country": "Palau",

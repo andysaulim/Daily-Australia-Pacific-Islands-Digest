@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-09-24",
+  "last_updated": "2026-09-25",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "PNG police rescue thirty-nine Indonesians from trafficking ring",
-      "last_event_date": "2026-09-23",
-      "last_activity_type": "port / infrastructure",
-      "url": "https://www.rnz.co.nz/news/pacific/1527816/papua-new-guinea-police-rescue-39-indonesians-in-human-trafficking-operation",
-      "event_count": 5
+      "last_event": "ABC analysis: PNG franchise debate should centre communities, not China",
+      "last_event_date": "2026-09-25",
+      "last_activity_type": "other",
+      "url": "https://www.abc.net.au/pacific/talanoa-png-chiefs-analysis-nrl-rugby-league-security-china/107124348",
+      "event_count": 6
     },
     "Fiji": {
       "last_event": "Fiji passes 100,000 monthly visitors for the first time",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-25",
+      "country": "Papua New Guinea",
+      "activity": "other",
+      "headline": "ABC analysis: PNG franchise debate should centre communities, not China",
+      "url": "https://www.abc.net.au/pacific/talanoa-png-chiefs-analysis-nrl-rugby-league-security-china/107124348",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-24",
       "country": "Palau",

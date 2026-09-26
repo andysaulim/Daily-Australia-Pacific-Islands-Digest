@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-25",
+  "last_updated": "2026-09-26",
   "countries": {
     "Papua New Guinea": {
       "last_event": "ABC analysis: PNG franchise debate should centre communities, not China",
@@ -23,11 +23,11 @@
       "event_count": 7
     },
     "Vanuatu": {
-      "last_event": "China donates NZ$155,000 to Vanuatu recovery",
-      "last_event_date": "2026-09-17",
-      "last_activity_type": "other",
-      "url": "https://islandsbusiness.com/news-break/china-donates-nzd155000-to-vanuatu-recovery/",
-      "event_count": 3
+      "last_event": "Finland pitches maritime surveillance and disaster technology to Vanuatu",
+      "last_event_date": "2026-09-26",
+      "last_activity_type": "senior visit",
+      "url": "https://www.dailypost.vu/news/finland-pitches-technology-business-ties-to-vanuatu/article_05c7da03-9807-5317-881f-bca9a498dc7a.html",
+      "event_count": 5
     },
     "Samoa": {
       "last_event": "Chinese-owned retail expansion squeezes Samoan village shops",
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-26",
+      "country": "Vanuatu",
+      "activity": "senior visit",
+      "headline": "Finland pitches maritime surveillance and disaster technology to Vanuatu",
+      "url": "https://www.dailypost.vu/news/finland-pitches-technology-business-ties-to-vanuatu/article_05c7da03-9807-5317-881f-bca9a498dc7a.html",
+      "section": "pacific_wire"
+    },
+    {
+      "date": "2026-09-26",
+      "country": "Vanuatu",
+      "activity": "other",
+      "headline": "Chinese Medical Team performs Vanuatu's first laparoscopic perforation repair",
+      "url": "https://www.dailypost.vu/news/chinese-medical-team-performs-vanuatu-s-first-laparoscopic-gastrointestinal-perforation-repair/article_5390cd72-7d27-56a3-ab07-c195b34e0690.html",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-25",
       "country": "Papua New Guinea",

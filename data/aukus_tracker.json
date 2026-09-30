@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-29",
+  "last_updated": "2026-09-30",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-09-30",
+      "headline": "Commentary floats Korean KSS-III as AUKUS submarine hedge",
+      "url": "https://thediplomat.com/2026/09/south-korean-submarines-could-save-australia-from-the-aukus-shambles/",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-29",
       "headline": "The Diplomat asks whether AUKUS is now too big to fail",

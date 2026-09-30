@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-09-26",
+  "last_updated": "2026-09-30",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "ABC analysis: PNG franchise debate should centre communities, not China",
-      "last_event_date": "2026-09-25",
-      "last_activity_type": "other",
-      "url": "https://www.abc.net.au/pacific/talanoa-png-chiefs-analysis-nrl-rugby-league-security-china/107124348",
-      "event_count": 6
+      "last_event": "China and PNG mark 50 years of diplomatic ties in Beijing",
+      "last_event_date": "2026-09-30",
+      "last_activity_type": "recognition switch",
+      "url": "https://www.chinadaily.com.cn/a/202609/30/WS6abcac59e4b06d4aa0561098.html",
+      "event_count": 7
     },
     "Fiji": {
       "last_event": "Fiji passes 100,000 monthly visitors for the first time",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-09-30",
+      "country": "Papua New Guinea",
+      "activity": "recognition switch",
+      "headline": "China and PNG mark 50 years of diplomatic ties in Beijing",
+      "url": "https://www.chinadaily.com.cn/a/202609/30/WS6abcac59e4b06d4aa0561098.html",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-09-26",
       "country": "Vanuatu",

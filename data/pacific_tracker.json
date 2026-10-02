@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-30",
+  "last_updated": "2026-10-02",
   "countries": {
     "Papua New Guinea": {
       "last_event": "China and PNG mark 50 years of diplomatic ties in Beijing",
@@ -9,11 +9,11 @@
       "event_count": 7
     },
     "Fiji": {
-      "last_event": "Fiji passes 100,000 monthly visitors for the first time",
-      "last_event_date": "2026-09-20",
+      "last_event": "Albanese flies to pre-COP on Monday with rate pain at home",
+      "last_event_date": "2026-10-02",
       "last_activity_type": "other",
-      "url": "https://fijisun.com.fj/news/nation/fiji-welcomes-record-105791-visitors-in-july",
-      "event_count": 5
+      "url": "https://www.abc.net.au/news/2026-10-02/anthony-albanese-climate-change-ai-interest-rates/107217568",
+      "event_count": 6
     },
     "Solomon Islands": {
       "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-02",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Albanese flies to pre-COP on Monday with rate pain at home",
+      "url": "https://www.abc.net.au/news/2026-10-02/anthony-albanese-climate-change-ai-interest-rates/107217568",
+      "section": "overnight_items"
+    },
     {
       "date": "2026-09-30",
       "country": "Papua New Guinea",

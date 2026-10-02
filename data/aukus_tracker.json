@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-30",
+  "last_updated": "2026-10-02",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-02",
+      "headline": "CSIS publishes transcript of its AUKUS at five assessment",
+      "url": "https://www.csis.org/analysis/aukus-five-progress-challenges-and-way-forward-transcript",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-09-30",
       "headline": "Commentary floats Korean KSS-III as AUKUS submarine hedge",

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-02",
+  "last_updated": "2026-10-03",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-03",
+      "headline": "Australian defence materiel counsellor on industrial-base integration",
+      "url": "https://www.csis.org/events/partners-producers-us-australia-defense-cooperation",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-10-03",
+      "headline": "Greens set defence red lines: no arms for Ukraine, curtail the US alliance",
+      "url": "https://www.smh.com.au/politics/federal/the-greens-defence-red-lines-no-weapons-for-ukraine-curtail-the-us-alliance-20261003-p6128o.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-02",
       "headline": "CSIS publishes transcript of its AUKUS at five assessment",

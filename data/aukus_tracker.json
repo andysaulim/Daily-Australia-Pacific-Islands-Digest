@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-03",
+  "last_updated": "2026-10-06",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-06",
+      "headline": "Hundreds protest against Australia's largest defence expo in Perth",
+      "url": "https://www.abc.net.au/news/2026-10-06/hundreds-protest-against-land-forces-defence-expo/107223822",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-03",
       "headline": "Australian defence materiel counsellor on industrial-base integration",

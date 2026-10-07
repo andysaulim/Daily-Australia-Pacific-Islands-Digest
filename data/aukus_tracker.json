@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-06",
+  "last_updated": "2026-10-07",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-07",
+      "headline": "Trump announces multibillion-dollar shipyard for AUKUS submarines",
+      "url": "https://www.smh.com.au/world/north-america/us-to-spend-billions-on-new-shipyard-for-aukus-submarines-20261007-p613db.html?ref=rss&utm_medium=rss&utm_source=rss_world",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-06",
       "headline": "Hundreds protest against Australia's largest defence expo in Perth",

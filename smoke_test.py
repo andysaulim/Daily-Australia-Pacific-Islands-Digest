@@ -60,6 +60,101 @@ check("sport block catches the Ashes",
 check("sport block leaves policy alone",
       not collect._SPORT_FILTER.search("Australia lifts defence spending"))
 
+# The ABC Emergency wire reaches the brief through ABC Pacific, which is a
+# prestige feed and therefore outscores everything the brief is actually for.
+# Each shape below is a real title from data/archive.db, suffix and all.
+_ALERT_JUNK = [
+    "Grass Fire | ANITA AV, LAKE MUNMORAH - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    "Bushfire | ROGAN BRIDGE RD, COPMANHURST - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    "Fire | Fire - Other - Lowden Ct, Narre Warren South - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    "Other Non-Urgent Alerts | HUME HWY, YERRINBOOL - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    "Burn Off (YALLINGUP, CITY OF BUSSELTON, LOWER SOUTH WEST, CAD-ID: 818859)",
+    "Structure Fire (BELMONT, CITY OF BELMONT, METRO NORTH EAST, CAD-ID: 816419)",
+    "Hazardous Material - Gurner St, St Kilda - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    "Accident / Rescue - Rescue - Jackson St, Winchelsea",
+    "Fire - Bushfire - Caroline Springs",
+    "Bushfire Watch and Act MONITOR CONDITIONS - DERBY",
+    "Bushfire Advice MONITOR CONDITIONS - KUNUNURRA",
+    "Advice - Riverine Flood - Stay Informed",
+    "STAY INFORMED - Murphys Creek and Fifteen Mile - fire as at 12:39pm"
+    " Sunday, 4 October 2026",
+    "AVOID SMOKE - Mingela (near Charters Towers) - fire as at 3:31pm"
+    " Sunday, 27 September 2026",
+    "LEAVE NOW - Somme and Thorndale (Nundubbermere) - fire as at 6:11pm"
+    " Monday, 21 September 2026",
+    "Smoke Alert FOR BEDFORDALE, KELMSCOTT, ARMADALE, WUNGONG AND SURROUNDING"
+    " AREAS IN THE CITY OF ARMADALE",
+    "Fuel Reduction Burn Smoke Alert - Masseys Creek, Beaconsfield - Avoid smoke",
+    "Strong Wind Warning for coastal waters between Cape Otway and Wilsons"
+    " Promontory for 02 October",
+    "Severe Thunderstorm Warning for Greater Brisbane and Surrounds",
+    "BATES LANE, NARACOORTE (Rubbish Fire) - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    "HACKHAM WEST : STRUCTURE FIRE - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    # SEO spam on the same feeds, with the number written several ways.
+    "+61 468 288 041 Swyftx Customer Service - ABC News & Headlines"
+    " – Australian Broadcasting Corporation",
+    "+61 488 841 989 Independent Reserve Customer Service",
+    "61 488 841 989 Coinspot Login issues Support",
+    "++61-488-841-989 Coinjar Support Helpdesk",
+    "+61 (03) 8904 8071 Coinspot withrawal issues",
+    "+61 (O3) 89O4 8O71, Swyftx support number available for australia",
+    "+61 399176309 How can I contact China Southern Airlines from Australia",
+    "+1 855 542 9315 \U0001F4DE Marriott Hotels Phone Number Australia",
+]
+
+# What the filter must never touch. The first two are the cases the brief
+# would lose outright; the rest are real survivors from the same archive,
+# several of which open with a figure.
+_ALERT_KEEP = [
+    "Bushfire royal commission hands down its report",
+    "ADF deployed to Queensland floods",
+    "Emergency warning issued for bushfire in N. Australia - Xinhua",
+    "Over 10 hectares of the Rubio plantation were destroyed in a bushfire",
+    "Flood recovery funding announced for northern NSW",
+    "Fire chiefs warn of a long summer ahead",
+    "Smoke alert for Sydney as hazard reduction burns begin",
+    "Advice for first home buyers - The Australian",
+    "32kg of cocaine held in Fiji court's evidence room replaced with flour",
+    "84,000-plus sit grade 10 exams - PNG National",
+    "11 killed in avalanche on Russian peak",
+    "04 Lies in Lismore | An arrest",
+    "150,000 words, zero guarantees: Bullock's high-stakes interest rate revolution",
+    "1300kms in the making: new road connects Papua New Guinea's two largest cities",
+    "19,301 Influenza-Like Illness Cases Reported in Vanuatu",
+    "PACNEWS ONE, 04 SEPTEMBER 2026",
+    "Estimates : Report - ParlInfo",
+]
+
+_alert_dropped = [t for t in _ALERT_JUNK
+                  if collect._is_emergency_alert({"title": t})]
+_alert_kept = [t for t in _ALERT_KEEP
+               if not collect._is_emergency_alert({"title": t})]
+for _t in _ALERT_JUNK:
+    check(f"emergency block drops {_t[:52]!r}",
+          collect._is_emergency_alert({"title": _t}))
+for _t in _ALERT_KEEP:
+    check(f"emergency block keeps {_t[:52]!r}",
+          not collect._is_emergency_alert({"title": _t}))
+check("emergency block fired on every junk fixture",
+      len(_alert_dropped) == len(_ALERT_JUNK),
+      f"{len(_alert_dropped)}/{len(_ALERT_JUNK)}")
+check("emergency block fired on none of the real stories",
+      len(_alert_kept) == len(_ALERT_KEEP),
+      f"{len(_alert_kept)}/{len(_ALERT_KEEP)}")
+check("emergency block reads the title, not the summary",
+      not collect._is_emergency_alert(
+          {"title": "Canberra lifts disaster funding",
+           "summary": "Grass Fire | ANITA AV, LAKE MUNMORAH"}))
+check("emergency block is wired into the tier-1 collector",
+      "_is_emergency_alert" in inspect.getsource(collect._collect_tier1))
+
 print("\n=== 3. Region tagging ===")
 class E(dict):
     def get(self, k, d=None): return dict.get(self, k, d)

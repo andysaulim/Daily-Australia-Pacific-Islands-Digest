@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-07",
+  "last_updated": "2026-10-08",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-08",
+      "headline": "Missed UPS email let China seize F-35 parts shipped from Australia",
+      "url": "https://www.afr.com/world/asia/ups-worker-missed-email-letting-china-seize-sensitive-f-35-parts-20261008-p613qh",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-07",
       "headline": "Trump announces multibillion-dollar shipyard for AUKUS submarines",

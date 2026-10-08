@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-06",
+  "last_updated": "2026-10-08",
   "countries": {
     "Papua New Guinea": {
       "last_event": "China and PNG mark 50 years of diplomatic ties in Beijing",
@@ -9,11 +9,11 @@
       "event_count": 7
     },
     "Fiji": {
-      "last_event": "Albanese flies to pre-COP on Monday with rate pain at home",
-      "last_event_date": "2026-10-02",
+      "last_event": "US sanctions Fiji businessman for 'significant corruption' tied to China",
+      "last_event_date": "2026-10-08",
       "last_activity_type": "other",
-      "url": "https://www.abc.net.au/news/2026-10-02/anthony-albanese-climate-change-ai-interest-rates/107217568",
-      "event_count": 6
+      "url": "https://www.rnz.co.nz/news/pacific/1791678/us-designates-prominent-fiji-businessman-for-advancing-china-based-interests",
+      "event_count": 7
     },
     "Solomon Islands": {
       "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-08",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "US sanctions Fiji businessman for 'significant corruption' tied to China",
+      "url": "https://www.rnz.co.nz/news/pacific/1791678/us-designates-prominent-fiji-businessman-for-advancing-china-based-interests",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-06",
       "country": "Cook Islands",

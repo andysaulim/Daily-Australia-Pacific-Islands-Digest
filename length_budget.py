@@ -29,7 +29,11 @@ TRIM_ORDER: list[tuple[str, int]] = [
     ("academic_today", 1),
     ("opeds_today", 2),
     ("china_in_the_pacific", 2),
-    ("canberra_politics", 2),
+    # 3, not 2: canberra_politics gained a validator floor of 3, and trimming
+    # runs after validation, so a floor of 2 here would quietly ship a section
+    # the gate had just passed at 3. Every floor in this list has to be at
+    # least the section's minimum in run.SECTION_CAPS; smoke_test asserts it.
+    ("canberra_politics", 3),
     ("business_economy", 2),
     ("new_zealand", 1),
     ("aukus_watch", 2),

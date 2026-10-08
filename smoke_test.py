@@ -266,8 +266,17 @@ def base_digest():
              "why_it_matters": "It shapes the regional agenda.", "confirmed": False}
             for i in range(4)
         ],
+        # Three items because canberra_politics gained a floor of 3; an empty
+        # list here would make the "clean digest" fixture fail its own check.
+        "canberra_politics": [
+            {"url": f"http://example.com/c{i}", "source": "Canberra Times",
+             "category": "AU-Politics",
+             "headline": f"Senate estimates hearing {i} questions the forecasts",
+             "body_text": "Australian officials appeared before the committee. " * 2}
+            for i in range(3)
+        ],
         "also_today": [], "opeds_today": [], "academic_today": [],
-        "aukus_watch": [], "china_in_the_pacific": [], "canberra_politics": [],
+        "aukus_watch": [], "china_in_the_pacific": [],
         "business_economy": [], "primary_documents": [], "on_this_day": [],
     }
 
@@ -844,7 +853,7 @@ _cap_patterns = {
     "china_in_the_pacific": r"- china_in_the_pacific: (\d+)-(\d+) items",
     "also_today":           r"- also_today: (\d+)-(\d+) items",
     "aukus_watch":          r"- aukus_watch: (\d+)-(\d+) items",
-    "canberra_politics":    r"- canberra_politics: (\d+)-(\d+) items",
+    "canberra_politics":    r"- canberra_politics: MINIMUM (\d+), maximum (\d+)",
     "business_economy":     r"- business_economy: (\d+)-(\d+) items",
 }
 import re as _re_caps
@@ -930,8 +939,12 @@ check("the highest scorer sorts first",
 check("ties keep collection order",
       digest_mod._prioritize([_plain, dict(_plain)])[0] is _plain)
 _dsrc = inspect.getsource(digest_mod)
+# Behavioural, not textual: _tier_json went through _window once the window
+# gained a reserve, and a source-string check would have read that refactor as
+# the ordering bug coming back.
+_ordered = json.loads(digest_mod._tier_json([_plain, _prest], max_items=1))
 check("the tier JSON orders before it slices",
-      "_prioritize(articles)[:max_items]" in _dsrc)
+      len(_ordered) == 1 and _ordered[0]["source"] == "Reuters")
 check("the tier-1 window is wide enough to matter",
       'payload.get("tier1", []), max_items=160' in _dsrc)
 # A prestige item buried at position 200 of the raw list must still make the cut.
@@ -1208,7 +1221,9 @@ print("\n=== 14r. The journalist watch list actually fires ===")
 # matched zero times, because it searched the title and the summary for a bare
 # name and a byline appears in neither.
 check("the beats are structured, not comments",
-      len(collect.JOURNALIST_BEATS) == 4)
+      len(collect.JOURNALIST_BEATS) >= 4
+      and all(isinstance(v, list) and v
+              for v in collect.JOURNALIST_BEATS.values()))
 check("every name is reachable through the flat set",
       collect.PRESTIGE_JOURNALISTS ==
       {n for v in collect.JOURNALIST_BEATS.values() for n in v})
@@ -1489,6 +1504,188 @@ check("stand-ins are not counted as coverage",
       or "Pacific-Politics" not in run_mod._topic_counts(
           {"pacific_wire": [{"stand_in": True, "category_tag": "Pacific-Politics"}]}))
 check("metrics record it", '"topic_counts": _topic_counts(digest_data)' in _rsrc_run)
+
+print("\n=== 14w. Australian politics reaches the brief ===")
+# "This needs more Australia politics news" turned out to be three separate
+# failures, each of which had to be measured before it could be fixed:
+#   1. the relevance gate carried no Canberra vocabulary, so nine of ten
+#      realistic political headlines were dropped at collection;
+#   2. the prioritiser scored what survived at a median of 12 against a window
+#      cut running at 70-120, so 24 of 26 such items over a fortnight were
+#      never shown to the model;
+#   3. there was no Canberra masthead and no polling source at all — 2 polling
+#      items in 4,275 collected.
+# The section cap, which is what looked broken, was never reached once.
+_au_pol_feeds = ("Guardian AU politics", "Canberra Times", "The Mandarin",
+                 "The New Daily", "Capital Brief", "SBS News",
+                 "AFR politics", "The Australian politics",
+                 "AU polling (wire)", "AU parliament (wire)",
+                 "AU leadership (wire)", "AU legislation (wire)",
+                 "AU budget (wire)", "AU integrity (wire)")
+for _f in _au_pol_feeds:
+    check(f"tier 1 carries {_f}", _f in collect.TIER1_FEEDS)
+check("the polling feed asks for the named published polls",
+      all(t in collect.TIER1_FEEDS["AU polling (wire)"].lower()
+          for t in ("newspoll", "resolve", "essential")))
+check("the parliament feed asks for chamber and committee business",
+      all(t in collect.TIER1_FEEDS["AU parliament (wire)"].lower()
+          for t in ("question+time", "senate+estimates")))
+check("the wires are topic feeds, not one masthead's site: query",
+      all("site:" not in collect.TIER1_FEEDS[f] for f in _au_pol_feeds
+          if f.endswith("(wire)")))
+check("tier 2 carries Australian politics commentary",
+      "The Saturday Paper" in collect.TIER2_FEEDS
+      and "Inside Story" in collect.TIER2_FEEDS)
+check("the press gallery is a watched beat",
+      "Australian federal politics" in collect.JOURNALIST_BEATS)
+check("the gallery beat is short enough to stay accurate",
+      3 <= len(collect.JOURNALIST_BEATS["Australian federal politics"]) <= 14)
+check("a gallery byline in the author field is flagged",
+      collect._flag_journalist(
+          {"author": "Paul Karp", "summary": ""}).get("flagged_journalist")
+      == "Paul Karp")
+check("a gallery name merely mentioned in the copy is not",
+      not collect._flag_journalist(
+          {"author": "", "summary": "Paul Karp was quoted in the piece"}
+      ).get("flagged_journalist"))
+check("the new feeds file as Australian",
+      all(collect._SOURCE_REGION.get(f, "AU") == "AU" for f in _au_pol_feeds))
+
+# The gate. Each of these was measured failing before the vocabulary landed.
+for _t in ("Resolve Political Monitor shows Coalition closing the gap on "
+           "two-party-preferred",
+           "Question Time erupts over the migration cap",
+           "Senate estimates: Treasury officials grilled on forecasts",
+           "Nationals party room splits over net zero",
+           "Crossbench senators to block the environment bill",
+           "Newspoll has Labor's primary vote at 32 per cent",
+           "Joint standing committee on treaties to review the arrangement",
+           "Productivity Commission flags approvals as the constraint"):
+    check(f"gate keeps: {_t[:46]}", bool(collect.AUSPAC_KEYWORDS.search(_t)))
+# And the gate must not have been widened into a sieve. Each of these is a
+# near-miss the new tokens could plausibly have caught.
+for _t in ("Senate Republicans block the spending bill as shutdown nears",
+           "Starmer faces a Labour revolt over welfare cuts",
+           "Carney's Liberals lead in a new Nanos poll",
+           "House of Representatives passes the defense authorization act",
+           "ACCC sues a telco over consumer law breaches",
+           "Coles launches a half-price promotion on pantry staples",
+           "Nurses win pay room concessions in Leeds"):
+    check(f"gate still drops: {_t[:46]}",
+          not collect.AUSPAC_KEYWORDS.search(_t))
+check("bare party nouns are not gate tokens",
+      not any(collect.AUSPAC_KEYWORDS.search(w)
+              for w in ("coalition", "labor", "the nationals", "senate")))
+# Westminster-wide vocabulary stays out of the gate. A token only earns its
+# place by what it admits when the text does not say Australia, and these two
+# stop being Australian exactly there.
+for _t in ("Starmer's cabinet reshuffle promotes two allies",
+           "Labour frontbench reshuffle in London",
+           "Senate passed the defense bill 68-29"):
+    check(f"gate still drops: {_t[:46]}",
+          not collect.AUSPAC_KEYWORDS.search(_t))
+check("the same vocabulary is safe in the window reserve, which is AU-only",
+      digest_mod._is_au_politics(
+          {"region": "AU", "title": "Cabinet reshuffle moves the portfolio",
+           "summary": ""})
+      and not digest_mod._is_au_politics(
+          {"region": "NZ", "title": "Cabinet reshuffle moves the portfolio",
+           "summary": ""}))
+
+# The window reserve.
+_pol = {"title": "Senate estimates: officials grilled on the forecasts",
+        "summary": "y" * 50, "region": "AU", "source": "Canberra Times"}
+check("a Canberra politics item is recognised as such",
+      digest_mod._is_au_politics(_pol))
+check("the same copy from outside Australia is not",
+      not digest_mod._is_au_politics(dict(_pol, region="Pacific")))
+check("the politics bonus stays below the Pacific bonus",
+      0 < digest_mod.AU_POLITICS_BONUS < 70)
+check("the reserve is a real number of slots",
+      digest_mod.AU_POLITICS_RESERVE >= 8)
+_filler = [dict(_plain, title=f"filler {i}", source="Reuters",
+                prestige_outlet=True) for i in range(300)]
+_buried = [dict(_pol, title=f"Senate estimates hearing {i}") for i in range(20)]
+_w = digest_mod._window(_filler + _buried, 160,
+                        digest_mod.AU_POLITICS_RESERVE)
+check("the window does not grow to make room", len(_w) == 160)
+check("the reserve is honoured when politics scores below the cut",
+      sum(1 for a in _w if digest_mod._is_au_politics(a))
+      == digest_mod.AU_POLITICS_RESERVE)
+check("it never promotes more than the reserve",
+      sum(1 for a in _w if digest_mod._is_au_politics(a)) <= 20)
+_w_small = digest_mod._window(_filler[:50], 160,
+                              digest_mod.AU_POLITICS_RESERVE)
+check("a corpus smaller than the window is returned whole",
+      len(_w_small) == 50)
+check("no reserve, no promotion: the plain slice still works",
+      len(digest_mod._window(_filler + _buried, 160, 0)) == 160 and
+      not any(digest_mod._is_au_politics(a)
+              for a in digest_mod._window(_filler + _buried, 160, 0)))
+check("tier 1 is the window that gets the reserve",
+      "politics_reserve=AU_POLITICS_RESERVE" in _dsrc)
+check("the other tiers do not", _dsrc.count("politics_reserve=") == 1)
+
+# The cap, and the metrics column that should have answered the question.
+check("canberra_politics has headroom above the 4 it ever reached",
+      run_mod.SECTION_CAPS["canberra_politics"][1] >= 7)
+check("the Pacific ceiling still exceeds it",
+      run_mod.SECTION_CAPS["pacific_wire"][1]
+      > run_mod.SECTION_CAPS["canberra_politics"][1])
+check("the prompt and the validator agree on the floor and the ceiling",
+      "- canberra_politics: MINIMUM %d, maximum %d"
+      % run_mod.SECTION_CAPS["canberra_politics"] in _prompt)
+check("the section has a floor at all, since the ceiling was never the limit",
+      run_mod.SECTION_CAPS["canberra_politics"][0] >= 3)
+check("the floor may be met honestly on a recess day",
+      "canberra_politics" in run_mod._FLOOR_SECTIONS
+      and "No significant developments in Australian federal politics" in _prompt)
+_cp_stand = base_digest()
+_cp_stand["canberra_politics"] = [
+    {"stand_in": "No significant developments in Australian federal politics "
+                 "in the past 24 hours."}]
+check("a stand-in satisfies the floor instead of blocking the send",
+      not [w for w in run_mod.validate_digest(_cp_stand)
+           if "CANBERRA" in w and "CRITICAL" in w])
+_cp_thin = base_digest()
+_cp_thin["canberra_politics"] = _cp_thin["canberra_politics"][:1]
+check("one real item is still CRITICAL, so the floor means something",
+      any("CANBERRA POLITICS CRITICAL" in w
+          for w in run_mod.validate_digest(_cp_thin)))
+_cp_pad = base_digest()
+_cp_pad["canberra_politics"] = [
+    {"url": f"http://example.com/p{i}", "source": "x", "category": "Other",
+     "headline": "Shop fire closes a street in Dayton",
+     "body_text": "Firefighters attended the scene."} for i in range(3)]
+_cp_pad_w = run_mod.validate_digest(_cp_pad)
+check("filler in the floored section is flagged",
+      any(w.startswith("CANBERRA POLITICS:") for w in _cp_pad_w))
+check("and flagging it does not block the send",
+      not any(w.startswith("CANBERRA POLITICS:") and "CRITICAL" in w
+              for w in _cp_pad_w))
+check("a genuine political item is not mistaken for filler",
+      not any(w.startswith("CANBERRA POLITICS:")
+              for w in run_mod.validate_digest(base_digest())))
+_rsrc = inspect.getsource(run_mod)
+check("the stand-in is recorded in metrics, so a run of them is visible",
+      '"canberra_stand_in": _has_stand_in(digest_data, "canberra_politics")'
+      in _rsrc)
+# The length trimmer runs AFTER validation, so a trim floor below a section's
+# validator minimum ships a section the gate had just passed.
+import length_budget as _lb
+for _sec, _floor in _lb.TRIM_ORDER:
+    _min = run_mod.SECTION_CAPS.get(_sec, (0, 0))[0]
+    check(f"the trim floor for {_sec} respects its validator minimum",
+          _floor >= _min, f"trim floor {_floor} < minimum {_min}")
+check("the prompt asks for polling numbers, not just that a poll happened",
+      "two-party-preferred" in _prompt and "Newspoll" in _prompt)
+check("the extra room is framed as headroom, not a quota",
+      "not a quota" in digest_mod.SYSTEM_PROMPT)
+check("the section is still fenced against local-news filler",
+      "local-council" in _prompt)
+for _m in ("canberra_politics", "business_economy"):
+    check(f"metrics record the {_m} section size",
+          f'"{_m}": len(_real_items(digest_data, "{_m}"))' in _rsrc)
 
 print("\n=== 15. Retry message shape ===")
 # The retry paths must not end on an assistant turn (a prefill, rejected with a

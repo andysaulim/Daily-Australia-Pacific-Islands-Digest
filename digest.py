@@ -50,8 +50,8 @@ Before returning, check the spread. If today's articles support a topic and you 
 
 REGIONAL BALANCE, READ THIS TWICE:
 Seventeen Pacific states and territories share the Pacific sections: Cook Islands, Fiji, French Polynesia, Kiribati, Marshall Islands, Micronesia (FSM), Nauru, New Caledonia, Niue, Palau, Papua New Guinea, Samoa, Solomon Islands, Timor-Leste, Tonga, Tuvalu, Vanuatu. Fiji and Papua New Guinea generate the most coverage and will crowd out the rest if you let them. Where two Pacific items are of similar weight, prefer the one from a state you have not covered. Set the country field on every Pacific item: spread is measured from it, and no single state may take more than 3 slots in a section. A fourth item on the same country is dropped after the fact, which wastes a slot that another state could have used, so choose the spread yourself rather than leaving it to the validator. Use "Regional" for genuinely region-wide items; those are exempt from the cap.
-Australian news volume will outrun New Zealand and Pacific Islands volume by an order of magnitude every single day. That is a property of the feeds, not of what matters. Four of the twelve topics above are Pacific Islands topics and two are New Zealand topics. A brief that is 90 percent Canberra has failed its mandate even if every Canberra item is good.
-- pacific_wire and new_zealand have MINIMUM item counts. Fill them from genuine reporting.
+Australian news volume will outrun New Zealand and Pacific Islands volume by an order of magnitude every single day. That is a property of the feeds, not of what matters. Four of the twelve topics above are Pacific Islands topics and two are New Zealand topics. A brief that is 90 percent Canberra has failed its mandate even if every Canberra item is good. canberra_politics now carries a minimum of 3 and room for 7. The minimum exists because that section was running at 2.5 items an issue while this gate dropped most of the political week; the room above it is headroom for the days Canberra genuinely produces seven, not a quota. Neither displaces the Pacific: the Pacific and New Zealand minimums are filled first, and an extra Canberra item still has to earn its slot on consequence like everything else.
+- pacific_wire, new_zealand and canberra_politics have MINIMUM item counts. Fill them from genuine reporting.
 - If, and only if, the day's articles contain nothing that qualifies, return the single stand-in string for that section (specified in the schema below). Do NOT pad the section with an Australian story that mentions the Pacific in passing, a sport or human-interest item, or a rewritten version of something already in another section. A short honest section beats a padded one. Padding is a worse failure than an empty section.
 
 GROUNDING, THE ZERO HALLUCINATION RULE (CRITICAL):
@@ -275,6 +275,39 @@ _MANDATE_TERMS = (
     "taiwan", "united states", "washington",
 )
 
+# Australian federal politics, for the window reserve below. Same vocabulary
+# as collect.AUSPAC_KEYWORDS' politics block, for the same reason: these are
+# the tokens that identify Canberra political reporting without matching
+# Washington, Westminster or Ottawa. Deliberately narrower than that block —
+# no minister names here, because a name in a story's text says the story
+# mentions a politician, not that the story is about the political week.
+_AU_POLITICS_TERMS = re.compile(
+    r"newspoll|resolve political monitor|essential poll|two-party[- ]preferred"
+    r"|primary vote|preferred prime minister|question time|senate estimates"
+    r"|senate inquiry|party ?room|federal parliament|\baph\b|parliament house"
+    r"|crossbench|teal independent|joint standing committee|\bpjcis\b"
+    r"|productivity commission|frontbench|opposition leader"
+    r"|preselection|leadership spill|cabinet reshuffle",
+    re.IGNORECASE,
+)
+
+# How many Australian federal-politics items are guaranteed a place in the
+# tier-1 window even when they score below the cut. See _window.
+AU_POLITICS_RESERVE = 18
+
+# The score bonus such an item carries. Below the Pacific bonus of 70 on
+# purpose: this moves a Canberra item up the window, it must never make one
+# outrank a Pacific story. The reserve, not the bonus, is what guarantees
+# the beat is visible at all.
+AU_POLITICS_BONUS = 35
+
+
+def _is_au_politics(a: dict) -> bool:
+    if (a.get("region") or "").strip() != "AU":
+        return False
+    hay = f"{a.get('title', '')} {(a.get('summary') or '')[:400]}"
+    return bool(_AU_POLITICS_TERMS.search(hay))
+
 
 def _relevance_score(a: dict) -> int:
     """How strongly an article speaks to the twelve-topic mandate.
@@ -308,6 +341,8 @@ def _relevance_score(a: dict) -> int:
         score += 15           # fulltext.py got the body, so it can be mined
     if a.get("seen_before"):
         score -= 60
+    if _is_au_politics(a):
+        score += AU_POLITICS_BONUS
     return score
 
 
@@ -316,8 +351,55 @@ def _prioritize(articles: list) -> list:
     return sorted(articles, key=lambda a: -_relevance_score(a))
 
 
-def _tier_json(articles: list, max_items: int = 60) -> str:
-    trimmed = _prioritize(articles)[:max_items]
+def _window(articles: list, max_items: int, politics_reserve: int = 0) -> list:
+    """The slice of a tier the model actually sees.
+
+    Scoring alone made the brief blind to the Australian political week.
+    Over the fourteen issues to 7 October the tier-1 corpus carried 26 items
+    that were recognisably Canberra politics and the model was shown 2 of
+    them: their median score was 12 against a cut that ran at 70 on a light
+    day and 120 on a heavy one, because the window fills with prestige-outlet
+    copy (120 each) and Pacific copy (70) long before a Senate estimates
+    story from a Canberra masthead gets near it. The section that carries
+    this beat then ran at 2.5 items an issue against a cap it never reached,
+    and the cap was blamed.
+
+    The honest fix is a reserve rather than a bigger bonus. A bonus large
+    enough to clear a 120 cut would say a procedural item from Canberra
+    outranks a Reuters story on AUKUS, which is false. A reserve says
+    something different and true: the brief may rank this beat below the
+    others and still must not be unable to see it. Same shape as the Pacific
+    floor in the schema, applied one stage earlier.
+
+    Bounded by construction. At most `politics_reserve` items are promoted,
+    the window never grows, and what they displace is the lowest-scoring
+    non-politics copy at the tail — the items that were about to be cut
+    anyway.
+    """
+    ranked = _prioritize(articles)
+    if politics_reserve <= 0 or len(ranked) <= max_items:
+        return ranked[:max_items]
+
+    inside, outside = ranked[:max_items], ranked[max_items:]
+    want = politics_reserve - sum(1 for a in inside if _is_au_politics(a))
+    if want <= 0:
+        return inside
+
+    promote = [a for a in outside if _is_au_politics(a)][:want]
+    if not promote:
+        return inside
+
+    # Drop from the tail inwards, and never a politics item: dropping one to
+    # make room for another would leave the count unchanged and spend the
+    # reserve on nothing.
+    drop = {id(a) for a in
+            [a for a in reversed(inside) if not _is_au_politics(a)][:len(promote)]}
+    return _prioritize([a for a in inside if id(a) not in drop] + promote)
+
+
+def _tier_json(articles: list, max_items: int = 60,
+               politics_reserve: int = 0) -> str:
+    trimmed = _window(articles, max_items, politics_reserve)
     result = []
     for a in trimmed:
         item = {
@@ -393,7 +475,7 @@ Use this to calibrate: if the Pacific count is low, the pacific_wire section wil
 {bar}
 TIER 1: NEWS ARTICLES (last 24h)
 {bar}
-{_tier_json(payload.get("tier1", []), max_items=160)}
+{_tier_json(payload.get("tier1", []), max_items=160, politics_reserve=AU_POLITICS_RESERVE)}
 
 {bar}
 TIER 2: ANALYSIS AND COMMENTARY (last 36h)
@@ -428,7 +510,7 @@ Return a single JSON object with these keys.
 - new_zealand: MINIMUM 1, maximum 5. New Zealand foreign policy, defence policy, and politics. Each: url, source, headline, body_text, category.
   IF AND ONLY IF nothing qualifies: return exactly [{{"stand_in": "No significant New Zealand developments in the past 24 hours."}}].
 - china_in_the_pacific: 0-5 items. PRC activity in the Pacific Islands and US-China competition there: security and policing arrangements, port and infrastructure deals, loans, senior visits, recognition questions, fisheries and maritime presence. Cross-check history claims against the CHINA IN THE PACIFIC TRACKER. Each: url, source, country, headline, body_text, activity_type, is_reaction_source (true for Global Times, Xinhua, China Daily, People's Daily), category.
-- canberra_politics: 0-5 items. Australian domestic politics where it bears on foreign or defence policy: parliamentary action, committee inquiries, portfolio changes, party positioning, budget and procurement decisions. Each: url, source, headline, body_text, category.
+- canberra_politics: MINIMUM 3, maximum 7. Australian federal politics. The core remains domestic politics that bears on foreign, defence or economic policy: parliamentary action, committee inquiries and Senate estimates, portfolio changes, budget and procurement decisions. ALSO include the governing-agenda reporting a Canberra reader expects even with no foreign-policy hook, because this section has been running well under its capacity and the gap was real political news, not room: published polling WITH ITS NUMBERS (Newspoll, Resolve Political Monitor, Essential, primary and two-party-preferred figures, and the margin's direction against the last published result if today's article states it), leadership and party-room dynamics, Question Time and Senate inquiry exchanges that produced something, legislation moving through either chamber, machinery-of-government and public-service decisions, and Coalition, Greens and crossbench positioning. State and territory politics only where it drives a federal question. This is a Canberra politics section, not a crime, celebrity, or local-council section: the test is whether somebody who follows Australian public policy for a living would need to know it today. A fundraising total or a procedural stunt with no consequence is not an item. Each: url, source, headline, body_text, category.\n  IF AND ONLY IF the day genuinely offers fewer than three — a parliamentary recess, a public holiday — return exactly [{{"stand_in": "No significant developments in Australian federal politics in the past 24 hours."}}]. That is the honest answer on a quiet day and it is always better than three items padded out of a thin one. Do NOT fill this section with a state or local story, a crime story, or a second write-up of something already in another section.
 - business_economy: 0-5 items. Trade, critical minerals, energy, investment screening, and economic coercion. Each: url, source, headline, body_text, category.
 - primary_documents: 0-4 items drawn from Tier 4. Each: url, source, document_type (communique, joint statement, ministerial transcript, readout, testimony), headline, body_text, key_line (the single most consequential sentence, quoted exactly from the source, or null), category.
 - calendar_watch: 4-5 entries, nearest first, drawn ONLY from today's articles or the VERIFIED DIPLOMATIC CALENDAR. Each: date (ISO if confirmed, else null), window (a phrase naming a month, like "expected in August" or "late November 2026", else null), event, why_it_matters (1 sentence, on what it changes for Australia, New Zealand or the Pacific), confirmed (boolean).

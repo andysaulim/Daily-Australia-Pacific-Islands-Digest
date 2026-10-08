@@ -126,6 +126,47 @@ TIER1_FEEDS = {
                               "site:skynews.com.au+politics+OR+defence+OR+China"),
     "AAP":                    _gnews("site:aap.com.au"),
 
+    # ── Australian politics: the press gallery and the substance ─────────
+    # AU-Politics already ran 5.1 items an issue, so this is not a volume
+    # problem. It is a substance one: canberra_politics never once reached
+    # its ceiling across fourteen issues, and the corpus held 2 polling
+    # items in 4,275, 4 on the party room, 5 on the budget. The brief was
+    # covering Australian politics as it appears in general news feeds and
+    # missing the reporting that general news feeds do not carry.
+    #
+    # Guardian takes the section-RSS form already proven by the
+    # australia-news feed above. The rest route through Google News because
+    # this machine cannot reach them to check, which is the house rule for
+    # an unverifiable feed; the first source-health line will judge them.
+    "Guardian AU politics":   "https://www.theguardian.com/australia-news/australian-politics/rss",
+    # The Canberra paper of record, and the public service beat with it. A
+    # brief with a Canberra Politics section had no Canberra masthead.
+    "Canberra Times":         _gnews("site:canberratimes.com.au"),
+    "The Mandarin":           _gnews("site:themandarin.com.au"),
+    "The New Daily":          _gnews("site:thenewdaily.com.au+politics+OR+canberra"),
+    "Capital Brief":          _gnews("site:capitalbrief.com"),
+    # SBS was simply absent, and it is the one free national broadcaster
+    # with a daily Canberra presence that was not already in the set.
+    "SBS News":               _gnews("site:sbs.com.au+politics+OR+canberra+OR+parliament"),
+
+    # Topic feeds, on the AUKUS (wire) lesson: every feed above is scoped to
+    # a masthead, so the brief can only see a poll or an estimates hearing
+    # on the days a masthead it subscribes to happens to lead with one.
+    # Polling is the load-bearing number in Australian political reporting
+    # and the brief was effectively blind to it.
+    "AU polling (wire)":      _gnews(
+        "Newspoll+OR+%22Resolve+Political+Monitor%22+OR+%22Essential+poll%22"
+        "+OR+%22two-party+preferred%22+Australia"),
+    "AU parliament (wire)":   _gnews(
+        "%22question+time%22+OR+%22Senate+estimates%22+OR+%22Senate+inquiry%22"
+        "+OR+%22party+room%22+Australia+parliament+OR+Canberra"),
+    "AU leadership (wire)":   _gnews(
+        "%22party+room%22+OR+preselection+OR+%22leadership+spill%22+OR+frontbench"
+        "+OR+%22cabinet+reshuffle%22+Australia+Labor+OR+Coalition+OR+Greens"),
+    "AU legislation (wire)":  _gnews(
+        "%22passed+the+Senate%22+OR+%22passed+the+House%22+OR+legislation"
+        "+OR+%22private+member%27s+bill%22+Australia+parliament+OR+Canberra"),
+
     # ── New Zealand ──────────────────────────────────────────────────────
     "RNZ National": _native("RNZ National", "https://www.rnz.co.nz/rss/national.xml",
                               f"site:rnz.co.nz+{_REGION_Q}"),
@@ -273,6 +314,13 @@ TIER2_FEEDS = {
     "Democracy Project NZ": (_gnews("site:democracyproject.substack.com"), "B"),
     "Declassified Australia": (_gnews("site:declassifiedaustralia.substack.com"), "C"),
     "Australian Defence Magazine": (_gnews("site:australiandefence.com.au"), "B"),
+
+    # ── Australian politics commentary ───────────────────────────────────
+    # Both do original Canberra reporting rather than only comment, which
+    # is why they are worth a tier-2 slot: the press-gallery mastheads
+    # added to tier 1 cover the day, these cover the week behind it.
+    "The Saturday Paper":    (_gnews("site:thesaturdaypaper.com.au"), "B"),
+    "Inside Story":          (_gnews("site:insidestory.org.au"), "B"),
 }
 
 # Tier 3: academic journals. name -> (url, journal_tier)
@@ -326,6 +374,47 @@ AUSPAC_KEYWORDS = re.compile(
     r"|ssn-aukus|submarine industrial base|collins-class|collins class"
     r"|hunter-class|astute-class|barrow-in-furness|aukus pillar"
     r"|defence strategic review|guided weapons and explosive ordnance"
+    # Australian federal politics. The brief has a Canberra Politics
+    # section and this gate was quietly starving it. Ten realistic Canberra
+    # headlines run against the pattern above matched once, and only
+    # because that one named the prime minister: "Senate estimates:
+    # Treasury officials grilled on productivity forecasts", "Nationals
+    # party room splits over net zero", "Resolve Political Monitor shows
+    # Coalition closing the gap" all carried no token at all and were
+    # dropped before the model saw them. Polling was the worst of it: 2
+    # polling items in 4,275 collected over a fortnight.
+    #
+    # The structural tokens do the work and the names are the backstop.
+    # Bare "coalition", "labor", "liberal party", "the nationals" and
+    # "senate" are deliberately absent: each is a common noun or names a
+    # party or chamber in another country. Ministers and shadow ministers
+    # are matched on full names for the same reason, since "king", "burke",
+    # "cash", "watt" and "waters" are surnames in the portfolio list and
+    # ordinary words everywhere else. The names are a matcher, not a
+    # reference: presence here asserts nothing about who holds what, and a
+    # reshuffle makes a line stale rather than wrong.
+    r"|newspoll|resolve political monitor|essential poll"
+    r"|two-party[- ]preferred|primary vote|preferred prime minister"
+    r"|question time|senate estimates|senate inquiry|party ?room"
+    r"|federal parliament|\baph\b|parliament house|crossbench"
+    r"|teal independent|joint standing committee|\bpjcis\b"
+    r"|productivity commission|\basio\b|austrade"
+    # Added with the leadership and legislation wires, so the feeds and the
+    # gate ask for the same thing. Three near-misses were tried and left
+    # out: "passed the senate", because the US Senate passes something
+    # every week; and "cabinet reshuffle" and "frontbench", because they
+    # are Westminster-wide and "Starmer's cabinet reshuffle promotes two
+    # allies" was admitted in testing. A token only earns its place by
+    # what it admits when the text does NOT say Australia, since a text
+    # that does already passes on the first token in this pattern — which
+    # is exactly where those two stop being Australian.
+    r"|preselection|leadership spill"
+    r"|jim chalmers|katy gallagher|tony burke|mark butler|chris bowen"
+    r"|tanya plibersek|murray watt|madeleine king|clare o'neil|don farrell"
+    r"|michelle rowland|amanda rishworth|anika wells|tim ayres|matt keogh"
+    r"|david littleproud|bridget mckenzie|michaelia cash|anne ruston"
+    r"|barnaby joyce|adam bandt|larissa waters|sarah hanson-young"
+    r"|jacqui lambie|david pocock|allegra spender|zali steggall"
     # New Zealand
     r"|new zealand|aotearoa|wellington|\bnzdf\b|anzmin|christopher luxon"
     r"|winston peters|judith collins|five eyes"
@@ -431,6 +520,18 @@ JOURNALIST_BEATS = {
     "Pacific Islands specialists": [
         "Kirsty Needham", "Lice Movono", "Marian Faa", "Prianka Srinivasan",
         "Stefan Armbruster", "Ben Bohane",
+    ],
+    # The press gallery. Added with the Australian politics feeds, because
+    # the brief watched the people who cover the alliance and nobody who
+    # covers the political week that decides what the alliance can do. A
+    # flagged byline is worth 50 in the window scoring, which is most of
+    # what a Canberra item needs to clear the cut on its own merits.
+    # Outlets move; a name here claims no masthead, only that the byline is
+    # worth reading, so a move makes a line stale rather than wrong.
+    "Australian federal politics": [
+        "Paul Karp", "Josh Butler", "Sarah Basford Canales", "Phillip Coorey",
+        "Tom McIlroy", "Paul Sakkal", "Natassia Chrysanthos", "Simon Benson",
+        "Patricia Karvelas", "Brett Worthington",
     ],
     "New Zealand": [
         "Thomas Manch", "Sam Sachdeva", "Jane Patterson",

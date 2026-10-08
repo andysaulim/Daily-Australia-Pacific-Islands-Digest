@@ -42,6 +42,16 @@ WORD_CEILING = 3000
 # Seventeen Pacific states and territories compete for pacific_wire; Canberra
 # has one capital and already takes the largest share of the brief. Raising both
 # would have widened the gap the REGIONAL BALANCE rule exists to close.
+#
+# canberra_politics is the one later exception, and it is not a reversal of
+# that reasoning. Over the fourteen issues to 7 October it ran 2.5 items an
+# issue and never once reached five: 1, 3, 2, 3, 4, 3, 1, 2, 3, 2, 3, 3, 3, 2.
+# The cap was never the binding constraint, so raising it on its own changes
+# nothing today. It goes to 7 as headroom for the Australian politics feeds
+# and the relevance-gate vocabulary added alongside it, and because those
+# issues came in at 1,567-2,220 words against a 2,000-3,000 band: the added
+# items fill headroom rather than displacing the Pacific, whose floor of 2
+# and New Zealand's floor of 1 hold regardless.
 SECTION_CAPS = {
     "morning_memo":         (3, 3),
     "top_stories":          (2, 4),
@@ -50,7 +60,7 @@ SECTION_CAPS = {
     "pacific_wire":         (2, 12),  # FLOOR, raised from 5 then 8
     "new_zealand":          (1, 5),   # FLOOR, raised from 4
     "china_in_the_pacific": (0, 5),   # raised from 4
-    "canberra_politics":    (0, 5),
+    "canberra_politics":    (0, 7),   # raised from 5
     "business_economy":     (0, 5),
     "primary_documents":    (0, 4),
     "calendar_watch":       (4, 5),
@@ -1141,6 +1151,14 @@ def main():
             "new_zealand": len(_real_items(digest_data, "new_zealand")),
             "nz_stand_in": _has_stand_in(digest_data, "new_zealand"),
             "china_in_the_pacific": len(_real_items(digest_data, "china_in_the_pacific")),
+            # These two were missing until 8 October, which is how "does this
+            # brief carry enough Australian politics?" became a question that
+            # could not be answered from metrics.jsonl: both printed as "-"
+            # across all 47 rows and the answer had to be recovered from the
+            # archive instead. A section whose size is worth tuning has to be
+            # a column.
+            "canberra_politics": len(_real_items(digest_data, "canberra_politics")),
+            "business_economy": len(_real_items(digest_data, "business_economy")),
             # Topic coverage counted by CATEGORY, not by which section an
             # item landed in. The section counts above read as coverage
             # and are not: across the first seven issues 19 items carried

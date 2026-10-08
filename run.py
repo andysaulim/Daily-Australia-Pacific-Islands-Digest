@@ -43,6 +43,12 @@ WORD_CEILING = 3000
 # has one capital and already takes the largest share of the brief. Raising both
 # would have widened the gap the REGIONAL BALANCE rule exists to close.
 #
+# canberra_politics gained a floor of 3 on the same evidence, because the
+# ceiling was never what held it down. It sat at 2.5 items an issue with the
+# cap unreached, so the only instruction that changes the number is a minimum.
+# It is a floor of the honest kind: satisfiable by a stand-in line on a day
+# that genuinely has nothing, which a parliamentary recess will produce.
+#
 # canberra_politics is the one later exception, and it is not a reversal of
 # that reasoning. Over the fourteen issues to 7 October it ran 2.5 items an
 # issue and never once reached five: 1, 3, 2, 3, 4, 3, 1, 2, 3, 2, 3, 3, 3, 2.
@@ -60,7 +66,7 @@ SECTION_CAPS = {
     "pacific_wire":         (2, 12),  # FLOOR, raised from 5 then 8
     "new_zealand":          (1, 5),   # FLOOR, raised from 4
     "china_in_the_pacific": (0, 5),   # raised from 4
-    "canberra_politics":    (0, 7),   # raised from 5
+    "canberra_politics":    (3, 7),   # FLOOR added, ceiling raised from 5
     "business_economy":     (0, 5),
     "primary_documents":    (0, 4),
     "calendar_watch":       (4, 5),
@@ -71,7 +77,10 @@ SECTION_CAPS = {
 }
 
 # Sections that may satisfy their floor with a stand-in line instead of items.
-_FLOOR_SECTIONS = ("pacific_wire", "new_zealand")
+# canberra_politics joined them with its floor: a floor whose only escape is a
+# blocked send would make a quiet Canberra day fail the brief, and there is no
+# honest way to conjure a third item out of a sitting-week recess.
+_FLOOR_SECTIONS = ("pacific_wire", "new_zealand", "canberra_politics")
 
 _PRESTIGE_OUTLETS = {
     "The Australian", "SMH", "Sydney Morning Herald", "AFR",
@@ -585,6 +594,26 @@ def validate_digest(digest: dict, payload: dict | None = None) -> list[str]:
                 warnings.append(
                     f"{section.upper()} CRITICAL: item does not mention the region "
                     f"('{(item.get('headline') or '')[:50]}'), this looks like padding")
+
+    # canberra_politics got a floor too, and a floor invites filler. Advisory
+    # rather than CRITICAL on purpose: whether an item is really about the
+    # political week is an editorial call, and a bad call should show up in the
+    # log, not stop the brief going out over a judgement the validator is not
+    # equipped to make.
+    try:
+        from collect import AU_KEYWORDS
+        from digest import _AU_POLITICS_TERMS
+    except Exception:                                       # noqa: BLE001
+        pass
+    else:
+        for item in _real_items(digest, "canberra_politics"):
+            text = " ".join(str(item.get(f, "")) for f in
+                            ("headline", "body_text", "category"))
+            if not (AU_KEYWORDS.search(text) or _AU_POLITICS_TERMS.search(text)):
+                warnings.append(
+                    f"CANBERRA POLITICS: item reads as neither Australian nor "
+                    f"political ('{(item.get('headline') or '')[:50]}'), check it "
+                    f"is not filling the floor (non-blocking)")
 
     # ── Morning memo ─────────────────────────────────────────────────────
     memo = digest.get("morning_memo") or []
@@ -1158,6 +1187,7 @@ def main():
             # archive instead. A section whose size is worth tuning has to be
             # a column.
             "canberra_politics": len(_real_items(digest_data, "canberra_politics")),
+            "canberra_stand_in": _has_stand_in(digest_data, "canberra_politics"),
             "business_economy": len(_real_items(digest_data, "business_economy")),
             # Topic coverage counted by CATEGORY, not by which section an
             # item landed in. The section counts above read as coverage

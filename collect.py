@@ -148,6 +148,12 @@ TIER1_FEEDS = {
     # SBS was simply absent, and it is the one free national broadcaster
     # with a daily Canberra presence that was not already in the set.
     "SBS News":               _gnews("site:sbs.com.au+politics+OR+canberra+OR+parliament"),
+    # The two best-resourced Canberra bureaus had only their mastheads'
+    # front pages in the set, where a politics story competes with the
+    # whole paper. These ask each for its political desk.
+    "AFR politics":           _gnews("site:afr.com+politics+OR+canberra+OR+parliament"),
+    "The Australian politics": _gnews(
+        "site:theaustralian.com.au+politics+OR+canberra+OR+parliament"),
 
     # Topic feeds, on the AUKUS (wire) lesson: every feed above is scoped to
     # a masthead, so the brief can only see a poll or an estimates hearing
@@ -166,6 +172,13 @@ TIER1_FEEDS = {
     "AU legislation (wire)":  _gnews(
         "%22passed+the+Senate%22+OR+%22passed+the+House%22+OR+legislation"
         "+OR+%22private+member%27s+bill%22+Australia+parliament+OR+Canberra"),
+    "AU budget (wire)":       _gnews(
+        "budget+OR+MYEFO+OR+%22budget+update%22+OR+%22fiscal+outlook%22"
+        "+Treasury+Australia+Canberra"),
+    "AU integrity (wire)":    _gnews(
+        "%22National+Anti-Corruption+Commission%22+OR+NACC"
+        "+OR+%22Australian+Electoral+Commission%22+OR+%22federal+election%22"
+        "+Australia"),
 
     # ── New Zealand ──────────────────────────────────────────────────────
     "RNZ National": _native("RNZ National", "https://www.rnz.co.nz/rss/national.xml",
@@ -321,6 +334,7 @@ TIER2_FEEDS = {
     # added to tier 1 cover the day, these cover the week behind it.
     "The Saturday Paper":    (_gnews("site:thesaturdaypaper.com.au"), "B"),
     "Inside Story":          (_gnews("site:insidestory.org.au"), "B"),
+    "The Monthly":           (_gnews("site:themonthly.com.au"), "B"),
 }
 
 # Tier 3: academic journals. name -> (url, journal_tier)
@@ -409,6 +423,8 @@ AUSPAC_KEYWORDS = re.compile(
     # that does already passes on the first token in this pattern — which
     # is exactly where those two stop being Australian.
     r"|preselection|leadership spill"
+    r"|myefo|national anti-corruption commission|\bnacc\b"
+    r"|australian electoral commission"
     r"|jim chalmers|katy gallagher|tony burke|mark butler|chris bowen"
     r"|tanya plibersek|murray watt|madeleine king|clare o'neil|don farrell"
     r"|michelle rowland|amanda rishworth|anika wells|tim ayres|matt keogh"

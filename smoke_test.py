@@ -171,8 +171,17 @@ def base_digest():
              "why_it_matters": "It shapes the regional agenda.", "confirmed": False}
             for i in range(4)
         ],
+        # Three items because canberra_politics gained a floor of 3; an empty
+        # list here would make the "clean digest" fixture fail its own check.
+        "canberra_politics": [
+            {"url": f"http://example.com/c{i}", "source": "Canberra Times",
+             "category": "AU-Politics",
+             "headline": f"Senate estimates hearing {i} questions the forecasts",
+             "body_text": "Australian officials appeared before the committee. " * 2}
+            for i in range(3)
+        ],
         "also_today": [], "opeds_today": [], "academic_today": [],
-        "aukus_watch": [], "china_in_the_pacific": [], "canberra_politics": [],
+        "aukus_watch": [], "china_in_the_pacific": [],
         "business_economy": [], "primary_documents": [], "on_this_day": [],
     }
 
@@ -749,7 +758,7 @@ _cap_patterns = {
     "china_in_the_pacific": r"- china_in_the_pacific: (\d+)-(\d+) items",
     "also_today":           r"- also_today: (\d+)-(\d+) items",
     "aukus_watch":          r"- aukus_watch: (\d+)-(\d+) items",
-    "canberra_politics":    r"- canberra_politics: (\d+)-(\d+) items",
+    "canberra_politics":    r"- canberra_politics: MINIMUM (\d+), maximum (\d+)",
     "business_economy":     r"- business_economy: (\d+)-(\d+) items",
 }
 import re as _re_caps
@@ -1414,8 +1423,10 @@ print("\n=== 14w. Australian politics reaches the brief ===")
 # The section cap, which is what looked broken, was never reached once.
 _au_pol_feeds = ("Guardian AU politics", "Canberra Times", "The Mandarin",
                  "The New Daily", "Capital Brief", "SBS News",
+                 "AFR politics", "The Australian politics",
                  "AU polling (wire)", "AU parliament (wire)",
-                 "AU leadership (wire)", "AU legislation (wire)")
+                 "AU leadership (wire)", "AU legislation (wire)",
+                 "AU budget (wire)", "AU integrity (wire)")
 for _f in _au_pol_feeds:
     check(f"tier 1 carries {_f}", _f in collect.TIER1_FEEDS)
 check("the polling feed asks for the named published polls",
@@ -1526,16 +1537,57 @@ check("canberra_politics has headroom above the 4 it ever reached",
 check("the Pacific ceiling still exceeds it",
       run_mod.SECTION_CAPS["pacific_wire"][1]
       > run_mod.SECTION_CAPS["canberra_politics"][1])
-check("the prompt and the validator agree on the new ceiling",
-      "- canberra_politics: 0-%d items"
-      % run_mod.SECTION_CAPS["canberra_politics"][1] in _prompt)
+check("the prompt and the validator agree on the floor and the ceiling",
+      "- canberra_politics: MINIMUM %d, maximum %d"
+      % run_mod.SECTION_CAPS["canberra_politics"] in _prompt)
+check("the section has a floor at all, since the ceiling was never the limit",
+      run_mod.SECTION_CAPS["canberra_politics"][0] >= 3)
+check("the floor may be met honestly on a recess day",
+      "canberra_politics" in run_mod._FLOOR_SECTIONS
+      and "No significant developments in Australian federal politics" in _prompt)
+_cp_stand = base_digest()
+_cp_stand["canberra_politics"] = [
+    {"stand_in": "No significant developments in Australian federal politics "
+                 "in the past 24 hours."}]
+check("a stand-in satisfies the floor instead of blocking the send",
+      not [w for w in run_mod.validate_digest(_cp_stand)
+           if "CANBERRA" in w and "CRITICAL" in w])
+_cp_thin = base_digest()
+_cp_thin["canberra_politics"] = _cp_thin["canberra_politics"][:1]
+check("one real item is still CRITICAL, so the floor means something",
+      any("CANBERRA POLITICS CRITICAL" in w
+          for w in run_mod.validate_digest(_cp_thin)))
+_cp_pad = base_digest()
+_cp_pad["canberra_politics"] = [
+    {"url": f"http://example.com/p{i}", "source": "x", "category": "Other",
+     "headline": "Shop fire closes a street in Dayton",
+     "body_text": "Firefighters attended the scene."} for i in range(3)]
+_cp_pad_w = run_mod.validate_digest(_cp_pad)
+check("filler in the floored section is flagged",
+      any(w.startswith("CANBERRA POLITICS:") for w in _cp_pad_w))
+check("and flagging it does not block the send",
+      not any(w.startswith("CANBERRA POLITICS:") and "CRITICAL" in w
+              for w in _cp_pad_w))
+check("a genuine political item is not mistaken for filler",
+      not any(w.startswith("CANBERRA POLITICS:")
+              for w in run_mod.validate_digest(base_digest())))
+_rsrc = inspect.getsource(run_mod)
+check("the stand-in is recorded in metrics, so a run of them is visible",
+      '"canberra_stand_in": _has_stand_in(digest_data, "canberra_politics")'
+      in _rsrc)
+# The length trimmer runs AFTER validation, so a trim floor below a section's
+# validator minimum ships a section the gate had just passed.
+import length_budget as _lb
+for _sec, _floor in _lb.TRIM_ORDER:
+    _min = run_mod.SECTION_CAPS.get(_sec, (0, 0))[0]
+    check(f"the trim floor for {_sec} respects its validator minimum",
+          _floor >= _min, f"trim floor {_floor} < minimum {_min}")
 check("the prompt asks for polling numbers, not just that a poll happened",
       "two-party-preferred" in _prompt and "Newspoll" in _prompt)
 check("the extra room is framed as headroom, not a quota",
       "not a quota" in digest_mod.SYSTEM_PROMPT)
 check("the section is still fenced against local-news filler",
       "local-council" in _prompt)
-_rsrc = inspect.getsource(run_mod)
 for _m in ("canberra_politics", "business_economy"):
     check(f"metrics record the {_m} section size",
           f'"{_m}": len(_real_items(digest_data, "{_m}"))' in _rsrc)

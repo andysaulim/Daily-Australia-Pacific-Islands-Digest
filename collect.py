@@ -567,6 +567,164 @@ def _is_sport(entry) -> bool:
     return bool(_SPORT_FILTER.search(_entry_text(entry)))
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# HARD BLOCK: EMERGENCY ALERTS AND PHONE-NUMBER SPAM
+# ─────────────────────────────────────────────────────────────────────────────
+# ABC Pacific is not only ABC Pacific. Whatever the routed feed finds under
+# that query it carries back, and most of what it carries back is the ABC
+# Emergency wire: NSW RFS, CFA, SA CFS, SA MFS, DFES, QFES and NT Fire incident
+# notices, plus Bureau of Meteorology marine and severe-weather warnings. On
+# the archive of 25 August to 7 October that was 1,579 of 2,398 ABC Pacific
+# items, 66% of the feed and 39 a day. Riding in on the same query is a run of
+# SEO spam whose titles open with a phone number, selling crypto-exchange and
+# airline "support numbers"; four of those reached the brief through ABC
+# Politics as well, which is why this is not scoped to one feed.
+#
+# None of it is reporting and all of it is expensive, because ABC Pacific sits
+# in _PRESTIGE_FEEDS. That is +120 in digest._relevance_score, the largest
+# single term in the scheme, so a burn-off notice for a Western Australian
+# shire outscored every unflagged item in the corpus. Re-ranking the archive
+# through _relevance_score puts these in the 160-item tier-1 window the model
+# actually reads 27 times a day on average, 70 times on 4 October, and ninth
+# and tenth overall that day.
+#
+# Title shape is the whole test. The summary is never consulted and every
+# branch is anchored, because these notices use the words real stories use.
+# "Emergency warning issued for bushfire in N. Australia" is a Xinhua report
+# and "Bushfire royal commission hands down its report" is the inquiry; a
+# substring test on "Bushfire" or "Emergency Warning" loses both. What
+# separates them is position: an alert names its category first and its street
+# second, or brackets the category at the end. A story does neither.
+_ALERT_CATEGORY = (
+    r"Bushfire|Grass(?: and Scrub)? Fire|Structure Fire|Vehicle Fire|Tree Fire"
+    r"|Rubbish Fire|Building Fire|Fire Alarm|Private Alarm|Fire"
+    r"|Riverine Flood|Flood|Motor Vehicle Accident|Vehicle Accident|Road Crash"
+    r"|Roadway|Accident\s*/\s*Rescue|Animal Welfare|Geological"
+    r"|Hazardous Materials?|Oil Spill|Natural Gas Supply|Smell of Gas|Fuel Leak"
+    r"|Burn Off|Permit Burn|Fuel Reduction Burn|Report of Smoke"
+    r"|Smoke Complaint/Illegal Burn|Rubbish or Waste|Assist Agency|Cleanup"
+    r"|Other (?:Non-)?Urgent Alerts?"
+)
+
+# The same list without the bare words a headline can open with. "Fire",
+# "Flood" and "Bushfire" are held back to the forms that carry a pipe or a
+# bracket, so that "Flood recovery funding announced for northern NSW" and
+# "Fire chiefs warn of a long summer ahead" are never in reach of a dash rule.
+_ALERT_CATEGORY_UNAMBIGUOUS = (
+    r"Grass(?: and Scrub)? Fire|Structure Fire|Vehicle Fire|Tree Fire"
+    r"|Rubbish Fire|Building Fire|Fire Alarm|Private Alarm"
+    r"|Riverine Flood|Motor Vehicle Accident|Vehicle Accident|Road Crash"
+    r"|Accident\s*/\s*Rescue|Animal Welfare|Hazardous Materials?|Oil Spill"
+    r"|Natural Gas Supply|Smell of Gas|Fuel Leak|Burn Off|Permit Burn"
+    r"|Report of Smoke|Smoke Complaint/Illegal Burn|Community Information"
+    r"|Other (?:Non-)?Urgent Alerts?"
+)
+
+# Warning levels, matched only as the head of a title or straight after a
+# category, and only ahead of a dash. "Emergency warning issued for bushfire"
+# survives because "issued" is not a dash.
+_ALERT_LEVEL = (
+    r"Emergency Warning|Watch and Act|Advice|Stay Informed|Monitor Conditions"
+)
+
+# A routed feed appends " - <publisher>" to every title, so the shapes that are
+# only recognisable at the end of one have to see past that tail.
+_FEED_TAIL = r"(?:\s*[-\u2013]\s[^|]*)?"
+
+_EMERGENCY_ALERT = re.compile(
+    "|".join((
+        # "Grass Fire | ANITA AV, LAKE MUNMORAH", "Other Non-Urgent Alerts | ..."
+        rf"^(?:{_ALERT_CATEGORY})\s*\|",
+        # "Burn Off (YALLINGUP, CITY OF BUSSELTON, ..., CAD-ID: 818859)"
+        rf"^(?:{_ALERT_CATEGORY})\s*\(",
+        # "Hazardous Material - Gurner St, St Kilda", "Accident / Rescue - ..."
+        rf"^(?:{_ALERT_CATEGORY_UNAMBIGUOUS})\s*(?:[-\u2013]\s|$)",
+        # "Fire - Bushfire - Caroline Springs": the bare word, and then only
+        # where a second category follows it.
+        rf"^Fire\s*[-\u2013]\s*(?:{_ALERT_CATEGORY})\b",
+        # A category and nothing else, give or take the publisher tail.
+        rf"^(?:{_ALERT_CATEGORY})\s*(?:[-\u2013]\s*(?:ABC\b[^|]*|abc\.net\.au))?\s*$",
+        # "Fuel Reduction Burn Smoke Alert - Masseys Creek - Avoid smoke"
+        r"^Fuel Reduction Burn\b",
+        # "Bushfire Advice MONITOR CONDITIONS - DERBY", "Bushfire Watch and Act ..."
+        rf"^Bushfire\s+(?:{_ALERT_LEVEL})\b",
+        # "Advice - Riverine Flood - Stay Informed"
+        rf"^(?:{_ALERT_LEVEL})\s+[-\u2013]\s",
+        # Bureau of Meteorology. Always "<hazard> Warning for <waters|district>".
+        r"^(?:Strong Wind|Gale Force Wind|Storm Force Wind|Damaging Wind"
+        r"|Severe Thunderstorm|Severe Weather|Fire Danger|Heatwave|Frost"
+        r"|Sheep Graziers|Flood|Tsunami|Cyclone)\s+Warning\s+for\b",
+        # SA CFS brackets the category last: "BATES LANE, NARACOORTE (Rubbish Fire)"
+        rf"\((?:{_ALERT_CATEGORY})\){_FEED_TAIL}$",
+        # Perth's computer-aided dispatch reference, wherever it lands.
+        r"\bCAD-ID:\s*\d",
+    )),
+    re.IGNORECASE,
+)
+
+# Shapes that are only safe to match while they are shouting. SA MFS writes
+# "HACKHAM WEST : STRUCTURE FIRE" and DFES writes "Smoke Alert FOR BEDFORDALE,
+# KELMSCOTT, ARMADALE", where the Queensland ladder writes "LEAVE NOW -
+# Somme and Thorndale". Case-folded, each of those is a headline somebody
+# could plausibly write: "Smoke alert for Sydney as hazard reduction burns
+# begin" is a story, "Smoke Alert FOR BEDFORDALE" is a dispatch. The capitals
+# are the signal, so this pattern is deliberately not IGNORECASE.
+_EMERGENCY_ALERT_SHOUTED = re.compile(
+    "|".join((
+        rf"^[A-Z][A-Z0-9\s,'/.()-]{{2,}}\s:\s(?i:{_ALERT_CATEGORY}){_FEED_TAIL}$",
+        r"^Smoke Alert\s+FOR\s+[A-Z]",
+        r"^(?:LEAVE NOW|PREPARE TO LEAVE|STAY INFORMED|AVOID SMOKE"
+        r"|WATCH AND ACT|EMERGENCY WARNING)\s*[-\u2013(]",
+    ))
+)
+
+# A phone number, then the pitch: "+61 468 288 041 Swyftx Customer Service",
+# "61 488 841 989 Coinspot Login issues Support", "+1 855 542 9315 Marriott
+# Hotels Phone Number Australia".
+#
+# Deliberately not "begins with a digit". The corpus is full of headlines that
+# do and have to survive: "32kg of cocaine held in Fiji court's evidence room
+# replaced with flour", "84,000-plus sit grade 10 exams", "11 killed in
+# avalanche on Russian peak", "04 Lies in Lismore | An arrest". What separates
+# a number from a figure is length and chunking, so the leading run has to
+# carry nine digits across three or more groups before it counts. A comma is
+# not a separator, which is what keeps "150,000 words, zero guarantees" out.
+_PHONE_LEAD = re.compile(r"^\s*\+{0,2}\s*[\d(][\d\s().\-]{7,}")
+
+# Some of the spam writes the number with a capital O for zero, and one title
+# runs the digits together. Nothing else in the archive opens a title with a
+# plus sign at all, so where one appears, a dense run of digits behind it is
+# enough on its own.
+_PHONE_PLUS_LEAD = re.compile(r"^\s*\+")
+
+
+def _is_phone_number_lead(title: str) -> bool:
+    match = _PHONE_LEAD.match(title)
+    if match:
+        groups = re.findall(r"\d+", match.group(0))
+        if len(groups) >= 3 and sum(len(g) for g in groups) >= 9:
+            return True
+    if _PHONE_PLUS_LEAD.match(title):
+        head = title[:30].upper().replace("O", "0")
+        if len(re.findall(r"\d", head)) >= 7:
+            return True
+    return False
+
+
+def _is_emergency_alert(entry) -> bool:
+    """A fire-service dispatch or a phone-number spam listing, not news.
+
+    Reads the title and nothing else. See the block comment above for why the
+    summary is left out of it and why every branch is anchored.
+    """
+    title = (entry.get("title") or "").strip()
+    if not title:
+        return False
+    return bool(_EMERGENCY_ALERT.search(title)
+                or _EMERGENCY_ALERT_SHOUTED.search(title)
+                or _is_phone_number_lead(title))
+
+
 # Feeds that are on-topic by construction, and so must not be put through
 # _is_region_related. That filter exists to strip world news out of general
 # wires, which publish about everything. Applied to a primary document it does
@@ -737,6 +895,11 @@ def _collect_tier1() -> list:
             if source not in REGION_NATIVE_FEEDS and not _is_region_related(entry):
                 continue
             if _is_sport(entry):
+                continue
+            # The ABC Emergency wire and the phone-number spam that rides in
+            # with it. Both arrive on prestige-flagged feeds, so they outscore
+            # real copy in the tier-1 window unless they are dropped here.
+            if _is_emergency_alert(entry):
                 continue
             article = _entry_to_article(entry, source)
             article = _flag_journalist(article)

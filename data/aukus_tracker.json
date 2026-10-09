@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-08",
+  "last_updated": "2026-10-09",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-09",
+      "headline": "Varghese and Pezzullo argue Australia's dependence on Washington",
+      "url": "https://www.abc.net.au/listen/programs/global-roaming/does-australia-overrely-on-the-united-states-anzus-aukus/107173222",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-10-08",
       "headline": "Missed UPS email let China seize F-35 parts shipped from Australia",

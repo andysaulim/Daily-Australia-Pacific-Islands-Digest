@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-08",
+  "last_updated": "2026-10-09",
   "countries": {
     "Papua New Guinea": {
       "last_event": "China and PNG mark 50 years of diplomatic ties in Beijing",
@@ -9,11 +9,11 @@
       "event_count": 7
     },
     "Fiji": {
-      "last_event": "US sanctions Fiji businessman for 'significant corruption' tied to China",
-      "last_event_date": "2026-10-08",
+      "last_event": "Fiji demands US evidence behind China-linked bribery sanctions",
+      "last_event_date": "2026-10-09",
       "last_activity_type": "other",
-      "url": "https://www.rnz.co.nz/news/pacific/1791678/us-designates-prominent-fiji-businessman-for-advancing-china-based-interests",
-      "event_count": 7
+      "url": "https://www.pacificislandtimes.com/post/us-flags-china-s-systemic-geocriminality-in-pacific-island-region",
+      "event_count": 8
     },
     "Solomon Islands": {
       "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-09",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Fiji demands US evidence behind China-linked bribery sanctions",
+      "url": "https://www.pacificislandtimes.com/post/us-flags-china-s-systemic-geocriminality-in-pacific-island-region",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-08",
       "country": "Fiji",

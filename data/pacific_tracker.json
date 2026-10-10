@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-09",
+  "last_updated": "2026-10-10",
   "countries": {
     "Papua New Guinea": {
       "last_event": "China and PNG mark 50 years of diplomatic ties in Beijing",
@@ -9,11 +9,11 @@
       "event_count": 7
     },
     "Fiji": {
-      "last_event": "Fiji demands US evidence behind China-linked bribery sanctions",
-      "last_event_date": "2026-10-09",
+      "last_event": "Rubio marks Fiji's 56th independence day, praising its regional contribution",
+      "last_event_date": "2026-10-10",
       "last_activity_type": "other",
-      "url": "https://www.pacificislandtimes.com/post/us-flags-china-s-systemic-geocriminality-in-pacific-island-region",
-      "event_count": 8
+      "url": "https://www.fbcnews.com.fj/news/rubio-commends-fijis-regional-role/",
+      "event_count": 9
     },
     "Solomon Islands": {
       "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
@@ -65,11 +65,11 @@
       "event_count": 2
     },
     "Palau": {
-      "last_event": "Forum chair Whipps: Pacific 'not a theatre for geopolitical competition'",
-      "last_event_date": "2026-09-24",
+      "last_event": "Pacific Islands Forum's goals, achievements and failures",
+      "last_event_date": "2026-10-10",
       "last_activity_type": "other",
-      "url": "https://islandsbusiness.com/pacnews/pacnews-three-24-september-2026/",
-      "event_count": 22
+      "url": "https://www.pacificislandtimes.com/post/pacific-islands-forum-s-goals-achievements-and-failures",
+      "event_count": 23
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-10",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Pacific Islands Forum's goals, achievements and failures",
+      "url": "https://www.pacificislandtimes.com/post/pacific-islands-forum-s-goals-achievements-and-failures",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-10-10",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Rubio marks Fiji's 56th independence day, praising its regional contribution",
+      "url": "https://www.fbcnews.com.fj/news/rubio-commends-fijis-regional-role/",
+      "section": "pacific_wire"
+    },
     {
       "date": "2026-10-09",
       "country": "Fiji",

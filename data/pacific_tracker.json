@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-10-10",
+  "last_updated": "2026-10-11",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "China and PNG mark 50 years of diplomatic ties in Beijing",
-      "last_event_date": "2026-09-30",
+      "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
+      "last_event_date": "2026-10-11",
       "last_activity_type": "recognition switch",
-      "url": "https://www.chinadaily.com.cn/a/202609/30/WS6abcac59e4b06d4aa0561098.html",
-      "event_count": 7
+      "url": "https://www.postcourier.com.pg/inaugural-png-china-business-forum-and-trade-expo-moved-to-march-2027/",
+      "event_count": 8
     },
     "Fiji": {
       "last_event": "Rubio marks Fiji's 56th independence day, praising its regional contribution",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-11",
+      "country": "Papua New Guinea",
+      "activity": "recognition switch",
+      "headline": "PNG pushes inaugural China business forum and trade expo to March 2027",
+      "url": "https://www.postcourier.com.pg/inaugural-png-china-business-forum-and-trade-expo-moved-to-march-2027/",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-10-10",
       "country": "Palau",

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-11",
+  "last_updated": "2026-10-13",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -9,11 +9,11 @@
       "event_count": 8
     },
     "Fiji": {
-      "last_event": "Rubio marks Fiji's 56th independence day, praising its regional contribution",
-      "last_event_date": "2026-10-10",
+      "last_event": "Taiwan's Fiji envoy says security investment underpins Pacific peace",
+      "last_event_date": "2026-10-13",
       "last_activity_type": "other",
-      "url": "https://www.fbcnews.com.fj/news/rubio-commends-fijis-regional-role/",
-      "event_count": 9
+      "url": "https://islandsbusiness.com/news-break/investing-in-peace-and-regional-resilience/",
+      "event_count": 12
     },
     "Solomon Islands": {
       "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
@@ -122,6 +122,30 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-13",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Taiwan's Fiji envoy says security investment underpins Pacific peace",
+      "url": "https://islandsbusiness.com/news-break/investing-in-peace-and-regional-resilience/",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-10-13",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "China denies US allegations of state-backed cyberattacks",
+      "url": "https://www.fbcnews.com.fj/news/china-denies-cyberattack-allegations/",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-10-13",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Fiji presses US for evidence against Chinese businessman",
+      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/fiji-zhao/107259156",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-10-11",
       "country": "Papua New Guinea",

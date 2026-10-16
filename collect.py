@@ -454,7 +454,15 @@ PACIFIC_KEYWORDS = re.compile(
     r"|fiji|fijian|suva|solomon islands|honiara|vanuatu|port vila"
     r"|\bsamoa\b|apia|\btonga\b|kiribati|tuvalu|nauru|palau"
     r"|marshall islands|cook islands|niue|tokelau|new caledonia|noumea|kanak"
-    r"|french polynesia|compact of free association|\bcofa\b",
+    r"|french polynesia|compact of free association|\bcofa\b"
+    # The North Pacific and the near north. Marianas Variety is one of this
+    # edition's own Pacific feeds, yet a Guam or CNMI story failed this check,
+    # and the pacific_wire padding gate in run.py treats a miss as CRITICAL:
+    # on 16 October a single Guam item held the whole brief.
+    r"|\bguam\b|\bcnmi\b|northern mariana|saipan|micronesia|\bfsm\b"
+    r"|pohnpei|chuuk|kosrae|majuro|wallis and futuna|pitcairn"
+    r"|timor-leste|east timor"
+    r"|pacific (?:police|leaders|nations|countries|region|ministers|chiefs|partners)",
     re.IGNORECASE,
 )
 

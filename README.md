@@ -10,20 +10,20 @@ same day. The brief therefore closes a completed Australian business day rather
 than catching one mid-morning.
 
 <!-- STATS:START -->
-**Last run:** 2026-10-14 &middot; 1,567 words &middot; sent
+**Last run:** 2026-10-16 &middot; 1,536 words &middot; sent
 
 | Metric | Last 10 issues |
 | --- | --- |
-| Average length | 1,854 words |
-| Pacific Wire items per issue | 7.7 |
-| New Zealand items per issue | 2.6 |
+| Average length | 1,785 words |
+| Pacific Wire items per issue | 7.6 |
+| New Zealand items per issue | 2.7 |
 | Issues where Pacific fell back to the stand-in | 0 of 10 |
 | Issues where New Zealand fell back to the stand-in | 0 of 10 |
 | Validation retries | 4 |
-| Articles in the archive | 15,346 |
-| Issues published | 48 |
+| Articles in the archive | 15,762 |
+| Issues published | 49 |
 
-_Updated 2026-10-14 06:22 AM ET._
+_Updated 2026-10-16 01:09 PM ET._
 <!-- STATS:END -->
 
 ## What it covers

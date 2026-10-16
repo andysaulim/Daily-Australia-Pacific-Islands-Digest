@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-13",
+  "last_updated": "2026-10-16",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -51,11 +51,11 @@
       "event_count": 7
     },
     "Tuvalu": {
-      "last_event": "Forum struggles with missile dilemma",
-      "last_event_date": "2026-08-28",
-      "last_activity_type": "senior visit",
-      "url": "https://islandsbusiness.com/news-break/forum-struggles-with-missile-dilemma/",
-      "event_count": 2
+      "last_event": "Palau's president rebuffs Chinese pressure over Taiwan ties",
+      "last_event_date": "2026-10-16",
+      "last_activity_type": "recognition switch",
+      "url": "https://www.politico.com/news/2026/10/15/our-choice-not-yours-palau-president-stares-down-china-over-taiwan-threats-01119822",
+      "event_count": 3
     },
     "Nauru": {
       "last_event": "Forum says no member blocked China missile statement",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-16",
+      "country": "Tuvalu",
+      "activity": "recognition switch",
+      "headline": "Palau's president rebuffs Chinese pressure over Taiwan ties",
+      "url": "https://www.politico.com/news/2026/10/15/our-choice-not-yours-palau-president-stares-down-china-over-taiwan-threats-01119822",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-13",
       "country": "Fiji",

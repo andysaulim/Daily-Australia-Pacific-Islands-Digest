@@ -847,7 +847,7 @@ fetch('archive.json').then(r => r.json()).then(entries => {
     const li = document.createElement('li');
     li.innerHTML = '<span class="date">' + e.date + '</span> &nbsp; ' +
                    '<a href="' + e.url + '">' + (e.headline_re || 'Issue') + '</a>' +
-                   '<a class="pdf" href="' + e.url.replace(/\.html$/, '.pdf') +
+                   '<a class="pdf" href="' + e.url.replace(/\\.html$/, '.pdf') +
                    '">PDF</a>';
     list.appendChild(li);
   });
@@ -910,8 +910,10 @@ def main():
         total = sum(len(v) for v in payload.values() if isinstance(v, list))
         print(f"  {total} articles loaded from cache")
     else:
-        from collect import collect
-        payload = collect()
+        # The module, not `from collect import collect`: that bound the name to
+        # the function, so the byline re-flag below raised on every run.
+        import collect
+        payload = collect.collect()
 
         # Canonicalize Google News redirects FIRST. Order matters twice over:
         # the model can only copy a short URL accurately, and fulltext.py skips

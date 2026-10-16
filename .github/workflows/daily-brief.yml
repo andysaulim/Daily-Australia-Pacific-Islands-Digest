@@ -284,6 +284,7 @@ jobs:
           # Reaching here means the list was mailed and the record of it did
           # not reach the remote. Fail loudly: a fallback cron would otherwise
           # read a stale marker and send today's issue a second time.
+          echo "marker_failed=true" >> "$GITHUB_OUTPUT"
           echo "::error::Sent, but could not push last_sent.txt — a fallback may re-send"
           exit 1
 
@@ -340,8 +341,12 @@ jobs:
           fi
 
       - name: Send failure alert
-        if: ${{ (failure() || steps.record.outcome == 'failure')
-                && steps.guard.outputs.should_run == 'true' }}
+        # One line, no ${{ }}, and an explicit flag rather than
+        # steps.record.outcome. The two-line ${{ }} form that read the outcome
+        # evaluated true on every run from 12 September to 16 October, so a
+        # FAILED email followed every successful send, and the real alert
+        # meant nothing.
+        if: (failure() || steps.record.outputs.marker_failed == 'true') && steps.guard.outputs.should_run == 'true'
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}

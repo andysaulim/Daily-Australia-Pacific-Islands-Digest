@@ -192,7 +192,7 @@ TIER1_FEEDS = {
     "Stuff":                  _native("Stuff", "https://www.stuff.co.nz/rss",
                               "site:stuff.co.nz+politics+OR+defence+OR+foreign"),
     "The Post (Wellington)":  _gnews("site:thepost.co.nz"),
-    "1News":                  _native("1News", "https://www.1news.co.nz/feed/",
+    "1News":                  _native("1News", "https://www.1news.co.nz/arc/outboundfeeds/rss/",
                               "site:1news.co.nz+politics+OR+pacific"),
 
     # ── Pacific Islands: requester's named outlets ──────────────────────
@@ -594,6 +594,17 @@ def _parse_feed(url: str) -> list:
             if resp.status_code in (401, 403):
                 print(f"    !  Feed blocked ({resp.status_code}): {url[:80]}")
                 return []
+            # Rate-limited, not broken. Daily Post and Marianas Variety share a
+            # host platform and are fetched in parallel, so one of them is
+            # often told to wait; on 16 October both were dropped on a 429
+            # that a single pause would have cleared.
+            if resp.status_code == 429 and attempt < FEED_RETRIES - 1:
+                try:
+                    wait = min(int(resp.headers.get("Retry-After", 10)), 30)
+                except ValueError:
+                    wait = 10
+                time.sleep(wait)
+                continue
             resp.raise_for_status()
             return feedparser.parse(resp.content).entries
         except requests.exceptions.SSLError as e:

@@ -1254,6 +1254,11 @@ check("re-flagging runs after full-text enrichment",
       "reflag_journalists" in _csrc
       and "reflag_journalists" in _rsrc_run
       and _rsrc_run.index("enrich_payload") < _rsrc_run.index("collect.reflag_journalists"))
+# The check above reads source text, so it passed while run.py's
+# `from collect import collect` shadowed the module and every live re-flag
+# raised AttributeError.
+check("run.py does not shadow the collect module with the function",
+      "from collect import collect\n" not in _rsrc_run)
 _payload = {"tier1": [{"title": "t", "summary": "By Damien Cave. Something.",
                        "author": ""},
                       {"title": "t", "summary": "nothing here", "author": ""}]}

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-17",
+  "last_updated": "2026-10-19",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -9,11 +9,11 @@
       "event_count": 8
     },
     "Fiji": {
-      "last_event": "Fiji justice minister resigns over circulated video",
-      "last_event_date": "2026-10-17",
-      "last_activity_type": "other",
-      "url": "https://www.abc.net.au/pacific/programs/pacificreview/pacific-review/107253978",
-      "event_count": 15
+      "last_event": "Vanuatu expects China's police presence to fall after Nakamal Agreement with Australia",
+      "last_event_date": "2026-10-19",
+      "last_activity_type": "security agreement",
+      "url": "https://www.abc.net.au/news/2026-10-19/vanuatu-expects-reduction-in-china-police-presence/107283618",
+      "event_count": 16
     },
     "Solomon Islands": {
       "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
@@ -51,11 +51,11 @@
       "event_count": 7
     },
     "Tuvalu": {
-      "last_event": "Palau's president rebuffs Chinese pressure over Taiwan ties",
-      "last_event_date": "2026-10-16",
-      "last_activity_type": "recognition switch",
-      "url": "https://www.politico.com/news/2026/10/15/our-choice-not-yours-palau-president-stares-down-china-over-taiwan-threats-01119822",
-      "event_count": 3
+      "last_event": "Palau's president rebuffs Chinese pressure over Taiwan: 'Our choice, not yours'",
+      "last_event_date": "2026-10-19",
+      "last_activity_type": "other",
+      "url": "https://islandsbusiness.com/pacnews/pacnews-one-19-october-2026/",
+      "event_count": 4
     },
     "Nauru": {
       "last_event": "Forum says no member blocked China missile statement",
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-19",
+      "country": "Tuvalu",
+      "activity": "other",
+      "headline": "Palau's president rebuffs Chinese pressure over Taiwan: 'Our choice, not yours'",
+      "url": "https://islandsbusiness.com/pacnews/pacnews-one-19-october-2026/",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-10-19",
+      "country": "Fiji",
+      "activity": "security agreement",
+      "headline": "Vanuatu expects China's police presence to fall after Nakamal Agreement with Australia",
+      "url": "https://www.abc.net.au/news/2026-10-19/vanuatu-expects-reduction-in-china-police-presence/107283618",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-17",
       "country": "Fiji",

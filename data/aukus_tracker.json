@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-17",
+  "last_updated": "2026-10-19",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -75,9 +75,9 @@
     {
       "workstream": "advanced cyber",
       "status": "reported",
-      "note": "Pillar 2's record resists assessment for want of a metric",
-      "source_url": "https://thediplomat.com/2026/09/what-has-aukus-pillar-ii-achieved-over-5-years/",
-      "last_seen": "2026-09-16"
+      "note": "ASPI argues AUKUS steel demand should be tied to green industrialisation",
+      "source_url": "https://www.aspistrategist.org.au/green-steel-can-help-defence-which-can-help-green-steel/",
+      "last_seen": "2026-10-19"
     },
     {
       "workstream": "hypersonic and counter-hypersonic",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-19",
+      "headline": "ASPI argues AUKUS steel demand should be tied to green industrialisation",
+      "url": "https://www.aspistrategist.org.au/green-steel-can-help-defence-which-can-help-green-steel/",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-10-19",
+      "headline": "Declassified details show Ghost Shark drones will carry sea mines and strike drones",
+      "url": "https://www.abc.net.au/news/2026-10-19/ghost-shark-fleet-aerial-drones-sea-mines-defence/107283746",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-17",
       "headline": "Forum asks whether AUKUS undercuts the Indo-Pacific order it claims to defend",

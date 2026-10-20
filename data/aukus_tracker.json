@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-19",
+  "last_updated": "2026-10-20",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-20",
+      "headline": "ADF war-games use of nuclear-powered submarines in a China conflict",
+      "url": "https://www.smh.com.au/world/north-america/australia-war-gaming-use-of-nuclear-powered-subs-in-conflict-with-china-20261020-p616qj.html?ref=rss&utm_medium=rss&utm_source=rss_world",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-10-19",
       "headline": "ASPI argues AUKUS steel demand should be tied to green industrialisation",

@@ -139,6 +139,46 @@ def _link_or_text(text: str, url: str,
     return text
 
 
+def _source_trail(sources: list, prefix: str = "") -> str:
+    """A line of hyperlinked outlet names under a prose block.
+
+    The Week in Review's synthesis carried no link at all outside The Week:
+    Patterns, the three threads and the bottom line named a theme and left the
+    reader to go back through five daily issues to find the reporting behind
+    it. This is the trail that closes that gap.
+
+    Each entry is {"outlet": ..., "url": ...}, already checked against the
+    week's archive rows by weekly._attach_sources, so the name shown is the
+    outlet that actually published the item at that URL and not a name the
+    model typed next to it. An entry whose URL did not survive that check
+    still prints, as plain text, because the outlet carried the story either
+    way and a missing link is better than a wrong one.
+
+    `prefix` rides on the same line ahead of the outlets, which is where a
+    pattern's run of days goes, so a pattern costs two lines rather than three.
+
+    Reuses the meta grey and the link style already in the palette rather than
+    introducing a colour, so _check_dark_coverage stays satisfied.
+    """
+    parts = []
+    if prefix.strip():
+        parts.append(_esc(prefix.strip()))
+    for s in sources or []:
+        if not isinstance(s, dict):
+            continue
+        outlet = _esc(_str(s.get("outlet", "")).strip())
+        if not outlet:
+            continue
+        parts.append(_link_or_text(
+            outlet, s.get("url", ""),
+            style=f"color:{NAVY};border-bottom:1px solid {TEAL};"
+                  "padding-bottom:1px;text-decoration:none;"))
+    if not parts:
+        return ""
+    return (f'<div style="margin-top:5px;font-size:11px;color:#6B7280;'
+            f'line-height:1.5;">{" &middot; ".join(parts)}</div>')
+
+
 _SEC = 'style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec"'
 _SEC_ALERT = (f'style="padding:20px 32px;border-top:3px solid {ALERT};'
               'border-bottom:1px solid #EBEBEB;" class="sec"')

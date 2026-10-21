@@ -779,6 +779,94 @@ check("weekly inherits the forwarding-safe frame", 'width="680"' in _wh)
 check("weekly is em-dash clean", "—" not in _wh)
 check("weekly shares the daily shell", "_shell" in inspect.getsource(weekly.render_weekly))
 
+# The legacy fixture above is the shape the model returned before source
+# trails existed, and the shape an archived weekly.json still holds. It has to
+# keep rendering, which is why _prose_parts takes a bare string.
+check("a bare-string pattern still renders", "Theme one." in _wh)
+check("a bare-string thread still renders", "Pacific text." in _wh)
+check("a bare-string bottom line still renders", "The bottom line." in _wh)
+check("plain source names survive where there is no trail", "Islands Business" in _wh)
+
+# Source trails. The outlet label is read out of the archive row, never taken
+# from the model, and a URL the week did not publish is dropped.
+_witems = [
+    {"url": "https://www.rnz.co.nz/a", "source": "RNZ Pacific (wire)"},
+    {"url": "https://apnews.com/b", "source": ""},
+    {"url": "https://www.theaustralian.com.au/c", "source": "The Australian"},
+]
+_w2 = {
+    "week_label": "5 to 9 October 2026", "re_line": "Line.",
+    "top_stories": [{"rank": 1, "headline": "Forum meets in Koror", "body": "Body.",
+                     "category": "Pacific-Diplomacy", "sources": ["Islands Business"],
+                     "url": "https://www.rnz.co.nz/a",
+                     "source_urls": ["https://www.rnz.co.nz/a",
+                                     "https://evil.example/fake"]}],
+    "pacific_thread": {"text": "Pacific text.",
+                       "source_urls": ["https://apnews.com/b"]},
+    "nz_thread": None, "aukus_thread": None,
+    "patterns": [{"pattern": "Coast guard presence recurred.",
+                  "days": "Tue, Wed, Fri",
+                  "source_urls": ["https://www.theaustralian.com.au/c",
+                                  "https://made-up.test/x"]}],
+    "bottom_line": {"text": "The bottom line.",
+                    "source_urls": ["https://apnews.com/b"]},
+}
+_wstats = weekly._attach_sources(_w2, _witems)
+_wh2 = weekly.render_weekly(_w2)
+
+check("patterns carry a hyperlinked source",
+      bool(re.search(r'Patterns.*?theaustralian\.com\.au/c', _wh2, re.S)))
+check("each thread carries a hyperlinked source",
+      bool(re.search(r'Pacific Thread.*?<a href="https://apnews\.com/b"', _wh2, re.S)))
+check("the bottom line carries a hyperlinked source",
+      bool(re.search(r'Bottom Line.*?<a href="https://apnews\.com/b"', _wh2, re.S)))
+check("a top story carries a trail as well as its headline link",
+      _w2["top_stories"][0]["sources_linked"] ==
+      [{"outlet": "RNZ Pacific", "url": "https://www.rnz.co.nz/a"}])
+check("a URL the week never published is dropped",
+      sorted(_wstats["dropped"]) == ["https://evil.example/fake",
+                                     "https://made-up.test/x"],
+      str(_wstats["dropped"]))
+check("a dropped URL reaches no reader",
+      "evil.example" not in _wh2 and "made-up.test" not in _wh2)
+check("the outlet label comes from the archive, not the model",
+      "RNZ Pacific" in _wh2 and "RNZ Pacific (wire)" not in _wh2)
+check("an archive row with no outlet falls back to the host",
+      "apnews.com" in _wh2)
+check("a pattern's days ride on the trail line", "Tue, Wed, Fri" in _wh2)
+# An outlet that filed twice belongs in the trail once. Three SMH URLs behind
+# one pattern printed the name three times before the trail deduped on it.
+_wdupe = weekly._resolve_sources(
+    ["u1", "u2", "u3"],
+    {"u1": "SMH Federal Politics", "u2": "SMH Federal Politics",
+     "u3": "Guardian Australia"}, [])
+check("a trail names each outlet once",
+      [s["outlet"] for s in _wdupe] == ["SMH Federal Politics", "Guardian Australia"],
+      str(_wdupe))
+check("the trail cap counts distinct outlets",
+      len(weekly._resolve_sources(
+          [f"u{i}" for i in range(9)],
+          {f"u{i}": f"Outlet {i}" for i in range(9)}, [])) == weekly._TRAIL_MAX)
+check("the trail supersedes the model's plain source list",
+      "Islands Business" not in _wh2)
+check("the trail fired on every section that has one",
+      _wstats["linked"] == 4, f"linked={_wstats['linked']}")
+check("a fabricated top-story URL is not left as a dead link",
+      "url" in _w2["top_stories"][0])
+_w3 = {"top_stories": [{"headline": "H", "body": "B", "url": "https://nope.test/z"}],
+       "patterns": [], "bottom_line": ""}
+weekly._attach_sources(_w3, _witems)
+check("an unpublishable top-story URL is removed outright",
+      "url" not in _w3["top_stories"][0])
+check("weekly source trails are dark-mode covered",
+      render_mod._check_dark_coverage(_wh2) == [],
+      str(render_mod._check_dark_coverage(_wh2)))
+
+# The join that makes the labels real. items holds the Google News redirect,
+# published holds the canonical URL, so url_cache has to bridge them.
+check("the week's join bridges resolved URLs through url_cache",
+      "url_cache" in _wsrc and "gnews_url" in _wsrc)
+
 print("\n=== 14e. Cost tracking ===")
 import cost_report
 

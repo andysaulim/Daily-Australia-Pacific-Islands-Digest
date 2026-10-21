@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-20",
+  "last_updated": "2026-10-21",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -65,11 +65,11 @@
       "event_count": 2
     },
     "Palau": {
-      "last_event": "Pacific Islands Forum's goals, achievements and failures",
-      "last_event_date": "2026-10-10",
+      "last_event": "Israel joins Pacific Islands Forum as development partner",
+      "last_event_date": "2026-10-21",
       "last_activity_type": "other",
-      "url": "https://www.pacificislandtimes.com/post/pacific-islands-forum-s-goals-achievements-and-failures",
-      "event_count": 23
+      "url": "https://www.rnz.co.nz/news/pacific/2048545/israel-joins-pacific-islands-forum-as-partner",
+      "event_count": 24
     },
     "Marshall Islands": {
       "last_event": null,
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-21",
+      "country": "Palau",
+      "activity": "other",
+      "headline": "Israel joins Pacific Islands Forum as development partner",
+      "url": "https://www.rnz.co.nz/news/pacific/2048545/israel-joins-pacific-islands-forum-as-partner",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-20",
       "country": "Vanuatu",

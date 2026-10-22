@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-21",
+  "last_updated": "2026-10-22",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -23,11 +23,11 @@
       "event_count": 7
     },
     "Vanuatu": {
-      "last_event": "Vanuatu confirms reduction of Chinese police presence under Nakamal Agreement",
-      "last_event_date": "2026-10-20",
-      "last_activity_type": "port / infrastructure",
-      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/van-china/107286416",
-      "event_count": 6
+      "last_event": "Vanuatu minister says no decision made to cut Chinese police presence",
+      "last_event_date": "2026-10-22",
+      "last_activity_type": "other",
+      "url": "https://www.abc.net.au/news/2026-10-22/vanuatu-minister-says-no-plans-to-reduce-chinese-police-presence/107293920",
+      "event_count": 7
     },
     "Samoa": {
       "last_event": "Chinese-owned retail expansion squeezes Samoan village shops",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-22",
+      "country": "Vanuatu",
+      "activity": "other",
+      "headline": "Vanuatu minister says no decision made to cut Chinese police presence",
+      "url": "https://www.abc.net.au/news/2026-10-22/vanuatu-minister-says-no-plans-to-reduce-chinese-police-presence/107293920",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-21",
       "country": "Palau",

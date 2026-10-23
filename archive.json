@@ -498,5 +498,14 @@
     "nz_count": 2,
     "word_count": 1608,
     "url": "digest_2026-10-22.html"
+  },
+  {
+    "date": "2026-10-23",
+    "headline_re": "NZ military chief resigns over 'inappropriate relationship' · PNG parliament debates Bougainville independence ratification · Solomon Islands seizes Chinese cargo ship MV Wealth · US launches Pacific anti-cartel police network, Palau hub · Australia sanctions North Korean nuclear-funding network",
+    "top_stories_count": 4,
+    "pacific_count": 4,
+    "nz_count": 3,
+    "word_count": 2140,
+    "url": "digest_2026-10-23.html"
   }
 ]

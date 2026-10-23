@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-22",
+  "last_updated": "2026-10-23",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -16,11 +16,11 @@
       "event_count": 16
     },
     "Solomon Islands": {
-      "last_event": "US backs Taiwan's continued role at the Pacific Islands Forum",
-      "last_event_date": "2026-09-16",
-      "last_activity_type": "other",
-      "url": "https://islandsbusiness.com/pacnews/pacnews-one-16-september-2026/",
-      "event_count": 7
+      "last_event": "Solomon Islands confiscates Chinese cargo ship after law-breaking voyage",
+      "last_event_date": "2026-10-23",
+      "last_activity_type": "fisheries / maritime",
+      "url": "https://www.abc.net.au/pacific/programs/wantok/sols-confiscate-ship/107302534",
+      "event_count": 8
     },
     "Vanuatu": {
       "last_event": "Vanuatu minister says no decision made to cut Chinese police presence",
@@ -44,11 +44,11 @@
       "event_count": 2
     },
     "Kiribati": {
-      "last_event": "Kiribati calls PIF closing snub 'disappointing'",
-      "last_event_date": "2026-09-05",
+      "last_event": "Kiribati president reaffirms one-China policy",
+      "last_event_date": "2026-10-23",
       "last_activity_type": "other",
-      "url": "https://www.1news.co.nz/2026/09/05/disappointing-kiribati-snubbed-at-pacific-islands-forum-closing/",
-      "event_count": 7
+      "url": "https://islandsbusiness.com/pacnews/pacnews-three-23-october-2026/",
+      "event_count": 8
     },
     "Tuvalu": {
       "last_event": "Palau's president rebuffs Chinese pressure over Taiwan: 'Our choice, not yours'",
@@ -114,14 +114,38 @@
       "event_count": 0
     },
     "Timor-Leste": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "Australia and Timor-Leste advance security and regional priorities",
+      "last_event_date": "2026-10-23",
+      "last_activity_type": "senior visit",
+      "url": "https://www.foreignminister.gov.au/minister/penny-wong/media-release/australia-and-timor-leste-advance-shared-security-and-regional-priorities",
+      "event_count": 1
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-23",
+      "country": "Timor-Leste",
+      "activity": "senior visit",
+      "headline": "Australia and Timor-Leste advance security and regional priorities",
+      "url": "https://www.foreignminister.gov.au/minister/penny-wong/media-release/australia-and-timor-leste-advance-shared-security-and-regional-priorities",
+      "section": "primary_documents"
+    },
+    {
+      "date": "2026-10-23",
+      "country": "Kiribati",
+      "activity": "other",
+      "headline": "Kiribati president reaffirms one-China policy",
+      "url": "https://islandsbusiness.com/pacnews/pacnews-three-23-october-2026/",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-10-23",
+      "country": "Solomon Islands",
+      "activity": "fisheries / maritime",
+      "headline": "Solomon Islands confiscates Chinese cargo ship after law-breaking voyage",
+      "url": "https://www.abc.net.au/pacific/programs/wantok/sols-confiscate-ship/107302534",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-22",
       "country": "Vanuatu",

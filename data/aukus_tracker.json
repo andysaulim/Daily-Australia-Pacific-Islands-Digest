@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-20",
+  "last_updated": "2026-10-24",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-24",
+      "headline": "AUKUS partners run autonomy demonstration off Southern California",
+      "url": "https://www.naval-technology.com/news/aukus-autonomous-maritime-systems/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-20",
       "headline": "ADF war-games use of nuclear-powered submarines in a China conflict",

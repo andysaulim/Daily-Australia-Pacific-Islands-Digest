@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-25",
+  "last_updated": "2026-10-26",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-26",
+      "headline": "ASPI: Ghost Shark mine-laying confirmed, readiness question unresolved",
+      "url": "https://www.aspistrategist.org.au/ghost-sharks-mines-wont-be-much-use-if-australia-cant-act-fast-enough/",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-10-25",
       "headline": "Australia names Rachel Moseley arms control and counter-proliferation ambassador",

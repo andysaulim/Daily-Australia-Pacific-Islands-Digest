@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-26",
+  "last_updated": "2026-10-27",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -9,11 +9,11 @@
       "event_count": 8
     },
     "Fiji": {
-      "last_event": "Vanuatu expects China's police presence to fall after Nakamal Agreement with Australia",
-      "last_event_date": "2026-10-19",
-      "last_activity_type": "security agreement",
-      "url": "https://www.abc.net.au/news/2026-10-19/vanuatu-expects-reduction-in-china-police-presence/107283618",
-      "event_count": 16
+      "last_event": "Fiji islanders brave rising seas to protect waterfront homes",
+      "last_event_date": "2026-10-27",
+      "last_activity_type": "other",
+      "url": "https://www.scmp.com/news/asia/australasia/article/3372264/fiji-islanders-brave-rising-seas-protect-their-us100-million-views",
+      "event_count": 17
     },
     "Solomon Islands": {
       "last_event": "Solomon Islands takes ownership of confiscated Chinese cargo ship",
@@ -114,14 +114,30 @@
       "event_count": 0
     },
     "Timor-Leste": {
-      "last_event": "Australia and Timor-Leste advance security and regional priorities",
-      "last_event_date": "2026-10-23",
-      "last_activity_type": "senior visit",
-      "url": "https://www.foreignminister.gov.au/minister/penny-wong/media-release/australia-and-timor-leste-advance-shared-security-and-regional-priorities",
-      "event_count": 1
+      "last_event": "China tipped to step forward as Woodside exits Timor-Leste gas project",
+      "last_event_date": "2026-10-27",
+      "last_activity_type": "other",
+      "url": "https://www.abc.net.au/news/2026-10-27/greater-sunrise-timor-leste-china-woodside/107315832",
+      "event_count": 2
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-27",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "Fiji islanders brave rising seas to protect waterfront homes",
+      "url": "https://www.scmp.com/news/asia/australasia/article/3372264/fiji-islanders-brave-rising-seas-protect-their-us100-million-views",
+      "section": "pacific_wire"
+    },
+    {
+      "date": "2026-10-27",
+      "country": "Timor-Leste",
+      "activity": "other",
+      "headline": "China tipped to step forward as Woodside exits Timor-Leste gas project",
+      "url": "https://www.abc.net.au/news/2026-10-27/greater-sunrise-timor-leste-china-woodside/107315832",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-26",
       "country": "Micronesia (FSM)",

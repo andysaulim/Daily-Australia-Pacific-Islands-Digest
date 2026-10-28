@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-27",
+  "last_updated": "2026-10-28",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -51,11 +51,11 @@
       "event_count": 8
     },
     "Tuvalu": {
-      "last_event": "Palau's president rebuffs Chinese pressure over Taiwan: 'Our choice, not yours'",
-      "last_event_date": "2026-10-19",
-      "last_activity_type": "other",
-      "url": "https://islandsbusiness.com/pacnews/pacnews-one-19-october-2026/",
-      "event_count": 4
+      "last_event": "NZ papers say Tuvalu has 'limited' power to halt its fossil fuel investments",
+      "last_event_date": "2026-10-28",
+      "last_activity_type": "recognition switch",
+      "url": "https://www.france24.com/en/live-news/20261028-tuvalu-has-limited-power-to-halt-its-fossil-fuel-investments-nz-govt-papers-seen-by-afp",
+      "event_count": 5
     },
     "Nauru": {
       "last_event": "Forum says no member blocked China missile statement",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-28",
+      "country": "Tuvalu",
+      "activity": "recognition switch",
+      "headline": "NZ papers say Tuvalu has 'limited' power to halt its fossil fuel investments",
+      "url": "https://www.france24.com/en/live-news/20261028-tuvalu-has-limited-power-to-halt-its-fossil-fuel-investments-nz-govt-papers-seen-by-afp",
+      "section": "pacific_wire"
+    },
     {
       "date": "2026-10-27",
       "country": "Fiji",

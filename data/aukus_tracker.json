@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-26",
+  "last_updated": "2026-10-28",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-28",
+      "headline": "Stirling visit framed as a scheduled maintenance period, with Australian crews on the tools",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQa0d5MGw5SXlTRVJFWkdkTF9lSTF6SWF5RXI2VTFnNllOS0JRb2lHb28tb010QmhzOFpmcWdPdFB2T19ZQS1hWXRJbVEzb2QtUTFFX0lLVk9JVjZnQWtVZGZkS1N3bnpXM3RTWDhCRElPbjZEbHFyZ1RfMmJJTmJMQTZVZ2hVc3JLSlhMU1FXMktOYllDbHBfNldUbVY2SGFZZnE4bENGX042YnM?oc=5",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-10-28",
+      "headline": "USS Colorado named first boat of Submarine Rotational Force-West",
+      "url": "https://www.abc.net.au/listen/programs/perth-mornings/jennifer-parker-aukus-uss-colorado/107320210",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-26",
       "headline": "ASPI: Ghost Shark mine-laying confirmed, readiness question unresolved",

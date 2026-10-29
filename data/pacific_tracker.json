@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-28",
+  "last_updated": "2026-10-29",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
@@ -9,11 +9,11 @@
       "event_count": 8
     },
     "Fiji": {
-      "last_event": "Fiji islanders brave rising seas to protect waterfront homes",
-      "last_event_date": "2026-10-27",
-      "last_activity_type": "other",
-      "url": "https://www.scmp.com/news/asia/australasia/article/3372264/fiji-islanders-brave-rising-seas-protect-their-us100-million-views",
-      "event_count": 17
+      "last_event": "Australia flags concern after China tests ballistic missile from nuclear submarine",
+      "last_event_date": "2026-10-29",
+      "last_activity_type": "senior visit",
+      "url": "https://www.crikey.com.au/2026/10/29/australia-concerns-china-ballistic-missile-test-nuclear-submarine/",
+      "event_count": 18
     },
     "Solomon Islands": {
       "last_event": "Solomon Islands takes ownership of confiscated Chinese cargo ship",
@@ -100,11 +100,11 @@
       "event_count": 0
     },
     "New Caledonia": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "ASPI Fault Lines tracks Taiwan drones, Timor deals and New Caledonia diplomacy",
+      "last_event_date": "2026-10-29",
+      "last_activity_type": "other",
+      "url": "https://www.aspistrategist.org.au/fault-lines-taiwanese-drones-timorese-deals-and-new-caledonian-diplomacy/",
+      "event_count": 1
     },
     "French Polynesia": {
       "last_event": null,
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-29",
+      "country": "New Caledonia",
+      "activity": "other",
+      "headline": "ASPI Fault Lines tracks Taiwan drones, Timor deals and New Caledonia diplomacy",
+      "url": "https://www.aspistrategist.org.au/fault-lines-taiwanese-drones-timorese-deals-and-new-caledonian-diplomacy/",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-10-29",
+      "country": "Fiji",
+      "activity": "senior visit",
+      "headline": "Australia flags concern after China tests ballistic missile from nuclear submarine",
+      "url": "https://www.crikey.com.au/2026/10/29/australia-concerns-china-ballistic-missile-test-nuclear-submarine/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-28",
       "country": "Tuvalu",

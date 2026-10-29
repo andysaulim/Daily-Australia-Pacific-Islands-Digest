@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-28",
+  "last_updated": "2026-10-29",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-10-29",
+      "headline": "Lowy: Australia's $30 billion AUKUS-era base boom needs scrutiny",
+      "url": "https://www.lowyinstitute.org/the-interpreter/australia-s-usd30-billion-base-boom-needs-scrutiny-too",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-10-29",
+      "headline": "Australia flags concern after China tests ballistic missile from nuclear submarine",
+      "url": "https://www.crikey.com.au/2026/10/29/australia-concerns-china-ballistic-missile-test-nuclear-submarine/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-10-28",
       "headline": "Stirling visit framed as a scheduled maintenance period, with Australian crews on the tools",

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the client this brief handles its own theming. Without these, a
+       dark-mode client applies its own inversion heuristics, and on a
+       FORWARDED copy where the <style> block carrying the dark rules has
+       been stripped, the result is a mixture: inline colours such as the
+       black footer survive while everything around them is recoloured by the
+       client. Declaring both schemes is what stops that guesswork. -->
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>Australia Daily Brief &ndash; Thursday, October 29, 2026</title>
+  <style type="text/css">
+    body, table, td, div, p { margin:0; padding:0; }
+    img { border:0; display:block; }
+
+    @media only screen and (max-width: 620px) {
+      .util-row .util-cell { display:block !important; text-align:center !important;
+        padding:5px 8px !important; white-space:normal !important; }
+      .util-row .util-cell a { padding:4px 7px !important; margin:1px !important;
+        font-size:11px !important; letter-spacing:0.3px !important; }
+
+      .wrapper { width:100% !important; }
+      .sec, .footer { padding:16px 14px !important; }
+      .mast-main, .mast-meta { display:block !important; width:100% !important;
+                              text-align:left !important; }
+      .mast-meta { text-align:left !important; padding-top:10px !important; }
+      .mkt { font-size:11px !important; padding-right:12px !important; }
+      .cal-table td[width="110"] { width:80px !important; padding:8px 8px 8px 0 !important; }
+      .cal-date { font-size:11px !important; }
+      .china-dark > div { padding:16px 14px !important; }
+      h1 { font-size:22px !important; }   /* the shared phone nameplate size */
+      h2 { font-size:13px !important; }
+      h3 { font-size:14px !important; }
+      .story-card { padding:12px 10px !important; }
+      p, div { word-wrap:break-word !important; overflow-wrap:break-word !important; }
+      img { max-width:100% !important; height:auto !important; }
+      /* Keep the iOS auto-zoom guard, drop the blanket size. Forcing every
+         td, div, p and span to one size on a phone flattened the whole
+         hierarchy, so a section label, a body copy paragraph and a footnote
+         all rendered at 14px. That is why this edition read larger than the
+         other three, none of which carries such a rule. */
+      body, td, div, p, span { -webkit-text-size-adjust:100%; }
+      div[style*="font-size:10px"], div[style*="font-size:10px"],
+      span[style*="font-size:10px"], span[style*="font-size:10px"] { font-size:11px !important; }
+      a { min-height:44px; min-width:44px; display:inline-block; line-height:44px; }
+      p a, div a, td a { min-height:auto; min-width:auto; display:inline; padding:6px 0; line-height:inherit; }
+    }
+
+    @media only screen and (min-width: 621px) and (max-width: 768px) {
+      .wrapper { width:100% !important; max-width:680px !important; }
+      .sec, .footer { padding:14px 20px !important; }
+      h1 { font-size:22px !important; }
+    }
+
+    @media print {
+      /* The PDF is generated from this same HTML, so the print rules are what
+         decide whether it reads as a document or a long screenshot. */
+      body { background:#FFFFFF !important; }
+      .wrapper { width:100% !important; max-width:100% !important;
+                  box-shadow:none !important; }
+      /* The read-online bar and the back-to-top links are navigation. On
+         paper they are dead text. */
+      .no-print { display:none !important; }
+      /* An item split across a page break loses its source line, which is the
+         part that makes it checkable. */
+      .story-card, .cal-table tr { page-break-inside:avoid;
+                                    break-inside:avoid; }
+      h1, h2, h3 { page-break-after:avoid; break-after:avoid; }
+      a { text-decoration:none !important; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body { background:#121212 !important; }
+      .wrapper { background:#1a1a1a !important; }
+      .wrapper .sec { background:#222 !important; border-bottom-color:#333 !important; }
+      .wrapper h1, .wrapper h2, .wrapper h3 { color:#E0E0E0 !important; }
+      /* Removed: this forced EVERY text node to #CCC, which is why dark mode
+         here was monochrome: accents flattened, and white type on a teal
+         ground turned grey at 3.15:1. The per-colour mappings below do the
+         job properly, mapping each light value to a chosen dark counterpart. */
+      .wrapper a { color:#2E9CB0 !important; }
+      .wrapper .footer { background:#0F1A2E !important; }
+      /* The terminal strip is white by design in light mode. Left
+         unmapped it stays white in dark mode, which is a bright band
+         across the bottom of an otherwise dark brief. The coverage
+         guard misses it because #FFFFFF is on the exempt list, being
+         legitimate as type on an accent fill. */
+      .wrapper .footer-end { background:#1a1a1a !important; }
+      /* Keep the filled buttons filled. The generic white-background
+         rule darkens them while their type stays dark, which measured
+         1.23:1 - a button you cannot read. */
+      .wrapper .footer-end td { color:#9AA3AE !important; }
+      .wrapper .story-card { background:#2a2a2a !important; border-color:#333 !important; }
+      .wrapper .china-dark { background:#101E2A !important; }
+    /* Filled from a measured audit of the rendered brief: these
+       colours reached the output with no dark rule, so they kept
+       their light values and rendered near-black on near-black. */
+      .wrapper [style*="color:#0d1b2a"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#0D1B2A"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#17798c"] { color:#5FC2D6 !important; }
+      .wrapper [style*="color:#17798C"] { color:#5FC2D6 !important; }
+      /* NZ_GREEN, the third geography's accent. It reached the output with
+         no dark rule and kept its light value: #1B6A4A on #222 is 2.1:1. */
+      .wrapper [style*="color:#1b6a4a"] { color:#6FC79A !important; }
+      .wrapper [style*="color:#1B6A4A"] { color:#6FC79A !important; }
+      .wrapper [style*="color:#1b2a4a"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#1B2A4A"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#2c3e50"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#2C3E50"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#444"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#4a5260"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#4A5260"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#555"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#55607a"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#55607A"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#6b7280"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#6B7280"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#888"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#aaa"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#AAA"] { color:#9AA3AE !important; }
+      .wrapper [style*="background:#e9f2f4"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#E9F2F4"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#eff6f8"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#EFF6F8"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#f2f3f5"] { background-color:#22262C !important; }
+      .wrapper [style*="background:#F2F3F5"] { background-color:#22262C !important; }
+      .wrapper [style*="background:#f7f8fa"] { background-color:#1A1D22 !important; }
+      .wrapper [style*="background:#F7F8FA"] { background-color:#1A1D22 !important; }
+      .wrapper [style*="background:#fff"] { background-color:#262A30 !important; }
+      .wrapper [style*="background:#FFF"] { background-color:#262A30 !important; }
+      .wrapper [style*="background:#ffffff"] { background-color:#262A30 !important; }
+      .wrapper [style*="background:#FFFFFF"] { background-color:#262A30 !important; }
+          /* The blanket "everything is #CCC" rule turns the date block's white
+         type grey on its teal ground, and turns the pill's dark type teal.
+         Both are elements whose colours are already correct in either
+         scheme, so they opt out. */
+      .wrapper .cal-date, .wrapper .cal-date * { color:#FFFFFF !important; }
+      .wrapper .pill { background:#E8E6E1 !important; color:#14181F !important; }
+}
+  </style>
+  <!--[if mso]>
+  <style type="text/css">
+    table { border-collapse:collapse; }
+  </style>
+       /* Last in the block: equal specificity, so order decides. The pill is
+         dark type on a white fill, and the generic white-background rule
+         above darkens the fill while the type stays dark - 1.23:1. */
+      .wrapper .pill { background:#E8E6E1 !important; color:#14181F !important; }
+ <![endif]-->
+</head>
+<body style="margin:0;padding:0;background:#F2F3F5;font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+  <!-- The frame is a TABLE whose width is an HTML ATTRIBUTE, not a div with a
+       CSS max-width. Gmail and most clients drop every stylesheet block when a
+       recipient forwards or replies, and many ignore max-width on a div, so the
+       old wrapper lost its width on forward and the content sprawled. An
+       attribute survives stylesheet stripping, so a forwarded copy keeps its
+       shape. class="wrapper" stays so the mobile media query can still flex it
+       to 100% while the stylesheet is intact. -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;padding:0;background:#F2F3F5;">
+    <tr>
+      <td align="center" valign="top" style="padding:0;">
+        <!--[if mso]><table width="680" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
+        <table role="presentation" class="wrapper" width="680" cellpadding="0" cellspacing="0" border="0" align="center" style="width:680px;max-width:100%;margin:0 auto;background:#FFFFFF;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="padding:0;">
+              
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#2E3644;" class="util-row no-print">
+          <tr>
+            <td class="util-cell" style="padding:7px 32px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.72);white-space:nowrap;">For Internal Use Only</td>
+            <td class="util-cell" align="right" style="padding:5px 32px 5px 0;text-align:right;"><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/latest.html" style="display:inline-block;padding:6px 14px;margin:0 3px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Read online</a><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/digest_2026-10-29.pdf" style="display:inline-block;padding:6px 14px;margin:0 3px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Download PDF</a><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/archive.html" style="display:inline-block;padding:6px 14px;margin:0 3px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Past issues</a></td>
+          </tr>
+        </table>
+        
+
+    <a name="top" id="top"></a>
+    <div bgcolor="#17798C" style="background-color:#17798C;color:#fff;padding:16px 32px 16px;border-bottom:1px solid rgba(255,255,255,0.18);" class="sec mast-band">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td class="mast-main" style="vertical-align:top;">
+          <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.78);margin-bottom:7px;">CSIS Australia Chair</div>
+          <h1 style="margin:0 0 4px 0;font-size:26px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#fff;letter-spacing:0.5px;">
+            Australia Daily Brief
+          </h1>
+          <div style="margin-top:2px;font-size:16px;font-weight:400;color:rgba(255,255,255,0.85);font-family:Georgia,serif;">Thursday, October 29, 2026</div>
+        </td>
+        <td class="mast-meta" style="vertical-align:bottom;text-align:right;">
+          <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:0.5px;color:rgba(255,255,255,0.72);white-space:nowrap;">1,515 words &middot; 6 min read</div>
+        </td>
+      </tr></table>
+      <div style='margin-top:12px;padding-top:12px;border-top:1px solid rgba(46,156,176,0.35);font-size:13px;color:rgba(255,255,255,0.85);font-family:Georgia,serif;line-height:1.5;'><strong style='color:#FFFFFF;font-size:11px;letter-spacing:1px;'>RE:</strong>&nbsp; NZ election: National sub-25%, Opportunity surges · SAS Afghanistan inquiry cites command failures · Coalition splits over EU trade deal · Inflation hits 4.3% · Fiji election 'in limbo'</div>
+    </div>
+    
+<table class="mkt-table" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0D1B2A;color:#fff;border-bottom:1px solid rgba(255,255,255,0.10);"><tr><td width="25%" align="center" style="padding:11px 6px 13px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">ASX 200</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">8,892</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#69C88E;">+1.12%</div></td><td width="25%" align="center" style="padding:11px 6px 13px;border-left:1px solid rgba(255,255,255,0.10);"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">AUD/USD</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">0.7035</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#69C88E;">+0.21%</div></td><td width="25%" align="center" style="padding:11px 6px 13px;border-left:1px solid rgba(255,255,255,0.10);"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">NZX 50</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">13,710</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#E8697A;">-0.37%</div></td><td width="25%" align="center" style="padding:11px 6px 13px;border-left:1px solid rgba(255,255,255,0.10);"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">NZD/USD</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">0.5611</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#E8697A;">-1.30%</div></td></tr></table>
+<div class="nav-row sec" style="background:#F7F8FA;border-bottom:1px solid #E4E7EB;padding:9px 32px;text-align:center;font-family:Arial,sans-serif;font-size:11px;line-height:1.9;color:#6B7280;"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6B7280;">In this issue &nbsp;</span><a href="#top-stories" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Top Stories</a> &nbsp;&middot;&nbsp; <a href="#overnight" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Overnight</a> &nbsp;&middot;&nbsp; <a href="#key-stat" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Stat</a> &nbsp;&middot;&nbsp; <a href="#pacific" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Pacific</a> &nbsp;&middot;&nbsp; <a href="#nz" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">New Zealand</a> &nbsp;&middot;&nbsp; <a href="#canberra" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Canberra</a> &nbsp;&middot;&nbsp; <a href="#business" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Markets</a> &nbsp;&middot;&nbsp; <a href="#documents" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Documents</a> &nbsp;&middot;&nbsp; <a href="#calendar" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Upcoming</a> &nbsp;&middot;&nbsp; <a href="#wire" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">The Wire</a></div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="memo" id="memo"></a>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="glance-panel" style="background:#E9F2F4;border-left:3px solid #17798C;">
+            <tr><td style="padding:0;"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Today at a Glance</span></td></tr></table></td></tr>
+            <tr><td style="padding:0 20px 8px;">
+              
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <tr>
+                <td width="28" style="vertical-align:top;padding-top:2px;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#17798C;color:#FFFFFF;text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">1</div>
+                </td>
+                <td style="padding-left:10px;vertical-align:top;">
+                  <div style="font-size:14px;line-height:1.6;color:#2C3E50;font-family:Georgia,serif;">New Zealand's National Party has dropped below 25 percent in the latest RNZ-Reid Research poll, nine days before the November 7 election, with the Opportunity Party positioned as a potential kingmaker.</div>
+                </td>
+              </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <tr>
+                <td width="28" style="vertical-align:top;padding-top:2px;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#17798C;color:#FFFFFF;text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">2</div>
+                </td>
+                <td style="padding-left:10px;vertical-align:top;">
+                  <div style="font-size:14px;line-height:1.6;color:#2C3E50;font-family:Georgia,serif;">A declassified inquiry into Australia's Special Air Service Regiment finds systemic cultural failures and an 'inversion of authority' enabled alleged war crimes in Afghanistan, though the ADF chief has reportedly called the matter closed.</div>
+                </td>
+              </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <tr>
+                <td width="28" style="vertical-align:top;padding-top:2px;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#17798C;color:#FFFFFF;text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">3</div>
+                </td>
+                <td style="padding-left:10px;vertical-align:top;">
+                  <div style="font-size:14px;line-height:1.6;color:#2C3E50;font-family:Georgia,serif;">Coalition unity cracked again this week as Liberal MP Alex Hawke broke ranks over the Nationals' rejection of the EU trade deal, handing Albanese an opening to attack on inflation that hit 4.3 percent in September.</div>
+                </td>
+              </tr>
+            </table>
+            </td></tr>
+          </table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="top-stories" id="top-stories"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Top Stories</span></td></tr></table>
+          
+            <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid #1B6A4A;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <span style="display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#17798C;font-weight:700;margin-bottom:6px;">NZ-Politics</span>
+              <h3 style="margin:0 0 8px 0;font-size:16px;color:#0D1B2A;font-family:Georgia,serif;line-height:1.4;">
+                <a href="https://www.rnz.co.nz/news/politics/2218908/christopher-luxon-warns-against-making-latest-poll-a-reality" style="color:#0D1B2A;text-decoration:none;">National falls below 25 percent as Opportunity surges nine days from New Zealand's election</a>
+              </h3>
+              <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;">New Zealand's National Party has dropped below <em>25 percent</em> in the latest RNZ-Reid Research poll, while the Opportunity Party has reached a new high that could make it kingmaker. <strong style="font-weight:700;">Christopher Luxon</strong> posted on social media warning of 'dire consequences' if the poll becomes reality, saying it would produce a Labour-Greens government with Chloe Swarbrick as finance minister. Campaign chair <strong style="font-weight:700;">Simeon Brown</strong> acknowledged to RNZ the November 7 election will be 'very close.'</p>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">per RNZ: &quot;Christopher Luxon warns against making latest poll a 'reality'&quot;</div>
+            </div>
+            <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid #1B2A4A;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <span style="display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#17798C;font-weight:700;margin-bottom:6px;">AU-Defense</span>
+              <h3 style="margin:0 0 8px 0;font-size:16px;color:#0D1B2A;font-family:Georgia,serif;line-height:1.4;">
+                <a href="https://www.abc.net.au/news/2026-10-29/secret-inquiry-into-afghanistan-special-forces-slams-sas/107321098" style="color:#0D1B2A;text-decoration:none;">Declassified inquiry finds 'abandonment of curiosity' enabled SAS war crimes culture in Afghanistan</a>
+              </h3>
+              <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;">A newly declassified inquiry into Australia's Special Air Service Regiment found deep, systemic cultural problems and an 'inversion of authority' within units that helped enable alleged war crimes during the Afghanistan war. It found senior commanders overlooked warning signs, including a rising number of enemy casualties, amid an absence of effective leadership. The Australian reports the ADF chief has since called the matter 'case closed,' declining further action.</p>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">per ABC News: &quot;Inquiry slams culture and command of Australia's SAS during Afghanistan war&quot; · also The Australian: &quot;'Case closed': ADF chief rules out action on SAS command failures&quot;</div>
+            </div>
+            <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid #1B2A4A;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <span style="display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#17798C;font-weight:700;margin-bottom:6px;">AU-Politics</span>
+              <h3 style="margin:0 0 8px 0;font-size:16px;color:#0D1B2A;font-family:Georgia,serif;line-height:1.4;">
+                <a href="https://www.smh.com.au/politics/federal/cracks-emerge-in-reunited-coalition-over-trade-deal-and-ai-20261029-p6197x.html?ref=rss&amp;utm_medium=rss&amp;utm_source=rss_politics_federal" style="color:#0D1B2A;text-decoration:none;">Coalition splits again over EU trade deal as One Nation's sway grows</a>
+              </h3>
+              <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;">A Liberal-only meeting in Canberra this week saw former minister <strong style="font-weight:700;">Alex Hawke</strong>, a factional opponent of leader <strong style="font-weight:700;">Angus Taylor</strong>, speak out against the Nationals' position opposing a proposed Australia-EU free trade deal. Senator <strong style="font-weight:700;">Matt Canavan</strong> had declared, without leadership group approval, that both Coalition parties opposed the deal a fortnight earlier. <strong style="font-weight:700;">Anthony Albanese</strong> has seized on the split to attack the Coalition's economic credibility as inflation rises.</p>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">per SMH (Paul Sakkal): &quot;Cracks emerge in reunited Coalition over trade deal and AI&quot; · also SMH: &quot;Albanese bets on trade brawl to bash Coalition amid inflation woes&quot;</div>
+            </div>
+            <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid #1B2A4A;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <span style="display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#17798C;font-weight:700;margin-bottom:6px;">AU-Defense</span>
+              <h3 style="margin:0 0 8px 0;font-size:16px;color:#0D1B2A;font-family:Georgia,serif;line-height:1.4;">
+                <a href="https://www.crikey.com.au/2026/10/29/australia-concerns-china-ballistic-missile-test-nuclear-submarine/" style="color:#0D1B2A;text-decoration:none;">Australia flags concern after China tests ballistic missile from nuclear submarine</a>
+              </h3>
+              <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;">Chinese officials contacted Canberra to give advance warning of a ballistic missile test launched from a nuclear-powered submarine, Crikey reported, with Foreign Minister <strong style="font-weight:700;">Penny Wong</strong> in Fiji at the time. Australian officials have since indicated concern about the test without detailing its location or the submarine involved.</p>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">per Crikey: &quot;'You can draw the inference': Australia reveals concerns about Chinese ballistic missile test from nuclear sub&quot;</div>
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="overnight" id="overnight"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Overnight</span></td></tr></table>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="flash-table" style="border-top:2px solid #17798C;"><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">AU-Defense</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.smh.com.au/politics/federal/dangerously-unprepared-union-and-viva-energy-issue-fuel-security-warning-to-albanese-20261029-p619e3.html?ref=rss&amp;utm_medium=rss&amp;utm_source=rss_politics_federal" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Union and Viva Energy warn Canberra is 'dangerously unprepared' on fuel</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; SMH</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">A union and Viva Energy issued a joint warning to <strong style="font-weight:700;">Anthony Albanese</strong> that decades of industrial decline and reliance on volatile overseas shipping routes have left essential services, freight and farming exposed in the event of international conflict, SMH reported.</div></td></tr><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">AU-Politics</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.politico.com/news/2026/10/28/australian-parties-youtube-digital-ad-spend-soars-as-tv-campaigning-declines-01137651" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Australian parties triple YouTube ad spend as TV campaigning declines</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; Politico</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">Australian political parties have tripled their YouTube advertising spend at the expense of television buys, Politico reported, marking a structural shift in how federal campaigns reach voters.</div></td></tr><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">AU-Defense</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.abc.net.au/news/2026-10-29/nt-teen-terror-charges-extremism-3d-printed-gun-schematics/107322362" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">NT teenager charged with terror offences over 3D-printed gun plans</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; AFP</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">A Northern Territory teenager faces terror charges after police seized extremism material and 3D-printed gun schematics, AFP reported, the latest case to draw scrutiny of youth radicalisation since federal police told Senate estimates that 55 radicalised children have come to their attention.</div></td></tr><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">Trade-Economy</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.wsj.com/economy/central-banking/reserve-bank-of-australias-blunt-messaging-raises-questions-about-peak-in-rates-eb1b378a" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">RBA's blunt messaging raises questions about peak in rates</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; WSJ</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">The Wall Street Journal reports the Reserve Bank of Australia's increasingly blunt public messaging is fuelling debate over whether its tightening cycle is near a peak, after a hotter-than-expected September inflation print raised the odds of a further rate rise.</div></td></tr><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">Trade-Economy</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.bloomberg.com/opinion/articles/2026-10-28/nimby-or-pension-australia-pops-the-data-center-bubble" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Bloomberg: Australia's data centre investment boom faces a reckoning</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; Bloomberg</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">Bloomberg opinion examines rising local pushback against data centre construction in Australia, arguing pension-fund financing and community opposition are colliding as the AI infrastructure build-out accelerates nationwide.</div></td></tr></table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="key-stat" id="key-stat"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Stat of the Day</span></td></tr></table>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFF6F8;border-top:2px solid #17798C;border-bottom:1px solid #E4E7EB;">
+            <tr><td style="padding:14px 16px;">
+              <div style="font-family:Georgia,serif;font-size:26px;font-weight:700;color:#17798C;line-height:1;">4.3%</div>
+              <div style="font-family:Georgia,serif;font-size:14px;color:#2C3E50;margin-top:5px;line-height:1.4;">Australia's September quarter headline inflation rate</div>
+              <div style='font-family:Georgia,serif;font-size:13px;color:#4A5260;margin-top:4px;line-height:1.5;'>The hottest inflation reading since March intensifies pressure for a further RBA rate rise and has sharpened the Albanese-Coalition fight over budget savings.</div>
+              <div style='font-family:Arial,sans-serif;font-size:11px;color:#55607A;margin-top:7px;'>ABC News</div>
+            </td></tr>
+          </table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="pacific" id="pacific"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#17798C;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Pacific Wire</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Fiji &middot; Islands Business</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://islandsbusiness.com/2026/fiji-in-political-suspense/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Fiji's general election, set for February 2027, now 'in limbo'</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Fiji's voters face an uncertain timeline after the latest date for a Writ of Election cast the February 2027 general election into doubt, Islands Business reported, amid ongoing constitutional reform debate.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Fiji &middot; Fijivillage</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.fijivillage.com/news/civil-society-alliance-for-democracy-calls-for-constitution-vote-to-be-deferred-and-consultation-for-6-months-0236ec/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Civil Society Alliance calls for Fiji constitution vote to be deferred six months</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Fiji's Civil Society Alliance for Democracy has called for the planned constitutional vote to be deferred and for six months of further consultation, Fijivillage reported, intensifying pressure on the government's reform timeline.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Fiji &middot; Fijivillage</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.fijivillage.com/u/military-must-respect-people-s-democratic-choices-rfmf-commander-20706d/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Fiji military commander says armed forces must respect democratic choices</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Fiji's Republic of Fiji Military Forces commander said the military must respect the people's democratic choices, Fijivillage reported, a notable intervention as the country's election timeline and constitutional reform remain unresolved.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Regional &middot; ABC Pacific</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/pacific/programs/pacificbeat/israel-pif/107322070" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Civil society groups push back on Israel's entry to Pacific Islands Forum</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">The Pacific Islands Forum has welcomed Israel as a sectoral partner to work on water, desalination and climate adaptation, but Pacific civil society groups including the Pacific Network on Globalisation are demanding more transparency over the decision, ABC Pacific reported.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Timor-Leste &middot; ABC Pacific</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/pacific/programs/pacificbeat/timor-woodside/107322078" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Timor-Leste presses ahead with Greater Sunrise gas project after Woodside exit</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Timor-Leste has vowed to continue the Greater Sunrise project after Woodside sold its 33 percent stake for <em>$285 million</em>, leaving it without an operator, ABC Pacific reported. Analyst Saul Kavonic warned the government risks wagering its economic future on a project without an experienced operator.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Cook Islands &middot; Cook Islands News</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.cookislandsnews.com/internal/national/regional/cook-islands-police-join-regional-frontline-against-transnational-crime/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=cook-islands-police-join-regional-frontline-against-transnational-crime" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Cook Islands joins new Pacific Community of Policing initiative</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Cook Islands Police have joined the newly launched Pacific Community of Policing, a unified regional approach to tackling transnational crime, Cook Islands News reported.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Regional &middot; Islands Business</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://islandsbusiness.com/2026/regional-diplomacy-on-west-papua-ramps-up/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">West Papua diplomacy ramps up ahead of Forum discussions</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">West Papua, first placed on a Forum leaders' agenda in Kiribati in 2000, is drawing renewed regional diplomatic attention, Islands Business reported, as the issue remains an ongoing point of contention within the Pacific Islands Forum.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="nz" id="nz"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B6A4A;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">New Zealand</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B6A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">NZ-Politics &middot; RNZ</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.rnz.co.nz/news/politics_election-2026/2211837/winston-peters-endorses-national-s-chris-bishop-over-nz-first-s-hutt-south-candidate" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Peters tells NZ First voters to back National's Bishop in Hutt South</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;"><strong style="font-weight:700;">Winston Peters</strong> told supporters in Hutt South to vote for National's <strong style="font-weight:700;">Chris Bishop</strong>, warning he could lose his seat otherwise, as NZ First pursues an 'overhang' strategy to maximise seats ahead of the November 7 election.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B6A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">NZ-Politics &middot; Bloomberg</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.bloomberg.com/news/features/2026-10-28/new-zealand-opportunity-party-s-wong-vies-with-winston-peters-for-kingmaker-role" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Opportunity Party emerges as rival kingmaker to Peters in NZ race</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Bloomberg reports a political outsider evoking former prime minister Jacinda Ardern could determine who forms New Zealand's next government, as the Opportunity Party vies with <strong style="font-weight:700;">Winston Peters</strong> for kingmaker status nine days before the vote.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B6A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">NZ-Politics &middot; ABC News</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/news/2026-10-29/how-the-mongrel-mob-became-an-nz-election-issue/107315046" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Mongrel Mob photos with MPs become a flashpoint in New Zealand's election</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Photos of Te Pāti Māori and Green Party MPs meeting Mongrel Mob members at an Auckland gang pad have forced parties across New Zealand's political spectrum to respond, with National and Labour both criticising the minor parties over the encounter ahead of the November 7 election.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="canberra" id="canberra"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Canberra Politics</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; ABC News</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/news/2026-10-29/one-nation-mp-turns-down-extra-staffer-from-pm/107325240" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">One Nation rejects $200,000 staffer, accuses Albanese of meddling</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;"><strong style="font-weight:700;">Pauline Hanson</strong> accused <strong style="font-weight:700;">Anthony Albanese</strong> of trying to divide One Nation after MP <strong style="font-weight:700;">David Farley</strong> rejected an unsolicited offer of an extra $200,000 staffer, the latest flashpoint in a dispute over the prime minister's power to set parliamentary staffing levels. Hanson called the system 'grubby' and wants an independent body to set staffing instead.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; Guardian Australia</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.theguardian.com/australia-news/2026/oct/29/albanese-concedes-savings-needed-as-he-faces-internal-labor-pressure-on-cost-of-living-crisis" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Albanese concedes savings needed as Labor faces cost-of-living pressure</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;"><strong style="font-weight:700;">Anthony Albanese</strong> ruled out major cuts to health, education and essential services in December's mid-year budget update but conceded savings are required as Labor struggles to curb inflation, the Guardian reported, accusing the Coalition of hypocrisy for not backing existing savings measures.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Defense &middot; ABC News</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/news/2026-10-28/defence-official-flagged-plans-for-social-media-ban-request/107320790" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Defence official sought minister's help to keep evidence off social media</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">A Defence official asked the minister for support in keeping evidence off social media, ABC News reported, raising fresh questions about transparency within the department amid ongoing parliamentary scrutiny of military accountability.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; The Australian</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.theaustralian.com.au/nation/court-places-isis-acolyte-linked-to-bondi-suspect-under-control-order/news-story/1cb0759df5a17a0675e662e9b97ecacf" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Burke queries sentencing as court weighs control order for ISIS-linked man</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Home Affairs Minister <strong style="font-weight:700;">Tony Burke</strong> questioned sentencing outcomes as a court considered a control order for a man linked to the alleged Bondi attacker, The Australian reported, amid wider debate over counter-terrorism sentencing settings.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="business" id="business"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Business and Economy</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #B8860B;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Reuters</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.reuters.com/world/asia-pacific/new-zealand-central-bank-governor-says-chances-december-hike-are-high-2026-10-29/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">RBNZ governor says chances of December rate hike are 'high'</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">New Zealand's central bank governor said the chances of a December Official Cash Rate hike are 'high,' Reuters reported, a potential shift that would land weeks after the November 7 general election.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #B8860B;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Reuters</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.reuters.com/world/asia-pacific/australias-corporate-regulator-probing-failed-5-billion-firmus-ipo-2026-10-29/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">ASIC talks to bankers over failed $5 billion Firmus IPO</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Australia's corporate regulator is in discussions with bankers involved in the collapsed <em>$5 billion</em> Firmus initial public offering, Reuters reported, as scrutiny grows over disclosures made ahead of the failed listing.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #B8860B;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">ABC News</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/news/2026-10-29/santos-warned-over-barossa-non-compliance-flaring/107284152" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Regulator flags 'continued non-compliance' at Santos's Barossa gas project</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Australia's offshore petroleum regulator told Santos it holds concerns about fuel use and gas flaring at the multi-billion-dollar Barossa project, citing 'continued non-compliance' after onshore and offshore inspections, a leaked letter obtained by ABC News shows.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="documents" id="documents"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Primary Documents</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #5D6D7E;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">readout &middot; NZ ministerial</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.beehive.govt.nz/release/opening-new-tongan-detector-dog-facility" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">New Zealand opens new detector dog facility in Tonga</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">New Zealand's government announced the opening of a new detector dog facility in Tonga, according to a release on the Beehive government website, part of ongoing border security capacity-building with Pacific partners.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="calendar" id="calendar"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Upcoming</span></td></tr></table>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="cal-table">
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" style="background:#17798C;"><tr><td align="center" style="padding:4px 0 5px;width:46px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(255,255,255,0.85);">NOV</div><div style="font-family:Georgia,serif;font-size:16px;font-weight:700;color:#fff;line-height:1;">7</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">New Zealand general election</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">Polling shows National below 25 percent and the Opportunity Party emerging as a potential kingmaker, raising the prospect of a Labour-Greens coalition government.</div>
+                </td>
+              </tr>
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" class="cal-window" style="background:#E9F2F4;border:1px solid #17798C;"><tr><td align="center" style="padding:4px 0 5px;width:44px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#17798C;">NOV</div><div style="font-family:Georgia,serif;font-size:13px;font-weight:700;color:#1B2A4A;line-height:1.15;">2026</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">RBA interest rate decision</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">ABC reporting flags a rate rise as 'all-but-confirmed' after September inflation hit 4.3 percent, the highest reading since March.</div>
+                </td>
+              </tr>
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" class="cal-window" style="background:#E9F2F4;border:1px solid #17798C;"><tr><td align="center" style="padding:4px 0 5px;width:44px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#17798C;">DEC</div><div style="font-family:Georgia,serif;font-size:13px;font-weight:700;color:#1B2A4A;line-height:1.15;">2026</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">RBNZ Official Cash Rate decision</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">The governor says the chances of a hike are 'high,' which would land weeks after the general election and shape the incoming government's fiscal room.</div>
+                </td>
+              </tr>
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" class="cal-window" style="background:#E9F2F4;border:1px solid #17798C;"><tr><td align="center" style="padding:4px 0 5px;width:44px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#17798C;">FEB</div><div style="font-family:Georgia,serif;font-size:13px;font-weight:700;color:#1B2A4A;line-height:1.15;">2027</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">Fiji general election</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">Islands Business reports the vote is 'in limbo' with no Writ of Election yet issued, amid a parallel push for a constitutional referendum and calls to defer it six months.</div>
+                </td>
+              </tr></table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="wire" id="wire"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">The Wire</span></td></tr></table>
+          <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#55607A;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">Au-Foreign-Policy</div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">Lowy Interpreter</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.lowyinstitute.org/the-interpreter/colombo-port-a-chinese-exit-gives-australia-a-renewed-chance" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Colombo Port: a Chinese exit gives Australia a renewed chance</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">Lowy Institute's Interpreter argues Australia's lasting advantage in the Indian Ocean will come from building institutions rather than simply replacing Chinese investors at Colombo Port.</div></div><div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#55607A;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">Aukus</div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">Lowy Interpreter</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.lowyinstitute.org/the-interpreter/australia-s-usd30-billion-base-boom-needs-scrutiny-too" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Lowy: Australia's $30 billion AUKUS-era base boom needs scrutiny</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">New satellite imagery analysed by the Lowy Institute shows how quickly four Australian bases are being rebuilt for the AUKUS era, with the Interpreter arguing the <em>$30 billion</em> program needs more public scrutiny.</div></div><div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#55607A;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">China-Pacific</div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">ASPI Strategist</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.aspistrategist.org.au/fault-lines-taiwanese-drones-timorese-deals-and-new-caledonian-diplomacy/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">ASPI Fault Lines tracks Taiwan drones, Timor deals and New Caledonia diplomacy</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">ASPI's fortnightly Fault Lines roundup covers regional security developments from October 16 to 29, including Taiwanese drone activity, Timorese defence deals and New Caledonian diplomacy shaping the Indo-Pacific order.</div></div><div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#55607A;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">Pacific-Politics</div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">Devpolicy Blog</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://devpolicy.org/fijis-first-referendum-no-votes-to-spare-and-rules-still-being-written/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Devpolicy: Fiji's first referendum rests on a one-vote margin</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">Devpolicy Blog reports Fiji's path to its first referendum rests on a one-vote margin, a contested counting rule and campaign regulations yet to be written, with the clock ticking toward the vote.</div></div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">Fijivillage</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.fijivillage.com/s/fiji-launches-cyber-security-incident-reporting-portal-and-two-other-initiatives-e3d4e9/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Fiji launches new Cyber Security Incident Reporting Portal</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">Fiji has launched a Cyber Security Incident Reporting Portal alongside two other initiatives, Fijivillage reported, part of a broader push to strengthen the country's digital security infrastructure.</div></div><div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#55607A;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">Pacific-Diplomacy</div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">PNG Post-Courier</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.postcourier.com.pg/matagarakikai-says-pngdf-exercise-challenging-yet-valuable-learning-opportunity/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">PNGDF officer calls multinational air exercise a valuable lesson</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">A Papua New Guinea Defence Force officer said Exercise Kapa Pisin provided valuable lessons for future operations despite the challenges of coordinating a complex multinational air exercise, the Post-Courier reported.</div></div>
+        </div>
+
+    <!-- The house footer. Korea carries a CSIS lockup built in HTML; this
+         edition has no wordmark to reproduce, so it leads with the chair name
+         instead. Everything else matches: centred, the city and domain on
+         their own line, the links as links rather than a run-on sentence, and
+         the disclaimer set in the reading face. -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec footer" style="background:#14181F;border-top:4px solid #17798C;">
+      <tr><td style="padding:20px 32px 6px;text-align:center;">
+        
+        <div style="font-family:Georgia,serif;font-size:38px;font-weight:700;color:#FFFFFF;letter-spacing:1px;line-height:1.1;">CSIS Australia Chair</div>
+        <div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-top:6px;">Australia Daily Brief</div>
+        <div style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.72);margin-top:12px;">Washington, D.C.</div>
+        <div style="margin-top:11px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:0.5px;"><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/latest.html" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Read online</a><span style="color:rgba(255,255,255,0.45);">&nbsp;&middot;&nbsp;</span><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/archive.html" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Past issues</a></div>
+      </td></tr>
+      <tr><td style="padding:16px 32px 4px;text-align:center;">
+    <div style="font-family:Georgia,serif;font-size:12px;line-height:1.6;color:rgba(255,255,255,0.80);max-width:none;margin:0 auto;white-space:normal;">
+      You are receiving the Australia Daily Brief as a member of the CSIS Australia Chair distribution list.
+    </div>
+  </td></tr>
+  <tr><td style="padding:14px 32px 10px;text-align:center;">
+        <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:12px;font-family:Georgia,serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.82);max-width:560px;margin:0 auto;">
+          This newsletter is automatically generated, so it may contain errors. Please check all information and sources before citing.
+          To report errors or other issues, please contact Andy Lim at <a href="mailto:alim@csis.org" style="color:rgba(255,255,255,0.95);">alim@csis.org</a>.
+        </div>
+      </td></tr>
+      <tr><td style="padding:0 32px 20px;text-align:center;">
+        <div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:0.5px;color:rgba(255,255,255,0.70);margin-bottom:9px;">generated 6:18 AM ET</div>
+        <a href="#top" style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.95);text-decoration:none;">&#8593; Back to top</a>
+      </td></tr>
+    </table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" class="footer-end" style="background:#FFFFFF;">
+  <tr><td style="padding:12px 32px 18px;text-align:center;font-family:Arial,sans-serif;font-size:10px;letter-spacing:0.5px;color:#6B7280;">
+    &copy; 2026 Center for Strategic and International Studies
+  </td></tr>
+</table>
+            </td>
+          </tr>
+        </table>
+        <!--[if mso]></td></tr></table><![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

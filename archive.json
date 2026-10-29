@@ -552,5 +552,14 @@
     "nz_count": 3,
     "word_count": 1940,
     "url": "digest_2026-10-28.html"
+  },
+  {
+    "date": "2026-10-29",
+    "headline_re": "NZ election: National sub-25%, Opportunity surges · SAS Afghanistan inquiry cites command failures · Coalition splits over EU trade deal · Inflation hits 4.3% · Fiji election 'in limbo'",
+    "top_stories_count": 4,
+    "pacific_count": 7,
+    "nz_count": 3,
+    "word_count": 1515,
+    "url": "digest_2026-10-29.html"
   }
 ]

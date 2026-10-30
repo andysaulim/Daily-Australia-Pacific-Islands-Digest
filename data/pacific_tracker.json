@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-10-29",
+  "last_updated": "2026-10-30",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "PNG pushes inaugural China business forum and trade expo to March 2027",
-      "last_event_date": "2026-10-11",
-      "last_activity_type": "recognition switch",
-      "url": "https://www.postcourier.com.pg/inaugural-png-china-business-forum-and-trade-expo-moved-to-march-2027/",
-      "event_count": 8
+      "last_event": "Police investigate suspected explosives shipment at Port Moresby wharf",
+      "last_event_date": "2026-10-30",
+      "last_activity_type": "port / infrastructure",
+      "url": "https://www.postcourier.com.pg/police-investigate-suspected-explosives-shipment-at-wharf/",
+      "event_count": 9
     },
     "Fiji": {
       "last_event": "Australia flags concern after China tests ballistic missile from nuclear submarine",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-10-30",
+      "country": "Papua New Guinea",
+      "activity": "port / infrastructure",
+      "headline": "Police investigate suspected explosives shipment at Port Moresby wharf",
+      "url": "https://www.postcourier.com.pg/police-investigate-suspected-explosives-shipment-at-wharf/",
+      "section": "pacific_wire"
+    },
     {
       "date": "2026-10-29",
       "country": "New Caledonia",

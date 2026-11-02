@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-30",
+  "last_updated": "2026-11-02",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Police investigate suspected explosives shipment at Port Moresby wharf",
@@ -72,18 +72,18 @@
       "event_count": 24
     },
     "Marshall Islands": {
-      "last_event": null,
-      "last_event_date": null,
-      "last_activity_type": null,
-      "url": null,
-      "event_count": 0
+      "last_event": "Pacific states back Marshall Islands nuclear justice push",
+      "last_event_date": "2026-11-02",
+      "last_activity_type": "recognition switch",
+      "url": "https://islandsbusiness.com/news-break/pacific-backs-marshall-islands-nuclear-justice-push/",
+      "event_count": 1
     },
     "Micronesia (FSM)": {
-      "last_event": "Expert says Micronesia 'on the front line' of Chinese activity",
-      "last_event_date": "2026-10-26",
+      "last_event": "Micronesian experts urge people-first approach to US-China rivalry",
+      "last_event_date": "2026-11-02",
       "last_activity_type": "other",
-      "url": "https://islandsbusiness.com/pacnews/pacnews-two-26-october-2026/",
-      "event_count": 1
+      "url": "https://www.rnz.co.nz/news/pacific/2292218/micronesian-leaders-urge-people-first-approach-to-us-china-rivalry",
+      "event_count": 2
     },
     "Cook Islands": {
       "last_event": "Cook Islands authority says seabed exploration runs to 2032",
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-02",
+      "country": "Marshall Islands",
+      "activity": "recognition switch",
+      "headline": "Pacific states back Marshall Islands nuclear justice push",
+      "url": "https://islandsbusiness.com/news-break/pacific-backs-marshall-islands-nuclear-justice-push/",
+      "section": "pacific_wire"
+    },
+    {
+      "date": "2026-11-02",
+      "country": "Micronesia (FSM)",
+      "activity": "other",
+      "headline": "Micronesian experts urge people-first approach to US-China rivalry",
+      "url": "https://www.rnz.co.nz/news/pacific/2292218/micronesian-leaders-urge-people-first-approach-to-us-china-rivalry",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-10-30",
       "country": "Papua New Guinea",

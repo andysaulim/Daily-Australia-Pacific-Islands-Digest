@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the client this brief handles its own theming. Without these, a
+       dark-mode client applies its own inversion heuristics, and on a
+       FORWARDED copy where the <style> block carrying the dark rules has
+       been stripped, the result is a mixture: inline colours such as the
+       black footer survive while everything around them is recoloured by the
+       client. Declaring both schemes is what stops that guesswork. -->
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>Australia Daily Brief &ndash; Monday, November 2, 2026</title>
+  <style type="text/css">
+    body, table, td, div, p { margin:0; padding:0; }
+    img { border:0; display:block; }
+
+    @media only screen and (max-width: 620px) {
+      .util-row .util-cell { display:block !important; text-align:center !important;
+        padding:5px 8px !important; white-space:normal !important; }
+      .util-row .util-cell a { padding:4px 7px !important; margin:1px !important;
+        font-size:11px !important; letter-spacing:0.3px !important; }
+
+      .wrapper { width:100% !important; }
+      .sec, .footer { padding:16px 14px !important; }
+      .mast-main, .mast-meta { display:block !important; width:100% !important;
+                              text-align:left !important; }
+      .mast-meta { text-align:left !important; padding-top:10px !important; }
+      .mkt { font-size:11px !important; padding-right:12px !important; }
+      .cal-table td[width="110"] { width:80px !important; padding:8px 8px 8px 0 !important; }
+      .cal-date { font-size:11px !important; }
+      .china-dark > div { padding:16px 14px !important; }
+      h1 { font-size:22px !important; }   /* the shared phone nameplate size */
+      h2 { font-size:13px !important; }
+      h3 { font-size:14px !important; }
+      .story-card { padding:12px 10px !important; }
+      p, div { word-wrap:break-word !important; overflow-wrap:break-word !important; }
+      img { max-width:100% !important; height:auto !important; }
+      /* Keep the iOS auto-zoom guard, drop the blanket size. Forcing every
+         td, div, p and span to one size on a phone flattened the whole
+         hierarchy, so a section label, a body copy paragraph and a footnote
+         all rendered at 14px. That is why this edition read larger than the
+         other three, none of which carries such a rule. */
+      body, td, div, p, span { -webkit-text-size-adjust:100%; }
+      div[style*="font-size:10px"], div[style*="font-size:10px"],
+      span[style*="font-size:10px"], span[style*="font-size:10px"] { font-size:11px !important; }
+      a { min-height:44px; min-width:44px; display:inline-block; line-height:44px; }
+      p a, div a, td a { min-height:auto; min-width:auto; display:inline; padding:6px 0; line-height:inherit; }
+    }
+
+    @media only screen and (min-width: 621px) and (max-width: 768px) {
+      .wrapper { width:100% !important; max-width:680px !important; }
+      .sec, .footer { padding:14px 20px !important; }
+      h1 { font-size:22px !important; }
+    }
+
+    @media print {
+      /* The PDF is generated from this same HTML, so the print rules are what
+         decide whether it reads as a document or a long screenshot. */
+      body { background:#FFFFFF !important; }
+      .wrapper { width:100% !important; max-width:100% !important;
+                  box-shadow:none !important; }
+      /* The read-online bar and the back-to-top links are navigation. On
+         paper they are dead text. */
+      .no-print { display:none !important; }
+      /* An item split across a page break loses its source line, which is the
+         part that makes it checkable. */
+      .story-card, .cal-table tr { page-break-inside:avoid;
+                                    break-inside:avoid; }
+      h1, h2, h3 { page-break-after:avoid; break-after:avoid; }
+      a { text-decoration:none !important; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body { background:#121212 !important; }
+      .wrapper { background:#1a1a1a !important; }
+      .wrapper .sec { background:#222 !important; border-bottom-color:#333 !important; }
+      .wrapper h1, .wrapper h2, .wrapper h3 { color:#E0E0E0 !important; }
+      /* Removed: this forced EVERY text node to #CCC, which is why dark mode
+         here was monochrome: accents flattened, and white type on a teal
+         ground turned grey at 3.15:1. The per-colour mappings below do the
+         job properly, mapping each light value to a chosen dark counterpart. */
+      .wrapper a { color:#2E9CB0 !important; }
+      .wrapper .footer { background:#0F1A2E !important; }
+      /* The terminal strip is white by design in light mode. Left
+         unmapped it stays white in dark mode, which is a bright band
+         across the bottom of an otherwise dark brief. The coverage
+         guard misses it because #FFFFFF is on the exempt list, being
+         legitimate as type on an accent fill. */
+      .wrapper .footer-end { background:#1a1a1a !important; }
+      /* Keep the filled buttons filled. The generic white-background
+         rule darkens them while their type stays dark, which measured
+         1.23:1 - a button you cannot read. */
+      .wrapper .footer-end td { color:#9AA3AE !important; }
+      .wrapper .story-card { background:#2a2a2a !important; border-color:#333 !important; }
+      .wrapper .china-dark { background:#101E2A !important; }
+    /* Filled from a measured audit of the rendered brief: these
+       colours reached the output with no dark rule, so they kept
+       their light values and rendered near-black on near-black. */
+      .wrapper [style*="color:#0d1b2a"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#0D1B2A"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#17798c"] { color:#5FC2D6 !important; }
+      .wrapper [style*="color:#17798C"] { color:#5FC2D6 !important; }
+      /* NZ_GREEN, the third geography's accent. It reached the output with
+         no dark rule and kept its light value: #1B6A4A on #222 is 2.1:1. */
+      .wrapper [style*="color:#1b6a4a"] { color:#6FC79A !important; }
+      .wrapper [style*="color:#1B6A4A"] { color:#6FC79A !important; }
+      .wrapper [style*="color:#1b2a4a"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#1B2A4A"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#2c3e50"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#2C3E50"] { color:#D5D8DC !important; }
+      .wrapper [style*="color:#444"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#4a5260"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#4A5260"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#555"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#55607a"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#55607A"] { color:#C4C8CE !important; }
+      .wrapper [style*="color:#6b7280"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#6B7280"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#888"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#aaa"] { color:#9AA3AE !important; }
+      .wrapper [style*="color:#AAA"] { color:#9AA3AE !important; }
+      .wrapper [style*="background:#e9f2f4"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#E9F2F4"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#eff6f8"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#EFF6F8"] { background-color:#16262A !important; }
+      .wrapper [style*="background:#f2f3f5"] { background-color:#22262C !important; }
+      .wrapper [style*="background:#F2F3F5"] { background-color:#22262C !important; }
+      .wrapper [style*="background:#f7f8fa"] { background-color:#1A1D22 !important; }
+      .wrapper [style*="background:#F7F8FA"] { background-color:#1A1D22 !important; }
+      .wrapper [style*="background:#fff"] { background-color:#262A30 !important; }
+      .wrapper [style*="background:#FFF"] { background-color:#262A30 !important; }
+      .wrapper [style*="background:#ffffff"] { background-color:#262A30 !important; }
+      .wrapper [style*="background:#FFFFFF"] { background-color:#262A30 !important; }
+          /* The blanket "everything is #CCC" rule turns the date block's white
+         type grey on its teal ground, and turns the pill's dark type teal.
+         Both are elements whose colours are already correct in either
+         scheme, so they opt out. */
+      .wrapper .cal-date, .wrapper .cal-date * { color:#FFFFFF !important; }
+      .wrapper .pill { background:#E8E6E1 !important; color:#14181F !important; }
+}
+  </style>
+  <!--[if mso]>
+  <style type="text/css">
+    table { border-collapse:collapse; }
+  </style>
+       /* Last in the block: equal specificity, so order decides. The pill is
+         dark type on a white fill, and the generic white-background rule
+         above darkens the fill while the type stays dark - 1.23:1. */
+      .wrapper .pill { background:#E8E6E1 !important; color:#14181F !important; }
+ <![endif]-->
+</head>
+<body style="margin:0;padding:0;background:#F2F3F5;font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+  <!-- The frame is a TABLE whose width is an HTML ATTRIBUTE, not a div with a
+       CSS max-width. Gmail and most clients drop every stylesheet block when a
+       recipient forwards or replies, and many ignore max-width on a div, so the
+       old wrapper lost its width on forward and the content sprawled. An
+       attribute survives stylesheet stripping, so a forwarded copy keeps its
+       shape. class="wrapper" stays so the mobile media query can still flex it
+       to 100% while the stylesheet is intact. -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;padding:0;background:#F2F3F5;">
+    <tr>
+      <td align="center" valign="top" style="padding:0;">
+        <!--[if mso]><table width="680" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
+        <table role="presentation" class="wrapper" width="680" cellpadding="0" cellspacing="0" border="0" align="center" style="width:680px;max-width:100%;margin:0 auto;background:#FFFFFF;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="padding:0;">
+              
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#2E3644;" class="util-row no-print">
+          <tr>
+            <td class="util-cell" style="padding:7px 32px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.72);white-space:nowrap;">For Internal Use Only</td>
+            <td class="util-cell" align="right" style="padding:5px 32px 5px 0;text-align:right;"><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/latest.html" style="display:inline-block;padding:6px 14px;margin:0 3px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Read online</a><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/digest_2026-11-02.pdf" style="display:inline-block;padding:6px 14px;margin:0 3px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Download PDF</a><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/archive.html" style="display:inline-block;padding:6px 14px;margin:0 3px;font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Past issues</a></td>
+          </tr>
+        </table>
+        
+
+    <a name="top" id="top"></a>
+    <div bgcolor="#17798C" style="background-color:#17798C;color:#fff;padding:16px 32px 16px;border-bottom:1px solid rgba(255,255,255,0.18);" class="sec mast-band">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td class="mast-main" style="vertical-align:top;">
+          <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.78);margin-bottom:7px;">CSIS Australia Chair</div>
+          <h1 style="margin:0 0 4px 0;font-size:26px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#fff;letter-spacing:0.5px;">
+            Australia Daily Brief
+          </h1>
+          <div style="margin-top:2px;font-size:16px;font-weight:400;color:rgba(255,255,255,0.85);font-family:Georgia,serif;">Monday, November 2, 2026</div>
+        </td>
+        <td class="mast-meta" style="vertical-align:bottom;text-align:right;">
+          <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:0.5px;color:rgba(255,255,255,0.72);white-space:nowrap;">1,657 words &middot; 7 min read</div>
+        </td>
+      </tr></table>
+      <div style='margin-top:12px;padding-top:12px;border-top:1px solid rgba(46,156,176,0.35);font-size:13px;color:rgba(255,255,255,0.85);font-family:Georgia,serif;line-height:1.5;'><strong style='color:#FFFFFF;font-size:11px;letter-spacing:1px;'>RE:</strong>&nbsp; Rabuka shelves Constitution Bill timetable · RBA tipped to lift to 4.85% · Albanese at CHOGM under fire at home · Pacific backs Marshall Islands nuclear claim · NZ early voting surges</div>
+    </div>
+    
+<table class="mkt-table" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0D1B2A;color:#fff;border-bottom:1px solid rgba(255,255,255,0.10);"><tr><td width="25%" align="center" style="padding:11px 6px 13px;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">ASX 200</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">8,856</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#69C88E;">+0.53%</div></td><td width="25%" align="center" style="padding:11px 6px 13px;border-left:1px solid rgba(255,255,255,0.10);"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">AUD/USD</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">0.7013</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#E8697A;">-0.09%</div></td><td width="25%" align="center" style="padding:11px 6px 13px;border-left:1px solid rgba(255,255,255,0.10);"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">NZX 50</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">13,699</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#E8697A;">-0.26%</div></td><td width="25%" align="center" style="padding:11px 6px 13px;border-left:1px solid rgba(255,255,255,0.10);"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#9DB2CE;">NZD/USD</div><div style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;">0.5623</div><div style="font-family:'Courier New',Courier,monospace;font-size:11px;margin-top:2px;color:#E8697A;">-1.14%</div></td></tr></table>
+<div class="nav-row sec" style="background:#F7F8FA;border-bottom:1px solid #E4E7EB;padding:9px 32px;text-align:center;font-family:Arial,sans-serif;font-size:11px;line-height:1.9;color:#6B7280;"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6B7280;">In this issue &nbsp;</span><a href="#top-stories" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Top Stories</a> &nbsp;&middot;&nbsp; <a href="#overnight" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Overnight</a> &nbsp;&middot;&nbsp; <a href="#key-stat" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Stat</a> &nbsp;&middot;&nbsp; <a href="#pacific" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Pacific</a> &nbsp;&middot;&nbsp; <a href="#nz" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">New Zealand</a> &nbsp;&middot;&nbsp; <a href="#china-pacific" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">China-Pacific</a> &nbsp;&middot;&nbsp; <a href="#canberra" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Canberra</a> &nbsp;&middot;&nbsp; <a href="#business" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Markets</a> &nbsp;&middot;&nbsp; <a href="#calendar" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">Upcoming</a> &nbsp;&middot;&nbsp; <a href="#wire" style="color:#17798C;text-decoration:underline;text-underline-offset:2px;white-space:nowrap;">The Wire</a></div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="memo" id="memo"></a>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="glance-panel" style="background:#E9F2F4;border-left:3px solid #17798C;">
+            <tr><td style="padding:0;"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Today at a Glance</span></td></tr></table></td></tr>
+            <tr><td style="padding:0 20px 8px;">
+              
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <tr>
+                <td width="28" style="vertical-align:top;padding-top:2px;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#17798C;color:#FFFFFF;text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">1</div>
+                </td>
+                <td style="padding-left:10px;vertical-align:top;">
+                  <div style="font-size:14px;line-height:1.6;color:#2C3E50;font-family:Georgia,serif;">Rabuka pulled the Constitution (Amendment) Bill 2026 off this week's parliamentary timetable one day after confirming he would table it, with no new date given and Fiji's election deadline fixed at February 6, 2027.</div>
+                </td>
+              </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <tr>
+                <td width="28" style="vertical-align:top;padding-top:2px;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#17798C;color:#FFFFFF;text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">2</div>
+                </td>
+                <td style="padding-left:10px;vertical-align:top;">
+                  <div style="font-size:14px;line-height:1.6;color:#2C3E50;font-family:Georgia,serif;">Markets and economists expect the Reserve Bank to lift the cash rate to 4.85 percent on Tuesday, after a seventh consecutive monthly fall in house values.</div>
+                </td>
+              </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+              <tr>
+                <td width="28" style="vertical-align:top;padding-top:2px;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#17798C;color:#FFFFFF;text-align:center;line-height:24px;font-size:13px;font-weight:700;font-family:Georgia,serif;">3</div>
+                </td>
+                <td style="padding-left:10px;vertical-align:top;">
+                  <div style="font-size:14px;line-height:1.6;color:#2C3E50;font-family:Georgia,serif;">Pacific governments lined up behind the Marshall Islands in its pursuit of justice over United States nuclear testing, as Micronesian scholars warned that US-China military competition is running ahead of local consent.</div>
+                </td>
+              </tr>
+            </table>
+            </td></tr>
+          </table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="top-stories" id="top-stories"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Top Stories</span></td></tr></table>
+          
+            <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid #17798C;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <span style="display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#17798C;font-weight:700;margin-bottom:6px;">Pacific-Politics</span>
+              <h3 style="margin:0 0 8px 0;font-size:16px;color:#0D1B2A;font-family:Georgia,serif;line-height:1.4;">
+                <a href="https://www.rnz.co.nz/news/pacific/2301684/fiji-pm-rabuka-delays-vote-on-constitution-bill-after-mounting-pressure" style="color:#0D1B2A;text-decoration:none;">Rabuka delays Constitution Bill vote after mounting pressure</a>
+              </h3>
+              <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;"><strong style="font-weight:700;">Sitiveni Rabuka</strong> told parliament on Monday that the Special Parliamentary Committee on the Constitution (Amendment) Bill 2026 would &quot;table its review report at a later sitting date&quot;, reversing his confirmation a day earlier that the bill would be tabled this week. He gave no new date, saying the extension would let the committee &quot;listen to more submissions from the public&quot; and give parliamentary staff time to compile the final report. Rabuka has tied the absence of an announced election date to the reform process running in parallel; the hard deadline for the election is February 6, 2027.</p>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">per RNZ Pacific: &quot;Fiji PM Rabuka delays vote on Constitution Bill after mounting pressure&quot; · also ABC News</div>
+            </div>
+            <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid #1B2A4A;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <span style="display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#17798C;font-weight:700;margin-bottom:6px;">Trade-Economy</span>
+              <h3 style="margin:0 0 8px 0;font-size:16px;color:#0D1B2A;font-family:Georgia,serif;line-height:1.4;">
+                <a href="https://www.smh.com.au/politics/federal/the-rate-rise-that-stops-the-economy-fears-of-an-rba-induced-recession-20261102-p61aic.html?ref=rss&amp;utm_medium=rss&amp;utm_source=rss_politics_federal" style="color:#0D1B2A;text-decoration:none;">Markets price a fifth 2026 rate rise as house values fall for a seventh month</a>
+              </h3>
+              <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;">Markets and economists expect the Reserve Bank to push the cash rate to <em>4.85 percent</em> on Tuesday, which the Guardian records would be the fifth increase of 2026. House values fell for a seventh consecutive month in October, with the decline spreading across the country and capital city prices falling at the fastest pace of any housing downturn in four decades, on Cotality data reported by the ABC. Borrowing capacity is shrinking while rents keep rising, leaving affordability unimproved by the price falls.</p>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">per Sydney Morning Herald: &quot;The rate rise that stops the economy? Fears of an RBA-induced recession&quot; · also WSJ</div>
+            </div>
+            <div class="story-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border-radius:3px;border-left:4px solid #1B2A4A;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <span style="display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#17798C;font-weight:700;margin-bottom:6px;">AU-Foreign-Policy</span>
+              <h3 style="margin:0 0 8px 0;font-size:16px;color:#0D1B2A;font-family:Georgia,serif;line-height:1.4;">
+                <a href="https://www.smh.com.au/politics/federal/under-fire-at-home-albanese-walks-a-tightrope-at-caribbean-summit-20261102-p61ak5.html?ref=rss&amp;utm_medium=rss&amp;utm_source=rss_politics_federal" style="color:#0D1B2A;text-decoration:none;">Albanese works the Commonwealth summit while taking heat at home for going</a>
+              </h3>
+              <p style="margin:0 0 8px 0;font-size:13px;line-height:1.6;color:#444;"><strong style="font-weight:700;">Anthony Albanese</strong> is at the Commonwealth Heads of Government Meeting in Antigua, where the Sydney Morning Herald reports his appearances will be carefully stage-managed as cost-of-living pressure builds at home. The ABC reports he will raise British backpacker rules with UK Prime Minister <strong style="font-weight:700;">Andy Burnham</strong> on the sidelines, days after Canberra cut working holiday maker places. King Charles III is also attending the meeting.</p>
+              <div style="font-size:10px;color:#6B7280;margin-top:6px;">per Sydney Morning Herald: &quot;Under fire at home, Albanese walks a tightrope at Caribbean summit&quot; · also ABC News</div>
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="overnight" id="overnight"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Overnight</span></td></tr></table>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="flash-table" style="border-top:2px solid #17798C;"><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">AU-Foreign-Policy</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.abc.net.au/listen/programs/radionational-breakfast/radio-national-breakfast-chogm-reparations/107333998" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Burnham opens door to slavery apology as Caribbean activists press Commonwealth</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; ABC News</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">Protesters on the margins of the Commonwealth summit demanded the United Kingdom confront its role in transatlantic enslavement, which took more than 10 million Africans from their homes between the 15th and 19th centuries. <strong style="font-weight:700;">Andy Burnham</strong> opened the door to an apology over the weekend but said the prospect of reparation payments remains unlikely. The reparations question has shadowed successive Commonwealth leaders meetings.</div></td></tr><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">AU-Politics</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.abc.net.au/listen/programs/abc-news-top-stories/canavan-urges-pm-to-adopt-coalition-backpacker-plan/107337788" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Canavan presses Albanese to adopt Coalition backpacker plan</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; ABC News</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">Nationals senator <strong style="font-weight:700;">Matt Canavan</strong> urged the prime minister to take up the Coalition's working holiday maker proposal, days after Canberra raised student visa costs and cut working holiday maker places. A regional town reliant on backpacker labour told the ABC the visa changes would cripple local businesses. Albanese is separately raising British backpacker rules at the Commonwealth summit.</div></td></tr><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">AU-Politics</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.politico.com/news/2026/11/01/ai-talks-with-public-servants-deadlocked-as-australian-politicians-look-for-government-savings-01142034" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Public service AI talks deadlocked as politicians hunt staffing savings</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; Politico</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">Australian public servants are demanding safeguards on the use of artificial intelligence in government work while politicians look to the technology for savings on staff numbers, Politico reports. The negotiations are deadlocked. Machinery-of-government savings have become a live front as both major parties court budget repair arguments.</div></td></tr><tr><td style="padding:7px 10px 7px 0;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#17798C;border-bottom:1px solid #EEF0F3;">AU-Politics</td><td style="padding:7px 0;vertical-align:top;font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#2C3E50;border-bottom:1px solid #EEF0F3;"><div><a href="https://www.abc.net.au/news/2026-11-02/rise-in-young-men-open-to-extreme-measures-for-a-cause/107326932" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">One in four young men say violence for a cause can be justified</a><span style="font-family:Arial,sans-serif;font-size:11px;color:#6B7280;"> &middot; ABC News</span></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#6B7280;margin-top:2px;">New research reported by the ABC finds <em>one in four</em> young Australian men now say violence in support of a cause can be justified. The finding lands alongside separate polling showing three in four voters believe the country is becoming more divided.</div></td></tr></table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="key-stat" id="key-stat"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Stat of the Day</span></td></tr></table>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFF6F8;border-top:2px solid #17798C;border-bottom:1px solid #E4E7EB;">
+            <tr><td style="padding:14px 16px;">
+              <div style="font-family:Georgia,serif;font-size:26px;font-weight:700;color:#17798C;line-height:1;">4.85%</div>
+              <div style="font-family:Georgia,serif;font-size:14px;color:#2C3E50;margin-top:5px;line-height:1.4;">Expected RBA cash rate after Tuesday's decision</div>
+              <div style='font-family:Georgia,serif;font-size:13px;color:#4A5260;margin-top:4px;line-height:1.5;'>Markets and economists expect a fifth increase of 2026, landing as capital city house prices fall at their fastest pace in four decades.</div>
+              <div style='font-family:Arial,sans-serif;font-size:11px;color:#55607A;margin-top:7px;'>Sydney Morning Herald</div>
+            </td></tr>
+          </table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="pacific" id="pacific"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#17798C;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Pacific Wire</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Marshall Islands &middot; Islands Business (Stefan Armbruster)</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://islandsbusiness.com/news-break/pacific-backs-marshall-islands-nuclear-justice-push/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Pacific states back Marshall Islands nuclear justice push</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Pacific Island countries have rallied behind the Marshall Islands in its decades-long pursuit of justice over United States nuclear testing, Islands Business reports. The Marshall Islands is one of three Forum members in a Compact of Free Association with Washington and one of three that hold diplomatic relations with Taiwan.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Samoa &middot; RNZ Pacific</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.rnz.co.nz/news/pacific/2300817/god-s-government-samoan-pm-la-auli-makes-position-clear-on-israel" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Samoan PM joins pro-Israel march, confirms Jerusalem embassy preparations</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Head of state <strong style="font-weight:700;">Afioga Tui'malealiifano Vaaletoa Sualauvi II</strong> and Prime Minister <strong style="font-weight:700;">La'aulialemalietoa Leuatea Schmidt</strong> joined a &quot;March for Israel&quot; in Apia organised by the Samoa for Israel group. La'auli said the time had come to declare Samoa's position rather than remain undecided, and confirmed preparations for an embassy in Jerusalem continue despite opposition.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Fiji &middot; Islands Business, PACNEWS</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://islandsbusiness.com/pacnews/pacnews-one-02-november-2026/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Fiji military signals readiness to surrender coup immunity</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">PACNEWS reports the Republic of Fiji Military Forces is ready to surrender the immunity it holds for past coups, a provision embedded in the 2013 constitution. In the same bulletin Rabuka said the military may have to &quot;bring things back to order&quot; if &quot;things go wrong&quot;, remarks made as the constitutional review timetable slipped.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Papua New Guinea &middot; PNG Post-Courier</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.postcourier.com.pg/new-australian-high-commissioner-takes-up-post-in-png/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Isbister takes up post as Australian High Commissioner in Port Moresby</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;"><strong style="font-weight:700;">Jamie Isbister</strong> formally assumed the role of Australia's High Commissioner to Papua New Guinea after presenting his letter of introduction to Prime Minister <strong style="font-weight:700;">James Marape</strong>. The Post-Courier framed the arrival as a new chapter in the bilateral partnership.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Regional &middot; Islands Business, PACNEWS</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://islandsbusiness.com/pacnews/pacnews-three-02-november-2026/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Progress report on the 2050 Strategy flags implementation gaps</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">A new Pacific report shows progress against the 2050 Strategy for the Blue Pacific Continent but warns of gaps in implementation, PACNEWS reports. The strategy is the Forum's master framework for regional cooperation and donor alignment.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Regional &middot; ABC Pacific Beat</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/pacific/programs/pacificbeat/pacific-beat/107316714" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Analysts warn drug smugglers will adapt quickly to AI maritime drones</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Transnational crime analysts told ABC Pacific Beat that drug smugglers will adapt quickly to the AI-enabled maritime drones being introduced for surveillance in the Pacific. A companion segment examined the technology's rollout in Fiji.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Papua New Guinea &middot; ABC Pacific Beat</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/pacific/programs/pacificbeat/png27/107335444" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Families of the 27 lost off East New Britain still waiting for answers</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Relatives of the 27 people lost at sea off East New Britain are still without answers, ABC Pacific Beat reports. Maritime safety and search capacity have been recurring themes in PNG's domestic shipping incidents.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #17798C;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Cook Islands &middot; RNZ Pacific</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.rnz.co.nz/news/pacific/2299511/if-not-alive-repatriate-my-body-family-fears-for-sri-lankan-woman-stranded-in-cook-islands" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Family fears for Sri Lankan woman stranded three years in Cook Islands</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;"><strong style="font-weight:700;">Ruchira Ranasingha</strong>, 50, has been stuck in the Cook Islands since November 2023 after Australia and New Zealand repeatedly refused her transit visa applications. Immigration New Zealand declined to comment on the case, citing privacy, while noting concerns about her intentions. Her family says her mental state is deteriorating.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="nz" id="nz"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B6A4A;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">New Zealand</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B6A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">NZ-Politics &middot; Reuters</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.reuters.com/world/asia-pacific/new-zealand-early-voting-surges-ahead-november-7-election-2026-11-02/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Early voting surges ahead of New Zealand's November 7 election</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Reuters reports a surge in advance voting before Saturday's general election. Advance voting opened on October 26 for the contest between <strong style="font-weight:700;">Christopher Luxon</strong>'s National-led coalition with ACT and NZ First, and the opposition parties.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B6A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">NZ-Politics &middot; Reuters</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.reuters.com/world/asia-pacific/new-zealands-two-speed-economy-poses-election-dilemma-ruling-national-party-2026-11-01/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Two-speed economy poses election dilemma for National</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">New Zealand's two-speed economy, with export-facing sectors diverging from domestic demand, is complicating the governing National party's closing argument, Reuters reports, five days from the vote.</div>
+              
+            </div>
+        </div>
+
+        <div bgcolor="#0D1B2A" style="background-color:#0D1B2A;padding:20px 32px;" class="sec china-dark">
+          <a name="china-pacific" id="china-pacific"></a>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#2E9CB0;font-family:Arial,sans-serif;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #2E9CB0;">China in the Pacific</div>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #2E9CB0;">
+              <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.5px;">Micronesia (FSM) &middot; other &middot; RNZ Pacific</div>
+              <div style="font-size:13px;font-weight:600;color:#fff;margin:2px 0 3px;">
+                <a href="https://www.rnz.co.nz/news/pacific/2292218/micronesian-leaders-urge-people-first-approach-to-us-china-rivalry" style="color:#fff;border-bottom:1px solid #2E9CB0;padding-bottom:1px;text-decoration:none;">Micronesian experts urge people-first approach to US-China rivalry</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);">Scholars and security experts told a virtual forum run by the Guam-based Pacific Center for Island Security on October 23 that military competition between Washington and Beijing must not come at the expense of Micronesia's people, environment, and sovereignty. Former Guam congressional delegate <strong style="font-weight:700;">Robert Underwood</strong> said &quot;military strength or military spending cannot affect everything&quot;. The forum launched the Micronesia Security Monitor, a platform tracking military activity, and discussed China's expanding maritime operations and a possible US shift toward the Second Island Chain.</div>
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="canberra" id="canberra"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Canberra Politics</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; Sydney Morning Herald</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.smh.com.au/politics/federal/trust-in-politicians-plunges-new-polling-shows-as-education-divide-splits-australian-voters-20261102-p61aag.html?ref=rss&amp;utm_medium=rss&amp;utm_source=rss_politics_federal" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Trust in politicians plunges as education divide splits voters</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">New polling finds three in four voters believe Australia is becoming more divided, with respondents citing broken promises and dishonesty rather than cost of living for the fall in political trust. The ABC reports the McKinnon index also recorded falling satisfaction with democracy.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; Sydney Morning Herald</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.smh.com.au/politics/federal/when-it-comes-to-mea-culpas-they-don-t-come-much-stronger-than-jim-chalmers-recent-admission-20261102-p61aby.html?ref=rss&amp;utm_medium=rss&amp;utm_source=rss_politics_federal" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Chalmers admission feeds questions about Labor's direction</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;"><strong style="font-weight:700;">Jim Chalmers</strong> has made an unusually direct admission on the government's record, the Sydney Morning Herald reports, as pressure builds on an unpopular Labor government to define itself. The ABC reports tension between the treasurer and <strong style="font-weight:700;">Anthony Albanese</strong> over cost of living, which Chalmers has played down.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; ABC News</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.abc.net.au/news/2026-11-02/federal-politics-nationals-leader-matt-canavan-capricornia/107335062" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Canavan to seek preselection for Capricornia as Ashby rules out a run</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Nationals leader and Queensland senator <strong style="font-weight:700;">Matt Canavan</strong> confirmed he will seek preselection for the House of Representatives seat of Capricornia at the next federal election. One Nation's <strong style="font-weight:700;">James Ashby</strong> ruled out contesting the seat.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; Politico</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.politico.com/news/2026/11/01/australias-campaign-finance-laws-face-their-citizens-united-moment-01144654" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Australia's campaign finance laws face a 'Citizens United' moment</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Politico reports Australia's campaign finance regime is facing a constitutional challenge of the kind that reshaped United States political spending. The outcome would bear on donation caps and spending limits legislated by the current parliament.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #1B2A4A;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">AU-Politics &middot; Canberra Times</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.canberratimes.com.au/story/9382747/echidna-australian-mps-had-a-civil-question-time-for-once/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">A rare civil question time in the House</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">The Canberra Times records an unusually civil question time, a break from exchanges dominated by the opposition's attack on government spending. Parliament sits this week with the Reserve Bank decision landing mid-sitting.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="business" id="business"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Business and Economy</span></td></tr></table>
+          
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #B8860B;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Trade-Economy &middot; The Australian</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.theaustralian.com.au/business/financial-services/westpac-posts-696bn-profit-as-bad-loans-fall-despite-rising-interest-rates/news-story/f740284c4dc17ec0ec092a814266e29c" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Westpac posts $6.96 billion profit, warns property slump is only half done</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Westpac reported a <em>$6.96 billion</em> profit with bad loans falling despite rising interest rates, and its chief executive warned the property downturn is only half finished. The ASX 200 closed at 8,856, up 0.53 percent.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #B8860B;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Trade-Economy &middot; The Australian</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://www.theaustralian.com.au/business/agribusiness/naracoorte-farmers-fight-rare-earths-mining-push-across-food-bowl/news-story/f0f7ec59d7fac8afcf1a13ef18c9b5f3" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Naracoorte farmers fight rare earths push across South Australian food bowl</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Farmers in the Naracoorte district are contesting a rare earths mining proposal over prime agricultural land, warning of &quot;irreversible change&quot;. Critical minerals expansion has been central to Canberra's industrial and alliance agenda.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #B8860B;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Trade-Economy &middot; AFP</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxQVTN5aEtFS1FROWw4bHA1dmV2aDJKOFBGdjFOOWl1UDVrN3F3bENCdVRTVFhLMkk2SWtVOHg5WkNHeTl1Q0tkNEhYbnY5OXlLUFVWb01oUHBzMUZvM0NTXzQzYzJxNGd1ZU9KOUFZckVyM2FQb2xxLS1OUmxjTnVBMWtHZWQtcEpiRUFzNA?oc=5" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">ExxonMobil urged to rethink Papua New Guinea gas project</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">ExxonMobil is being urged to reconsider its Papua New Guinea gas project, AFP reports. PNG's gas pipeline has been the subject of repeated financing and landowner disputes, with Kumul Petroleum last week saying Papua LNG financing relies on domestic borrowing.</div>
+              
+            </div>
+            <div style="margin-bottom:12px;padding-left:12px;border-left:3px solid #B8860B;">
+              <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;">Trade-Economy &middot; Bloomberg</div>
+              <div style="font-size:13px;font-weight:600;color:#1B2A4A;margin:2px 0 3px;">
+                <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxPcV9DVDhZMnoyb1h5NWxCRzR6TkFrU3FsVFRGTVp4YWlaSkJaakg0WXBtRXR6UXhkbks1UnJlSk9sTzlBeTBxWWwzcHd5RUR6YUoyRFBzR3hOQTQ2ZjBxTzdhT01Ta2FmcHVVWWc5YVI3RXZfVUlSRDE5aHhvcDVhSjhOaTZkNC15NkhtYTlWWnhIek9oM3VBZkJQS3FmWVFuZmF1NGdBdlFuR1dhMmE4?oc=5" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">New Zealand assets face headwinds as the election race tightens</a>
+              </div>
+              <div style="font-size:13px;line-height:1.5;color:#555;">Bloomberg reports New Zealand assets are under pressure with the election five days away. The NZX 50 closed at 13,699, down 0.26 percent, and the New Zealand dollar fell 1.14 percent to 0.5623 against the greenback.</div>
+              
+            </div>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="calendar" id="calendar"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">Upcoming</span></td></tr></table>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="cal-table">
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" style="background:#17798C;"><tr><td align="center" style="padding:4px 0 5px;width:46px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(255,255,255,0.85);">NOV</div><div style="font-family:Georgia,serif;font-size:16px;font-weight:700;color:#fff;line-height:1;">3</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">Reserve Bank of Australia cash rate decision</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">Markets and economists expect a move to 4.85 percent, which would be the fifth increase of 2026 into a seventh month of falling house values.</div>
+                </td>
+              </tr>
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" style="background:#17798C;"><tr><td align="center" style="padding:4px 0 5px;width:46px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(255,255,255,0.85);">NOV</div><div style="font-family:Georgia,serif;font-size:16px;font-weight:700;color:#fff;line-height:1;">7</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">New Zealand general election</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">Decides whether the National, ACT and NZ First coalition continues, and with it the current settings on defence spending and Pacific policy.</div>
+                </td>
+              </tr>
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" class="cal-window" style="background:#E9F2F4;border:1px solid #17798C;"><tr><td align="center" style="padding:4px 0 5px;width:44px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#17798C;">NOV</div><div style="font-family:Georgia,serif;font-size:13px;font-weight:700;color:#1B2A4A;line-height:1.15;">2026</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">Commonwealth Heads of Government Meeting, Antigua</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">Albanese is using the margins to press British backpacker visa rules while reparations demands dominate the host agenda.</div>
+                </td>
+              </tr>
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" class="cal-window" style="background:#E9F2F4;border:1px solid #17798C;"><tr><td align="center" style="padding:4px 0 5px;width:44px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#17798C;">NOV</div><div style="font-family:Georgia,serif;font-size:13px;font-weight:700;color:#1B2A4A;line-height:1.15;">2026</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">Fiji parliamentary committee report on the Constitution (Amendment) Bill 2026</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">Rabuka gave no date for the delayed report, and the review is the stated reason Fiji's election date remains unannounced.</div>
+                </td>
+              </tr>
+              <tr>
+                <td width="54" style="vertical-align:top;padding:9px 12px 9px 0;"><table cellpadding="0" cellspacing="0" border="0" style="background:#17798C;"><tr><td align="center" style="padding:4px 0 5px;width:46px;"><div style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(255,255,255,0.85);">FEB</div><div style="font-family:Georgia,serif;font-size:16px;font-weight:700;color:#fff;line-height:1;">6</div></td></tr></table></td>
+                <td style="vertical-align:top;padding:9px 0;border-bottom:1px solid #E8E8E8;">
+                  <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1B2A4A;">Hard deadline for Fiji's general election</div>
+                  <div style="font-family:Georgia,serif;font-size:13px;line-height:1.45;color:#4A5260;margin-top:3px;">Any further slippage in the constitutional review compresses the window for campaigning and electoral administration.</div>
+                </td>
+              </tr></table>
+        </div>
+
+        <div style="padding:20px 32px;border-bottom:1px solid #EBEBEB;" class="sec">
+          <a name="wire" id="wire"></a><table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec-bar" style="background:#14181F;margin-bottom:14px;"><tr><td style="padding:9px 14px;"><span style="font-family:Arial,sans-serif;font-size:12px;color:#1B90A6;line-height:1;vertical-align:middle;margin-right:9px;">&#9679;</span><span style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;vertical-align:middle;">The Wire</span></td></tr></table>
+          <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#55607A;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">Us-Australia</div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">ASPI Strategist</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.aspistrategist.org.au/interoperability-needs-logistics-the-next-phase-of-us-marine-rotations-to-australia/" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Interoperability needs logistics: the next phase of US Marine rotations to Australia</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">ASPI argues the next phase of Australia-US cooperation should focus on how quickly the two can generate, deploy and sustain a combined force, linking rotational training in northern Australia to logistics capacity rather than exercise tempo alone.</div></div><div style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#55607A;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid #E4E7EB;">Trade-Economy</div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">ABC News</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.abc.net.au/news/2026-11-02/act-inflation-rate-rises-above-nation-average/107335864" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">ACT inflation hits 4.7 percent, above the national average</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">Inflation in the Australian Capital Territory rose to <em>4.7 percent</em> in the 12 months to September, above the national rate, with Canberra businesses reporting customers curbing spending.</div></div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">The Australian</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.theaustralian.com.au/nation/a-rather-poor-site-expert-urges-crisafulli-government-to-abandon-184bn-borumba-hydro-project/news-story/2f5b711228ace5aed6f78d349c0e9c75" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">Expert urges Queensland to abandon Borumba hydro on cost grounds</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">An expert called on the Crisafulli government to abandon the $18.4 billion Borumba pumped hydro project, describing the location as &quot;a rather poor site&quot; and putting its cost burden at six times that of Snowy 2.0.</div></div><div style="margin-bottom:11px;padding-left:12px;border-left:3px solid #17798C;"><div style="font-family:Arial,sans-serif;font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:2px;">The Australian</div><div style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#2C3E50;line-height:1.4;"><a href="https://www.theaustralian.com.au/business/financial-services/asic-slams-major-super-funds-for-missing-red-flags-on-complaints-and-blaming-members-for-errors/news-story/c75a1a65682f76cc39232a8a5e582582" style="color:#1B2A4A;border-bottom:1px solid #17798C;padding-bottom:1px;text-decoration:none;">ASIC criticises major super funds over complaint handling</a></div><div style="font-family:Georgia,serif;font-size:13px;line-height:1.5;color:#4A5260;margin-top:2px;">The corporate regulator found major superannuation funds missed red flags in member complaints and blamed members for the funds' own errors.</div></div>
+        </div>
+
+    <!-- The house footer. Korea carries a CSIS lockup built in HTML; this
+         edition has no wordmark to reproduce, so it leads with the chair name
+         instead. Everything else matches: centred, the city and domain on
+         their own line, the links as links rather than a run-on sentence, and
+         the disclaimer set in the reading face. -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="sec footer" style="background:#14181F;border-top:4px solid #17798C;">
+      <tr><td style="padding:20px 32px 6px;text-align:center;">
+        
+        <div style="font-family:Georgia,serif;font-size:38px;font-weight:700;color:#FFFFFF;letter-spacing:1px;line-height:1.1;">CSIS Australia Chair</div>
+        <div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-top:6px;">Australia Daily Brief</div>
+        <div style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.72);margin-top:12px;">Washington, D.C.</div>
+        <div style="margin-top:11px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:0.5px;"><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/latest.html" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Read online</a><span style="color:rgba(255,255,255,0.45);">&nbsp;&middot;&nbsp;</span><a class="pill" href="https://andysaulim.github.io/Daily-Australia-Pacific-Islands-Digest/archive.html" style="display:inline-block;padding:6px 15px;margin:0 4px;font-family:Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:#14181F;background:#FFFFFF;border-radius:3px;text-decoration:none;white-space:nowrap;">Past issues</a></div>
+      </td></tr>
+      <tr><td style="padding:16px 32px 4px;text-align:center;">
+    <div style="font-family:Georgia,serif;font-size:12px;line-height:1.6;color:rgba(255,255,255,0.80);max-width:none;margin:0 auto;white-space:normal;">
+      You are receiving the Australia Daily Brief as a member of the CSIS Australia Chair distribution list.
+    </div>
+  </td></tr>
+  <tr><td style="padding:14px 32px 10px;text-align:center;">
+        <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:12px;font-family:Georgia,serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.82);max-width:560px;margin:0 auto;">
+          This newsletter is automatically generated, so it may contain errors. Please check all information and sources before citing.
+          To report errors or other issues, please contact Andy Lim at <a href="mailto:alim@csis.org" style="color:rgba(255,255,255,0.95);">alim@csis.org</a>.
+        </div>
+      </td></tr>
+      <tr><td style="padding:0 32px 20px;text-align:center;">
+        <div style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:0.5px;color:rgba(255,255,255,0.70);margin-bottom:9px;">generated 6:22 AM ET</div>
+        <a href="#top" style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.95);text-decoration:none;">&#8593; Back to top</a>
+      </td></tr>
+    </table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" class="footer-end" style="background:#FFFFFF;">
+  <tr><td style="padding:12px 32px 18px;text-align:center;font-family:Arial,sans-serif;font-size:10px;letter-spacing:0.5px;color:#6B7280;">
+    &copy; 2026 Center for Strategic and International Studies
+  </td></tr>
+</table>
+            </td>
+          </tr>
+        </table>
+        <!--[if mso]></td></tr></table><![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

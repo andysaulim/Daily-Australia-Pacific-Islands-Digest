@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-10-30",
+  "last_updated": "2026-11-03",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -54,9 +54,9 @@
     {
       "workstream": "undersea capabilities",
       "status": "reported",
-      "note": "ASPI: AUKUS is Australia's undersea power strategy, not just a sub deal",
-      "source_url": "https://www.aspistrategist.org.au/in-a-contested-indo-pacific-undersea-power-is-critical-aukus-is-our-strategy/",
-      "last_seen": "2026-10-16"
+      "note": "Calls to renegotiate the AUKUS submarine pact as drone warfare surges",
+      "source_url": "https://www.theaustralian.com.au/commentary/australia-urged-to-renegotiate-aukus-submarine-pact-as-drone-warfare-surges/news-story/4e721280aca7426230db2669d227a0b6",
+      "last_seen": "2026-11-03"
     },
     {
       "workstream": "quantum technologies",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-03",
+      "headline": "Calls to renegotiate the AUKUS submarine pact as drone warfare surges",
+      "url": "https://www.theaustralian.com.au/commentary/australia-urged-to-renegotiate-aukus-submarine-pact-as-drone-warfare-surges/news-story/4e721280aca7426230db2669d227a0b6",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-10-30",
       "headline": "ASPI says Ghost Shark disclosure signals wartime options to adversaries",

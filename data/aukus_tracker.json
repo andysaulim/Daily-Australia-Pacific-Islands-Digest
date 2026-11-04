@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-03",
+  "last_updated": "2026-11-04",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-04",
+      "headline": "Barrie tells ABC the inquiry found the submarine plan unaffordable and unsound",
+      "url": "https://www.abc.net.au/listen/programs/the-radio-national-hour/public-aukus-inquiry-calls-for-sub-deal-to-be-scrapped-/107346950",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-11-04",
+      "headline": "Crowd-funded inquiry led by Garrett and Barrie calls for AUKUS to be scrapped",
+      "url": "https://www.smh.com.au/politics/federal/too-risky-too-costly-aukus-should-be-scrapped-finds-peter-garrett-led-inquiry-20261104-p61bbt.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-03",
       "headline": "Calls to renegotiate the AUKUS submarine pact as drone warfare surges",

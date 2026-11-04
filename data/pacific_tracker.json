@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-03",
+  "last_updated": "2026-11-04",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "Chinese embassy disputes PNG police finding on Port Moresby wharf object",
-      "last_event_date": "2026-11-03",
-      "last_activity_type": "port / infrastructure",
-      "url": "https://www.abc.net.au/news/2026-11-03/papua-new-guinea-artillery-shell-wine-bottle/107342264",
-      "event_count": 10
+      "last_event": "PNG minister says Chinese support underpins K200 billion economy target",
+      "last_event_date": "2026-11-04",
+      "last_activity_type": "other",
+      "url": "https://www.postcourier.com.pg/png-china-partnership-helps-k200-billion-economy-and-one-million-jobs-says-sir-ano-pala/",
+      "event_count": 12
     },
     "Fiji": {
       "last_event": "Australia flags concern after China tests ballistic missile from nuclear submarine",
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-04",
+      "country": "Papua New Guinea",
+      "activity": "other",
+      "headline": "PNG minister says Chinese support underpins K200 billion economy target",
+      "url": "https://www.postcourier.com.pg/png-china-partnership-helps-k200-billion-economy-and-one-million-jobs-says-sir-ano-pala/",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-11-04",
+      "country": "Papua New Guinea",
+      "activity": "port / infrastructure",
+      "headline": "PNG police identify Port Moresby wharf device as Chinese artillery round, contradicting embassy",
+      "url": "https://www.rnz.co.nz/news/pacific/2327133/chinese-embassy-suggests-explosive-found-at-png-wharf-a-wine-bottle-that-poses-no-danger",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-03",
       "country": "Solomon Islands",

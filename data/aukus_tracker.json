@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-04",
+  "last_updated": "2026-11-05",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-05",
+      "headline": "Politico carries the unofficial AUKUS inquiry's call to tear up the submarine pact to Washington",
+      "url": "https://www.politico.com/news/2026/11/04/australias-unofficial-aukus-inquiry-recommends-tearing-up-the-worst-defence-decision-the-country-has-ever-made-01148108",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-11-04",
       "headline": "Barrie tells ABC the inquiry found the submarine plan unaffordable and unsound",

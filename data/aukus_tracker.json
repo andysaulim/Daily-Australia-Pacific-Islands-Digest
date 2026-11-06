@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-05",
+  "last_updated": "2026-11-06",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -102,13 +102,31 @@
     },
     {
       "workstream": "information sharing",
-      "status": "no recent reporting",
-      "note": null,
-      "source_url": null,
-      "last_seen": null
+      "status": "reported",
+      "note": "USS Colorado arrives at HMAS Stirling for a maintenance period",
+      "source_url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQdFZwcGhORUZsdkhKS2VsdEh4LV9Sczg1bU13WHlIbU5ZRW9XVzQwTE13QVRGNHJabWxQRWhzdXBPU2FHMlBwYnN3OE81RElsVWJlYURtS0tQQmRtY25qZnN3eXhQR25JTHNPVFVLNUlOSDNmdHVPdU5PelJGTWx3RmFSY1VpVk92aHlYV3BLNjBXQVdlaEVsWHBrd085NG1sTnQ0Z2E5eU95MjJueC1MdG5NUnRYWFJfWS13cFVuaTI1Z2pic1dnTzJmSVY?oc=5",
+      "last_seen": "2026-11-06"
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-06",
+      "headline": "China doesn't need to dominate the world to threaten Australia's security",
+      "url": "https://www.aspistrategist.org.au/china-doesnt-need-to-dominate-the-world-to-threaten-australias-security/",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-11-06",
+      "headline": "USS Colorado arrives at HMAS Stirling for a maintenance period",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQdFZwcGhORUZsdkhKS2VsdEh4LV9Sczg1bU13WHlIbU5ZRW9XVzQwTE13QVRGNHJabWxQRWhzdXBPU2FHMlBwYnN3OE81RElsVWJlYURtS0tQQmRtY25qZnN3eXhQR25JTHNPVFVLNUlOSDNmdHVPdU5PelJGTWx3RmFSY1VpVk92aHlYV3BLNjBXQVdlaEVsWHBrd085NG1sTnQ0Z2E5eU95MjJueC1MdG5NUnRYWFJfWS13cFVuaTI1Z2pic1dnTzJmSVY?oc=5",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-11-06",
+      "headline": "Canberra reads the midterms for AUKUS, data centres and China",
+      "url": "https://www.theguardian.com/australia-news/2026/nov/06/us-midterms-warning-for-australia-cost-of-living-fuel-prices",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-05",
       "headline": "Politico carries the unofficial AUKUS inquiry's call to tear up the submarine pact to Washington",

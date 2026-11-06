@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-04",
+  "last_updated": "2026-11-06",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG minister says Chinese support underpins K200 billion economy target",
@@ -9,11 +9,11 @@
       "event_count": 12
     },
     "Fiji": {
-      "last_event": "Australia flags concern after China tests ballistic missile from nuclear submarine",
-      "last_event_date": "2026-10-29",
-      "last_activity_type": "senior visit",
-      "url": "https://www.crikey.com.au/2026/10/29/australia-concerns-china-ballistic-missile-test-nuclear-submarine/",
-      "event_count": 18
+      "last_event": "COP31 should draw on Taiwan's Pacific climate experience",
+      "last_event_date": "2026-11-06",
+      "last_activity_type": "other",
+      "url": "https://www.aspistrategist.org.au/cop31-should-draw-on-taiwans-pacific-climate-experience/",
+      "event_count": 19
     },
     "Solomon Islands": {
       "last_event": "Chinese-built Santa Cruz airport handed over in Temotu Province",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-06",
+      "country": "Fiji",
+      "activity": "other",
+      "headline": "COP31 should draw on Taiwan's Pacific climate experience",
+      "url": "https://www.aspistrategist.org.au/cop31-should-draw-on-taiwans-pacific-climate-experience/",
+      "section": "also_today"
+    },
     {
       "date": "2026-11-04",
       "country": "Papua New Guinea",

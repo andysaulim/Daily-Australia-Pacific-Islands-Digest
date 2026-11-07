@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-06",
+  "last_updated": "2026-11-07",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "PNG minister says Chinese support underpins K200 billion economy target",
-      "last_event_date": "2026-11-04",
+      "last_event": "Taiwan to close Papua New Guinea office, cites Chinese pressure",
+      "last_event_date": "2026-11-07",
       "last_activity_type": "other",
-      "url": "https://www.postcourier.com.pg/png-china-partnership-helps-k200-billion-economy-and-one-million-jobs-says-sir-ano-pala/",
-      "event_count": 12
+      "url": "https://asia.nikkei.com/politics/international-relations/taiwan-tensions/taiwan-to-close-papua-new-guinea-office-blames-chinese-pressure",
+      "event_count": 13
     },
     "Fiji": {
       "last_event": "COP31 should draw on Taiwan's Pacific climate experience",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-07",
+      "country": "Papua New Guinea",
+      "activity": "other",
+      "headline": "Taiwan to close Papua New Guinea office, cites Chinese pressure",
+      "url": "https://asia.nikkei.com/politics/international-relations/taiwan-tensions/taiwan-to-close-papua-new-guinea-office-blames-chinese-pressure",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-06",
       "country": "Fiji",

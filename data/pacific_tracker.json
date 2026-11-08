@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-07",
+  "last_updated": "2026-11-08",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Taiwan to close Papua New Guinea office, cites Chinese pressure",
@@ -9,11 +9,11 @@
       "event_count": 13
     },
     "Fiji": {
-      "last_event": "COP31 should draw on Taiwan's Pacific climate experience",
-      "last_event_date": "2026-11-06",
-      "last_activity_type": "other",
-      "url": "https://www.aspistrategist.org.au/cop31-should-draw-on-taiwans-pacific-climate-experience/",
-      "event_count": 19
+      "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
+      "last_event_date": "2026-11-08",
+      "last_activity_type": "recognition switch",
+      "url": "https://fijisun.com.fj/news/nation/no-fijian-soldiers-going-to-taiwan-strait-tikoduadua",
+      "event_count": 20
     },
     "Solomon Islands": {
       "last_event": "Chinese-built Santa Cruz airport handed over in Temotu Province",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-08",
+      "country": "Fiji",
+      "activity": "recognition switch",
+      "headline": "Fiji rules out sending soldiers to the Taiwan Strait",
+      "url": "https://fijisun.com.fj/news/nation/no-fijian-soldiers-going-to-taiwan-strait-tikoduadua",
+      "section": "overnight_items"
+    },
     {
       "date": "2026-11-07",
       "country": "Papua New Guinea",

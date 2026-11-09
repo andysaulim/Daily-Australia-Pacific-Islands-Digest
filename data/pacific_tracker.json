@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-08",
+  "last_updated": "2026-11-09",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "Taiwan to close Papua New Guinea office, cites Chinese pressure",
-      "last_event_date": "2026-11-07",
-      "last_activity_type": "other",
-      "url": "https://asia.nikkei.com/politics/international-relations/taiwan-tensions/taiwan-to-close-papua-new-guinea-office-blames-chinese-pressure",
-      "event_count": 13
+      "last_event": "Taiwan completes aid and LNG cutoff to Papua New Guinea",
+      "last_event_date": "2026-11-09",
+      "last_activity_type": "port / infrastructure",
+      "url": "https://www.rnz.co.nz/news/pacific/2457099/taiwan-shuts-papua-new-guinea-office-cuts-all-aid-and-halts-lng-purchases",
+      "event_count": 14
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-09",
+      "country": "Papua New Guinea",
+      "activity": "port / infrastructure",
+      "headline": "Taiwan completes aid and LNG cutoff to Papua New Guinea",
+      "url": "https://www.rnz.co.nz/news/pacific/2457099/taiwan-shuts-papua-new-guinea-office-cuts-all-aid-and-halts-lng-purchases",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-08",
       "country": "Fiji",

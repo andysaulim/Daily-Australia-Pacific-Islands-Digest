@@ -660,5 +660,14 @@
     "nz_count": 4,
     "word_count": 1715,
     "url": "digest_2026-11-09.html"
+  },
+  {
+    "date": "2026-11-10",
+    "headline_re": "Canberra to create AI safety regulator after Medicare breach · COP31 opens with Pacific pressing Australia · Vanuatu opposition moves no-confidence on Napat · $150bn Australia-EU research pact due this week · Qantas cuts 850 jobs",
+    "top_stories_count": 3,
+    "pacific_count": 10,
+    "nz_count": 2,
+    "word_count": 1684,
+    "url": "digest_2026-11-10.html"
   }
 ]

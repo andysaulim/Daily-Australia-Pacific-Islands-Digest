@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-09",
+  "last_updated": "2026-11-11",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "Taiwan completes aid and LNG cutoff to Papua New Guinea",
-      "last_event_date": "2026-11-09",
-      "last_activity_type": "port / infrastructure",
-      "url": "https://www.rnz.co.nz/news/pacific/2457099/taiwan-shuts-papua-new-guinea-office-cuts-all-aid-and-halts-lng-purchases",
-      "event_count": 14
+      "last_event": "PNG trade minister defends China pivot as Taiwan shuts Port Moresby office",
+      "last_event_date": "2026-11-11",
+      "last_activity_type": "recognition switch",
+      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/pngtaiwanreax/107371940",
+      "event_count": 15
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-11",
+      "country": "Papua New Guinea",
+      "activity": "recognition switch",
+      "headline": "PNG trade minister defends China pivot as Taiwan shuts Port Moresby office",
+      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/pngtaiwanreax/107371940",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-09",
       "country": "Papua New Guinea",

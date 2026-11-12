@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-11",
+  "last_updated": "2026-11-12",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "PNG trade minister defends China pivot as Taiwan shuts Port Moresby office",
-      "last_event_date": "2026-11-11",
-      "last_activity_type": "recognition switch",
-      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/pngtaiwanreax/107371940",
-      "event_count": 15
+      "last_event": "Fault Lines: China's navy mobilises, Marines in Manila, PNG's LNG",
+      "last_event_date": "2026-11-12",
+      "last_activity_type": "other",
+      "url": "https://www.aspistrategist.org.au/fault-lines-chinas-navy-mobilises-marines-in-manila-pngs-lng/",
+      "event_count": 16
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -58,11 +58,11 @@
       "event_count": 5
     },
     "Nauru": {
-      "last_event": "Forum says no member blocked China missile statement",
-      "last_event_date": "2026-09-17",
+      "last_event": "Nauru's parliament is left without an opposition",
+      "last_event_date": "2026-11-12",
       "last_activity_type": "other",
-      "url": "https://www.fbcnews.com.fj/news/pif-says-no-member-blocked-china-missile-statement-01/",
-      "event_count": 2
+      "url": "https://www.rnz.co.nz/news/pacific/2556147/no-opposition-left-in-naoero-after-all-mps-join-government",
+      "event_count": 3
     },
     "Palau": {
       "last_event": "Israel joins Pacific Islands Forum as development partner",
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-12",
+      "country": "Papua New Guinea",
+      "activity": "other",
+      "headline": "Fault Lines: China's navy mobilises, Marines in Manila, PNG's LNG",
+      "url": "https://www.aspistrategist.org.au/fault-lines-chinas-navy-mobilises-marines-in-manila-pngs-lng/",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-11-12",
+      "country": "Nauru",
+      "activity": "other",
+      "headline": "Nauru's parliament is left without an opposition",
+      "url": "https://www.rnz.co.nz/news/pacific/2556147/no-opposition-left-in-naoero-after-all-mps-join-government",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-11",
       "country": "Papua New Guinea",

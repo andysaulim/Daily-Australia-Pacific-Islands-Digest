@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-11",
+  "last_updated": "2026-11-12",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,24 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-12",
+      "headline": "Industry guide walks through navigating export controls",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBrMkZnRXVYQmpDMDlPc19UVVRPeXlTcTJmR0xKc0daQ19WYk5xalM4NjdfVDN4azJXVU1oWUdoWUZqcDVwUjVYcGJyQmVIQk9hV29xX0hBLVE1a3RrRHNKQ3FJZDY2WGJocEp4ZExjbU1qYWlHSUM0YjExUWV1dw?oc=5",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-11-12",
+      "headline": "Magazine makes the case for Western Australian infrastructure in defence plans",
+      "url": "https://www.australiandefence.com.au/defence/sea/wa-infrastructure-critical-to-defence-plans",
+      "section": "aukus_watch"
+    },
+    {
+      "date": "2026-11-12",
+      "headline": "Canberra adds $80 million to the AUKUS workforce pipeline",
+      "url": "https://www.smh.com.au/national/over-80-million-to-be-spent-on-growing-australias-workforce-to-deliver-aukus-20261112-p61dtc.html?ref=rss&utm_medium=rss&utm_source=rss_feed",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-11",
       "headline": "Veem secures United States Virginia-class submarine work",
@@ -450,12 +468,6 @@
       "headline": "Independent AUKUS public inquiry nears its conclusion",
       "url": "https://www.crikey.com.au/2026/08/25/aukus-inquiry-peter-garrett-rex-patrick/",
       "section": "aukus_watch"
-    },
-    {
-      "date": "2026-08-25",
-      "headline": "Chinese missile landing near Tuvalu's EEZ leaves Forum ministers without a joint statement",
-      "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
-      "section": "top_stories"
     }
   ]
 }

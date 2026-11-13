@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-12",
+  "last_updated": "2026-11-13",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-13",
+      "headline": "Admiral says AUKUS is on track and ahead of schedule in parts",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNTUVzX0E5N3NzRjRtb0pBWl9BUjh6aUloeDY5VG15cHVreEhtZ1lXTEk5SjB6Ujl5M1dHaUN5amJRdXA5YTRhT1VGTDJfOE5vOHBVbW81U0xxQV83azMtZzZkNVJ2Q1FsVngwZFRtdngxeFZNWFJaU0RKdWFLZWc4NDF6QUNPS1VFRFFTMGpVZE16MXF0bDR3Yi1NdGhUVjVIOUktcw?oc=5",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-11-12",
       "headline": "Industry guide walks through navigating export controls",
@@ -462,12 +468,6 @@
       "headline": "Chinese missile near Tuvalu's EEZ leaves Pacific Forum without a joint statement",
       "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
       "section": "top_stories"
-    },
-    {
-      "date": "2026-08-25",
-      "headline": "Independent AUKUS public inquiry nears its conclusion",
-      "url": "https://www.crikey.com.au/2026/08/25/aukus-inquiry-peter-garrett-rex-patrick/",
-      "section": "aukus_watch"
     }
   ]
 }

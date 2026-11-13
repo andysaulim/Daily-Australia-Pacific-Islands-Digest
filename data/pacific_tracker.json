@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-12",
+  "last_updated": "2026-11-13",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "Fault Lines: China's navy mobilises, Marines in Manila, PNG's LNG",
-      "last_event_date": "2026-11-12",
-      "last_activity_type": "other",
-      "url": "https://www.aspistrategist.org.au/fault-lines-chinas-navy-mobilises-marines-in-manila-pngs-lng/",
-      "event_count": 16
+      "last_event": "PNG minister says Taiwan office closure carries no economic cost",
+      "last_event_date": "2026-11-13",
+      "last_activity_type": "recognition switch",
+      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/tkatchenko-taiwan/107381358",
+      "event_count": 17
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-13",
+      "country": "Papua New Guinea",
+      "activity": "recognition switch",
+      "headline": "PNG minister says Taiwan office closure carries no economic cost",
+      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/tkatchenko-taiwan/107381358",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-12",
       "country": "Papua New Guinea",

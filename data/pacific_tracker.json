@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-13",
+  "last_updated": "2026-11-14",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "PNG minister says Taiwan office closure carries no economic cost",
-      "last_event_date": "2026-11-13",
-      "last_activity_type": "recognition switch",
-      "url": "https://www.abc.net.au/pacific/programs/pacificbeat/tkatchenko-taiwan/107381358",
-      "event_count": 17
+      "last_event": "PNG observers urge China and US restraint over smuggled artillery shell",
+      "last_event_date": "2026-11-14",
+      "last_activity_type": "other",
+      "url": "https://www.postcourier.com.pg/png-observers-call-for-restraint-from-china-and-u-s-over-wine-bottle-shell1/",
+      "event_count": 18
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -86,11 +86,11 @@
       "event_count": 2
     },
     "Cook Islands": {
-      "last_event": "Cook Islands authority says seabed exploration runs to 2032",
-      "last_event_date": "2026-10-06",
+      "last_event": "Chinese submersible Jiaolong completes 17 Pacific dives before Cook Islands survey",
+      "last_event_date": "2026-11-14",
       "last_activity_type": "other",
-      "url": "https://www.rnz.co.nz/news/pacific/1758901/cook-islands-seabed-authority-maintains-exploration-of-deep-sea-minerals-continues",
-      "event_count": 2
+      "url": "https://www.globaltimes.cn/page/202611/1374274.shtml",
+      "event_count": 3
     },
     "Niue": {
       "last_event": null,
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-14",
+      "country": "Papua New Guinea",
+      "activity": "other",
+      "headline": "PNG observers urge China and US restraint over smuggled artillery shell",
+      "url": "https://www.postcourier.com.pg/png-observers-call-for-restraint-from-china-and-u-s-over-wine-bottle-shell1/",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-11-14",
+      "country": "Cook Islands",
+      "activity": "other",
+      "headline": "Chinese submersible Jiaolong completes 17 Pacific dives before Cook Islands survey",
+      "url": "https://www.globaltimes.cn/page/202611/1374274.shtml",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-11-13",
       "country": "Papua New Guinea",

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-13",
+  "last_updated": "2026-11-14",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-14",
+      "headline": "AUKUS review was the 'best thing' for the trilateral pact, Colby says",
+      "url": "https://breakingdefense.com/2026/11/aukus-review-was-best-thing-for-trilateral-pact-colby/",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-11-13",
       "headline": "Admiral says AUKUS is on track and ahead of schedule in parts",
@@ -461,12 +467,6 @@
       "date": "2026-08-27",
       "headline": "WA hazard plan preps for 'one in 10 million' AUKUS reactor accident",
       "url": "https://www.abc.net.au/news/2026-08-27/emergency-plan-for-aukus-nuclear-accident-revealed/107079978",
-      "section": "top_stories"
-    },
-    {
-      "date": "2026-08-25",
-      "headline": "Chinese missile near Tuvalu's EEZ leaves Pacific Forum without a joint statement",
-      "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
       "section": "top_stories"
     }
   ]

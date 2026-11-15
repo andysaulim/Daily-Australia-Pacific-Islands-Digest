@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-14",
+  "last_updated": "2026-11-15",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-15",
+      "headline": "US Democrat urges AI access for Five Eyes partners like Australia",
+      "url": "https://www.smh.com.au/politics/federal/a-powerful-ai-tool-was-taken-away-from-australia-this-democrat-wants-to-change-that-20261115-p61e4i.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-11-15",
+      "headline": "US Ambassador tours AUKUS submarine on first WA visit",
+      "url": "https://southasianherald.com/us-ambassador-david-brat-tours-aukus-submarine-on-first-visit-to-western-australia/",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-11-14",
       "headline": "AUKUS review was the 'best thing' for the trilateral pact, Colby says",
@@ -456,18 +468,6 @@
       "headline": "Politico: 'There should be a Pillar 3 in AUKUS: Polar Security'",
       "url": "https://www.politico.com/news/2026/08/30/there-should-be-pillar-3-aukus-polar-security-01056234",
       "section": "aukus_watch"
-    },
-    {
-      "date": "2026-08-31",
-      "headline": "Howard weighs in on ANZUS, AUKUS and Trump-era alliance doubts",
-      "url": "https://www.abc.net.au/listen/programs/global-roaming/the-alliance-does-australia-still-need-america-/107025082",
-      "section": "overnight_items"
-    },
-    {
-      "date": "2026-08-27",
-      "headline": "WA hazard plan preps for 'one in 10 million' AUKUS reactor accident",
-      "url": "https://www.abc.net.au/news/2026-08-27/emergency-plan-for-aukus-nuclear-accident-revealed/107079978",
-      "section": "top_stories"
     }
   ]
 }

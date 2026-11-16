@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-15",
+  "last_updated": "2026-11-16",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,18 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-16",
+      "headline": "Ken Wyatt named Western Australia's first Indigenous governor",
+      "url": "https://www.abc.net.au/news/2026-11-16/ken-wyatt-named-as-wa-s-first-indigenous-governor/107391360",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-11-16",
+      "headline": "Lowy piece says AUKUS Public Inquiry doubts Washington but not Beijing",
+      "url": "https://www.lowyinstitute.org/the-interpreter/aukus-inquiry-scepticism-runs-only-one-way",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-11-15",
       "headline": "US Democrat urges AI access for Five Eyes partners like Australia",
@@ -455,18 +467,6 @@
       "date": "2026-09-03",
       "headline": "Former officials warn AUKUS exposes Australia to great-power war without a veto",
       "url": "https://www.smh.com.au/politics/federal/aukus-makes-australia-a-nuclear-target-top-experts-warn-20260902-p60tnk.html?ref=rss&utm_medium=rss&utm_source=rss_politics_federal",
-      "section": "aukus_watch"
-    },
-    {
-      "date": "2026-09-03",
-      "headline": "Marles, Hegseth flag bigger US military presence on Australian soil",
-      "url": "https://www.abc.net.au/news/2026-09-03/federal-politics-us-military-presence-in-australia-set-to-grow/107111352",
-      "section": "top_stories"
-    },
-    {
-      "date": "2026-08-31",
-      "headline": "Politico: 'There should be a Pillar 3 in AUKUS: Polar Security'",
-      "url": "https://www.politico.com/news/2026/08/30/there-should-be-pillar-3-aukus-polar-security-01056234",
       "section": "aukus_watch"
     }
   ]

@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-14",
+  "last_updated": "2026-11-17",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "PNG observers urge China and US restraint over smuggled artillery shell",
-      "last_event_date": "2026-11-14",
-      "last_activity_type": "other",
-      "url": "https://www.postcourier.com.pg/png-observers-call-for-restraint-from-china-and-u-s-over-wine-bottle-shell1/",
-      "event_count": 18
+      "last_event": "PNG's Marape tells Xi closing Taiwan office 'wasn't easy'",
+      "last_event_date": "2026-11-17",
+      "last_activity_type": "port / infrastructure",
+      "url": "https://www.reuters.com/world/china/papua-new-guineas-prime-minister-says-taiwan-does-not-operate-there-anymore-2026-11-17/",
+      "event_count": 19
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-17",
+      "country": "Papua New Guinea",
+      "activity": "port / infrastructure",
+      "headline": "PNG's Marape tells Xi closing Taiwan office 'wasn't easy'",
+      "url": "https://www.reuters.com/world/china/papua-new-guineas-prime-minister-says-taiwan-does-not-operate-there-anymore-2026-11-17/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-14",
       "country": "Papua New Guinea",

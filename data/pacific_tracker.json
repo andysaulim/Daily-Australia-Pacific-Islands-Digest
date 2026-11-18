@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-17",
+  "last_updated": "2026-11-18",
   "countries": {
     "Papua New Guinea": {
       "last_event": "PNG's Marape tells Xi closing Taiwan office 'wasn't easy'",
@@ -16,11 +16,11 @@
       "event_count": 20
     },
     "Solomon Islands": {
-      "last_event": "Chinese-built Santa Cruz airport handed over in Temotu Province",
-      "last_event_date": "2026-11-03",
-      "last_activity_type": "port / infrastructure",
-      "url": "https://islandsbusiness.com/news-break/solomons-boosts-aviation-and-border-security/",
-      "event_count": 10
+      "last_event": "Devpolicy traces constituency funds from Taipei to Beijing to Canberra",
+      "last_event_date": "2026-11-18",
+      "last_activity_type": "other",
+      "url": "https://devpolicy.org/a-great-game-of-two-halves-20261118/",
+      "event_count": 11
     },
     "Vanuatu": {
       "last_event": "Vanuatu minister says no decision made to cut Chinese police presence",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-18",
+      "country": "Solomon Islands",
+      "activity": "other",
+      "headline": "Devpolicy traces constituency funds from Taipei to Beijing to Canberra",
+      "url": "https://devpolicy.org/a-great-game-of-two-halves-20261118/",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-11-17",
       "country": "Papua New Guinea",

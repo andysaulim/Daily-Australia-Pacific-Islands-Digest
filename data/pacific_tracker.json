@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-18",
+  "last_updated": "2026-11-20",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "PNG's Marape tells Xi closing Taiwan office 'wasn't easy'",
-      "last_event_date": "2026-11-17",
+      "last_event": "Marape reassures Beijing after PNG's pacts with the West",
+      "last_event_date": "2026-11-20",
       "last_activity_type": "port / infrastructure",
-      "url": "https://www.reuters.com/world/china/papua-new-guineas-prime-minister-says-taiwan-does-not-operate-there-anymore-2026-11-17/",
-      "event_count": 19
+      "url": "https://www.lowyinstitute.org/the-interpreter/marape-reassures-beijing-after-png-s-pacts-with-the-west",
+      "event_count": 20
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-20",
+      "country": "Papua New Guinea",
+      "activity": "port / infrastructure",
+      "headline": "Marape reassures Beijing after PNG's pacts with the West",
+      "url": "https://www.lowyinstitute.org/the-interpreter/marape-reassures-beijing-after-png-s-pacts-with-the-west",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-11-18",
       "country": "Solomon Islands",

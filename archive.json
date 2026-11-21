@@ -759,5 +759,14 @@
     "nz_count": 1,
     "word_count": 2008,
     "url": "digest_2026-11-20.html"
+  },
+  {
+    "date": "2026-11-21",
+    "headline_re": "Trump threatens tax on offshore AI data centres · Australia-China agree annual AI dialogue · Cyclone Xavier weakens, Cook Islands relief sails · Fiji reopens Brussels embassy · NZD at post-GFC low",
+    "top_stories_count": 3,
+    "pacific_count": 9,
+    "nz_count": 2,
+    "word_count": 2153,
+    "url": "digest_2026-11-21.html"
   }
 ]

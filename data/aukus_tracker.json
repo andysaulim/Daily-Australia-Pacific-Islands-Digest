@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-19",
+  "last_updated": "2026-11-22",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-22",
+      "headline": "Marles rejects US budget office warning on AUKUS submarine deal",
+      "url": "https://theprint.in/world/australia-criticises-us-congressional-budget-office-over-aukus-comments/3105470/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-19",
       "headline": "Canberra to set seven-year prison term for photographing defence sites",
@@ -462,12 +468,6 @@
       "headline": "China is poised to lead in research on quantum technologies. Democracies must act",
       "url": "https://www.aspistrategist.org.au/china-is-poised-to-lead-in-research-on-quantum-technologies-democracies-must-act/",
       "section": "also_today"
-    },
-    {
-      "date": "2026-09-11",
-      "headline": "British envoy fields questions on UK yard capacity for SSN-AUKUS timetable",
-      "url": "https://www.abc.net.au/listen/programs/global-roaming/25-years-since-9-11-has-aukus-made-australia-stronger-/107068042",
-      "section": "aukus_watch"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-23",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Marape reassures Beijing after PNG's pacts with the West",
@@ -114,14 +114,22 @@
       "event_count": 0
     },
     "Timor-Leste": {
-      "last_event": "China tipped to step forward as Woodside exits Timor-Leste gas project",
-      "last_event_date": "2026-10-27",
+      "last_event": "Russian and Chinese firms eye Timor-Leste's Greater Sunrise after Woodside exit",
+      "last_event_date": "2026-11-23",
       "last_activity_type": "other",
-      "url": "https://www.abc.net.au/news/2026-10-27/greater-sunrise-timor-leste-china-woodside/107315832",
-      "event_count": 2
+      "url": "https://www.abc.net.au/news/2026-11-23/greater-sunrise-timor-leste-russia-china-oil-gas/107383394",
+      "event_count": 3
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-23",
+      "country": "Timor-Leste",
+      "activity": "other",
+      "headline": "Russian and Chinese firms eye Timor-Leste's Greater Sunrise after Woodside exit",
+      "url": "https://www.abc.net.au/news/2026-11-23/greater-sunrise-timor-leste-russia-china-oil-gas/107383394",
+      "section": "china_in_the_pacific"
+    },
     {
       "date": "2026-11-21",
       "country": "Vanuatu",

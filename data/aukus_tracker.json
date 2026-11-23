@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-22",
+  "last_updated": "2026-11-23",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-23",
+      "headline": "Wong tells Labor critics Australia cannot 'abandon' the US alliance",
+      "url": "https://www.smh.com.au/politics/federal/wong-to-labor-critics-australians-cannot-abandon-the-us-despite-trump-turmoil-20261123-p61gl1.html?ref=rss&utm_medium=rss&utm_source=rss_feed",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-22",
       "headline": "Marles rejects US budget office warning on AUKUS submarine deal",
@@ -461,12 +467,6 @@
       "date": "2026-09-12",
       "headline": "Anthropic says Iran used its American AI model to target US Navy warships",
       "url": "https://www.theaustralian.com.au/business/the-wall-street-journal/anthropic-says-iran-used-its-american-ai-model-to-target-us-navy-warships/news-story/e926427f75f6f5b4a61e9a4022bda079",
-      "section": "also_today"
-    },
-    {
-      "date": "2026-09-11",
-      "headline": "China is poised to lead in research on quantum technologies. Democracies must act",
-      "url": "https://www.aspistrategist.org.au/china-is-poised-to-lead-in-research-on-quantum-technologies-democracies-must-act/",
       "section": "also_today"
     }
   ]

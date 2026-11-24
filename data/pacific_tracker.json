@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-23",
+  "last_updated": "2026-11-24",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Marape reassures Beijing after PNG's pacts with the West",
@@ -16,18 +16,18 @@
       "event_count": 20
     },
     "Solomon Islands": {
-      "last_event": "Devpolicy traces constituency funds from Taipei to Beijing to Canberra",
-      "last_event_date": "2026-11-18",
+      "last_event": "Wong's full address: 'Securing Australia's future in a changing world'",
+      "last_event_date": "2026-11-24",
       "last_activity_type": "other",
-      "url": "https://devpolicy.org/a-great-game-of-two-halves-20261118/",
-      "event_count": 11
+      "url": "https://www.foreignminister.gov.au/minister/penny-wong/speech/securing-australias-future-changing-world-australian-foreign-policy-new-era",
+      "event_count": 16
     },
     "Vanuatu": {
-      "last_event": "Vanuatu and China sign agreement for 3,000 solar streetlights at COP31",
-      "last_event_date": "2026-11-21",
-      "last_activity_type": "senior visit",
-      "url": "https://www.dailypost.vu/news/vanuatu-china-sign-agreement-for-3-000-solar-streetlights-at-cop31/article_e31ba7ef-40e2-54a8-a104-d32e82ff18cc.html",
-      "event_count": 8
+      "last_event": "Coalition rejects $500 million Vanuatu pact over net zero clause",
+      "last_event_date": "2026-11-24",
+      "last_activity_type": "other",
+      "url": "https://www.abc.net.au/news/2026-11-24/opposition-turns-against-vanuatu-nakamal-agreement/107420028",
+      "event_count": 9
     },
     "Samoa": {
       "last_event": "Chinese-owned retail expansion squeezes Samoan village shops",
@@ -122,6 +122,54 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-24",
+      "country": "Solomon Islands",
+      "activity": "other",
+      "headline": "Wong's full address: 'Securing Australia's future in a changing world'",
+      "url": "https://www.foreignminister.gov.au/minister/penny-wong/speech/securing-australias-future-changing-world-australian-foreign-policy-new-era",
+      "section": "primary_documents"
+    },
+    {
+      "date": "2026-11-24",
+      "country": "Solomon Islands",
+      "activity": "other",
+      "headline": "Bloomberg: Australia pursuing another pact to counter China in Pacific",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-24/australia-aims-to-sign-another-deal-to-block-china-in-pacific",
+      "section": "overnight_items"
+    },
+    {
+      "date": "2026-11-24",
+      "country": "Solomon Islands",
+      "activity": "security agreement",
+      "headline": "Sogavare warns against scrapping China security pact",
+      "url": "https://www.rnz.co.nz/news/pacific/2761984/sogavare-warns-solomon-islands-government-against-ditching-china-security-pact",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-11-24",
+      "country": "Solomon Islands",
+      "activity": "senior visit",
+      "headline": "Wong reaffirms US alliance, warns US-China rivalry is destabilising world order",
+      "url": "https://www.abc.net.au/listen/programs/pm/wong-backs-us-alliance/107422760",
+      "section": "top_stories"
+    },
+    {
+      "date": "2026-11-24",
+      "country": "Vanuatu",
+      "activity": "other",
+      "headline": "Coalition rejects $500 million Vanuatu pact over net zero clause",
+      "url": "https://www.abc.net.au/news/2026-11-24/opposition-turns-against-vanuatu-nakamal-agreement/107420028",
+      "section": "top_stories"
+    },
+    {
+      "date": "2026-11-24",
+      "country": "Solomon Islands",
+      "activity": "security agreement",
+      "headline": "Solomon Islands scraps China security pact ahead of Australia treaty signing",
+      "url": "https://www.abc.net.au/news/2026-11-24/china-solomon-islands-security-pact-australia/107421976",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-23",
       "country": "Timor-Leste",

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-25",
+  "last_updated": "2026-11-26",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Marape reassures Beijing after PNG's pacts with the West",
@@ -16,11 +16,11 @@
       "event_count": 20
     },
     "Solomon Islands": {
-      "last_event": "Beijing says it does not engage in 'geopolitical manoeuvring' after Solomons decision",
-      "last_event_date": "2026-11-25",
-      "last_activity_type": "security agreement",
-      "url": "https://www.abc.net.au/listen/programs/am/china-reacts-to-solomons-pact-end/107423994",
-      "event_count": 19
+      "last_event": "What will China learn from the Australia-Solomon Islands treaty?",
+      "last_event_date": "2026-11-26",
+      "last_activity_type": "other",
+      "url": "https://www.lowyinstitute.org/the-interpreter/what-will-china-learn-from-australia-solomon-islands-treaty",
+      "event_count": 21
     },
     "Vanuatu": {
       "last_event": "Coalition rejects $500 million Vanuatu pact over net zero clause",
@@ -37,11 +37,11 @@
       "event_count": 1
     },
     "Tonga": {
-      "last_event": "Seabed authority says US science fellowship confers no control",
-      "last_event_date": "2026-10-03",
+      "last_event": "Cook Islands receives credentials from new Chinese, Thai, and Israeli envoys",
+      "last_event_date": "2026-11-26",
       "last_activity_type": "other",
-      "url": "https://www.cookislandsnews.com/internal/national/environment/technology/us-fellowship-confers-no-control-as-seabed-minerals-authority-reaffirms-sovereign-authority/?utm_source=rss&utm_medium=rss&utm_campaign=us-fellowship-confers-no-control-as-seabed-minerals-authority-reaffirms-sovereign-authority",
-      "event_count": 2
+      "url": "https://www.cookislandsnews.com/internal/national/local/cook-islands-receives-credentials-from-ambassadors-of-china-thailand-and-israel/?utm_source=rss&utm_medium=rss&utm_campaign=cook-islands-receives-credentials-from-ambassadors-of-china-thailand-and-israel",
+      "event_count": 3
     },
     "Kiribati": {
       "last_event": "Kiribati president reaffirms one-China policy",
@@ -122,6 +122,30 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-26",
+      "country": "Solomon Islands",
+      "activity": "other",
+      "headline": "What will China learn from the Australia-Solomon Islands treaty?",
+      "url": "https://www.lowyinstitute.org/the-interpreter/what-will-china-learn-from-australia-solomon-islands-treaty",
+      "section": "also_today"
+    },
+    {
+      "date": "2026-11-26",
+      "country": "Tonga",
+      "activity": "other",
+      "headline": "Cook Islands receives credentials from new Chinese, Thai, and Israeli envoys",
+      "url": "https://www.cookislandsnews.com/internal/national/local/cook-islands-receives-credentials-from-ambassadors-of-china-thailand-and-israel/?utm_source=rss&utm_medium=rss&utm_campaign=cook-islands-receives-credentials-from-ambassadors-of-china-thailand-and-israel",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-11-26",
+      "country": "Solomon Islands",
+      "activity": "security agreement",
+      "headline": "Australia and Solomon Islands sign sweeping security and development treaty",
+      "url": "https://www.taipeitimes.com/News/world/archives/2026/11/26/2003868428",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-25",
       "country": "Solomon Islands",
@@ -1057,30 +1081,6 @@
       "headline": "Kiribati bill would bar any future recognition of Taiwan",
       "url": "https://www.rnz.co.nz/news/pacific/1150376/kiribati-considers-constitutional-change-to-cement-diplomatic-recognition-of-china",
       "section": "top_stories"
-    },
-    {
-      "date": "2026-08-26",
-      "country": "Kiribati",
-      "activity": "recognition switch",
-      "headline": "Kiribati considers constitutional change to cement diplomatic recognition of China",
-      "url": "https://www.abc.net.au/news/2026-08-26/kiribati-changing-constitution-to-cement-recognition-china/107080764",
-      "section": "top_stories"
-    },
-    {
-      "date": "2026-08-25",
-      "country": "Tuvalu",
-      "activity": "recognition switch",
-      "headline": "Chinese missile near Tuvalu's EEZ leaves Pacific Forum without a joint statement",
-      "url": "https://islandsbusiness.com/news-break/when-silence-is-a-pacific-response/",
-      "section": "top_stories"
-    },
-    {
-      "date": "2026-08-25",
-      "country": "Vanuatu",
-      "activity": "other",
-      "headline": "PACNEWS: Pacific nations detain Chinese and Indonesian boats for illegal fishing",
-      "url": "https://islandsbusiness.com/pacnews/pacnews-one-25-august-2026/",
-      "section": "china_in_the_pacific"
     }
   ]
 }

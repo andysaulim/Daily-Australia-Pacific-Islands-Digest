@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-26",
+  "last_updated": "2026-11-27",
   "countries": {
     "Papua New Guinea": {
       "last_event": "Marape reassures Beijing after PNG's pacts with the West",
@@ -16,11 +16,11 @@
       "event_count": 20
     },
     "Solomon Islands": {
-      "last_event": "What will China learn from the Australia-Solomon Islands treaty?",
-      "last_event_date": "2026-11-26",
-      "last_activity_type": "other",
-      "url": "https://www.lowyinstitute.org/the-interpreter/what-will-china-learn-from-australia-solomon-islands-treaty",
-      "event_count": 21
+      "last_event": "Solomon Islands confirms security pact with China has lapsed",
+      "last_event_date": "2026-11-27",
+      "last_activity_type": "security agreement",
+      "url": "https://www.abc.net.au/news/2026-11-27/china-solomon-islands-security-pact-ends/107429200",
+      "event_count": 22
     },
     "Vanuatu": {
       "last_event": "Coalition rejects $500 million Vanuatu pact over net zero clause",
@@ -122,6 +122,14 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-27",
+      "country": "Solomon Islands",
+      "activity": "security agreement",
+      "headline": "Solomon Islands confirms security pact with China has lapsed",
+      "url": "https://www.abc.net.au/news/2026-11-27/china-solomon-islands-security-pact-ends/107429200",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-26",
       "country": "Solomon Islands",
@@ -1073,14 +1081,6 @@
       "headline": "Taiwan's foreign minister departs for Palau ahead of Forum meeting",
       "url": "https://www.rti.org.tw/en/news?uid=3&pid=228667",
       "section": "primary_documents"
-    },
-    {
-      "date": "2026-08-27",
-      "country": "Kiribati",
-      "activity": "recognition switch",
-      "headline": "Kiribati bill would bar any future recognition of Taiwan",
-      "url": "https://www.rnz.co.nz/news/pacific/1150376/kiribati-considers-constitutional-change-to-cement-diplomatic-recognition-of-china",
-      "section": "top_stories"
     }
   ]
 }

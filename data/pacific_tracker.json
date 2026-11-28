@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-11-27",
+  "last_updated": "2026-11-28",
   "countries": {
     "Papua New Guinea": {
-      "last_event": "Marape reassures Beijing after PNG's pacts with the West",
-      "last_event_date": "2026-11-20",
+      "last_event": "US details K211 million of active defence builds in PNG",
+      "last_event_date": "2026-11-28",
       "last_activity_type": "port / infrastructure",
-      "url": "https://www.lowyinstitute.org/the-interpreter/marape-reassures-beijing-after-png-s-pacts-with-the-west",
-      "event_count": 20
+      "url": "https://www.postcourier.com.pg/u-s-details-k211-27m-in-active-defense-builds-ahead-of-k2-25b-fuel-storage-project/",
+      "event_count": 21
     },
     "Fiji": {
       "last_event": "Fiji rules out sending soldiers to the Taiwan Strait",
@@ -16,11 +16,11 @@
       "event_count": 20
     },
     "Solomon Islands": {
-      "last_event": "Solomon Islands confirms security pact with China has lapsed",
-      "last_event_date": "2026-11-27",
+      "last_event": "Solomons pledges no foreign base and no militarised infrastructure",
+      "last_event_date": "2026-11-28",
       "last_activity_type": "security agreement",
-      "url": "https://www.abc.net.au/news/2026-11-27/china-solomon-islands-security-pact-ends/107429200",
-      "event_count": 22
+      "url": "https://www.abc.net.au/pacific/programs/pacificreview/pacific-review/107414784",
+      "event_count": 23
     },
     "Vanuatu": {
       "last_event": "Coalition rejects $500 million Vanuatu pact over net zero clause",
@@ -122,6 +122,22 @@
     }
   },
   "recent_events": [
+    {
+      "date": "2026-11-28",
+      "country": "Solomon Islands",
+      "activity": "security agreement",
+      "headline": "Solomons pledges no foreign base and no militarised infrastructure",
+      "url": "https://www.abc.net.au/pacific/programs/pacificreview/pacific-review/107414784",
+      "section": "china_in_the_pacific"
+    },
+    {
+      "date": "2026-11-28",
+      "country": "Papua New Guinea",
+      "activity": "port / infrastructure",
+      "headline": "US details K211 million of active defence builds in PNG",
+      "url": "https://www.postcourier.com.pg/u-s-details-k211-27m-in-active-defense-builds-ahead-of-k2-25b-fuel-storage-project/",
+      "section": "top_stories"
+    },
     {
       "date": "2026-11-27",
       "country": "Solomon Islands",
@@ -1065,22 +1081,6 @@
       "headline": "New Zealand says its ties with its Realm countries remain strong and stable",
       "url": "https://www.rnz.co.nz/news/pacific/1164525/new-zealand-says-its-ties-with-its-realm-countries-remain-strong-and-stable",
       "section": "top_stories"
-    },
-    {
-      "date": "2026-08-27",
-      "country": "Palau",
-      "activity": "other",
-      "headline": "What Lowy's Pacific team will be watching at the 2026 Forum",
-      "url": "https://www.lowyinstitute.org/the-interpreter/pacific-islands-forum-2026-what-lowy-s-pacific-team-will-be-watching",
-      "section": "also_today"
-    },
-    {
-      "date": "2026-08-27",
-      "country": "Solomon Islands",
-      "activity": "senior visit",
-      "headline": "Taiwan's foreign minister departs for Palau ahead of Forum meeting",
-      "url": "https://www.rti.org.tw/en/news?uid=3&pid=228667",
-      "section": "primary_documents"
     }
   ]
 }

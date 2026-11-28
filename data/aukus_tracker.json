@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-23",
+  "last_updated": "2026-11-28",
   "pillar1": [
     {
       "milestone": "Submarine Rotational Force West at HMAS Stirling",
@@ -109,6 +109,12 @@
     }
   ],
   "recent_events": [
+    {
+      "date": "2026-11-28",
+      "headline": "Lowy: AUKUS risks repeating the mistake made of two sidelined 1930s officers",
+      "url": "https://www.lowyinstitute.org/the-interpreter/aukus-is-there-a-dickie-williams-in-the-building",
+      "section": "aukus_watch"
+    },
     {
       "date": "2026-11-23",
       "headline": "Wong tells Labor critics Australia cannot 'abandon' the US alliance",
@@ -462,12 +468,6 @@
       "headline": "Australian Naval Institute convenes experts on AUKUS progress",
       "url": "https://navalinstitute.com.au/experts-look-at-aukus-progress/",
       "section": "aukus_watch"
-    },
-    {
-      "date": "2026-09-12",
-      "headline": "Anthropic says Iran used its American AI model to target US Navy warships",
-      "url": "https://www.theaustralian.com.au/business/the-wall-street-journal/anthropic-says-iran-used-its-american-ai-model-to-target-us-navy-warships/news-story/e926427f75f6f5b4a61e9a4022bda079",
-      "section": "also_today"
     }
   ]
 }
